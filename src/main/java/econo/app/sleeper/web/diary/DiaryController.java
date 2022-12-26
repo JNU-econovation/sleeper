@@ -1,7 +1,10 @@
 package econo.app.sleeper.web.diary;
 
 import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.repository.CharacterRepository;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
+import econo.app.sleeper.util.InitCharacter;
 import econo.app.sleeper.web.login.LoginUser;
 import econo.app.sleeper.web.login.SessionConst;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +28,7 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryService diaryService;
+
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
