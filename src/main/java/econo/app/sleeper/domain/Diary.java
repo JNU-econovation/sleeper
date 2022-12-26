@@ -18,14 +18,15 @@ public class Diary {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryPk;
     @Lob
+    @Column(name = "DIARY_CONTENT")
     private String content;
-    @Column(name = "date")
+    @Column(name = "DIARY_DATE")
     private LocalDate localDate;
 
-    @Column(name = "delete_date")
+    @Column(name = "DIARY_DELETE_DATE")
     private LocalDate deleteLocalDate;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_pk")
+    @JoinColumn(name = "USER_FK")
     private User user; // 연관관계의 주인
 
     @Builder
