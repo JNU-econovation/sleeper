@@ -26,11 +26,16 @@ public class User {
    private String userNickName;
    private Long userAge;
    @Enumerated(EnumType.STRING)
+   @Column(name = "USER_ROLE_TYPE")
    private RoleType roleType;
 
    private String userMessage;
 
    private Integer userMoney;
+
+   @OneToOne
+   @JoinColumn(name = "CHARACTER_FK")
+   private Character character;
 
    @Builder
    public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
