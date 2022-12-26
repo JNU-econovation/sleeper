@@ -33,6 +33,10 @@ public class User {
 
    private Integer userMoney;
 
+   @OneToOne
+   @JoinColumn(name = "CHARACTER_FK")
+   private Character character;
+
    @Builder
    public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
       this.userId = userId;
