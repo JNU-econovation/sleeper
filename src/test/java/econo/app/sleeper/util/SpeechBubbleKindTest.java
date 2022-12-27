@@ -1,8 +1,7 @@
 package econo.app.sleeper.util;
 
+import econo.app.sleeper.domain.SpeechBubbleKind;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class SpeechBubbleKindTest {
 

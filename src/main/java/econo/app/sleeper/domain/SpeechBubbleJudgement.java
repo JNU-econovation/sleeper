@@ -1,4 +1,4 @@
-package econo.app.sleeper.util;
+package econo.app.sleeper.domain;
 
 public class SpeechBubbleJudgement {
 
