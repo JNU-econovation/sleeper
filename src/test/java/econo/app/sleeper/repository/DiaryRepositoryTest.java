@@ -23,7 +23,7 @@ import static org.junit.Assert.*;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-@Rollback()
+@Rollback(value = false)
 public class DiaryRepositoryTest {
 
     @Autowired

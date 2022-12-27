@@ -1,11 +1,7 @@
 package econo.app.sleeper.util;
 
+import econo.app.sleeper.domain.*;
 import econo.app.sleeper.domain.Character;
-import econo.app.sleeper.domain.Color;
-import econo.app.sleeper.domain.Status;
-import econo.app.sleeper.domain.User;
-import econo.app.sleeper.web.character.CharacterDto;
-import econo.app.sleeper.web.diary.DiaryDateDto;
 
 public class InitCharacter {
 
@@ -15,7 +11,7 @@ public class InitCharacter {
                 .status(Status.NO_SLEEP)
                 .experience(0)
                 .level(1L)
-                .speechBubble("안녕하세요~")
+                .speechBubble(SpeechBubbleKind.NO_SLEEP.message())
                 .user(user)
                 .build();
     }

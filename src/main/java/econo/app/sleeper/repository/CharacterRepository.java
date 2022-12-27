@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -25,10 +26,12 @@ public class CharacterRepository {
         log.info("save: character={}", character);
     }
 
-    public void delete(Character character){
-        em.remove(character);
-        log.info("delete: character={}", character);
+    public Character findByPk(String userId) {
+        return em.createQuery("select c from Character c join c.user u where u.userId = :userId",Character.class)
+                .setParameter("userId",userId)
+                .getResultList().get(0);
     }
+
 
 
 

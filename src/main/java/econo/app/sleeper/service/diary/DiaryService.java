@@ -1,19 +1,18 @@
 package econo.app.sleeper.service.diary;
 
 import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.Status;
 import econo.app.sleeper.domain.User;
-import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.util.DateJudgementUtil;
-import econo.app.sleeper.util.InitCharacter;
 import econo.app.sleeper.util.MoneyManager;
+import econo.app.sleeper.domain.SpeechBubbleJudgement;
 import econo.app.sleeper.web.diary.DiaryDateDto;
 import econo.app.sleeper.web.diary.DiaryTimeDto;
-import econo.app.sleeper.web.diary.DiaryRequestForm;
 import econo.app.sleeper.web.diary.DiaryResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +28,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
 
+    private final CharacterService characterService;
+
     @Transactional
     public DiaryResponse saveDiary(DiaryTimeDto diaryTimeDto){
         LocalDate localDate = DateJudgementUtil.checkSavingDate(diaryTimeDto.getLocalDateTime());
@@ -39,6 +40,9 @@ public class DiaryService {
         Integer judgeMoney = MoneyManager.judgeMoney(diaryTimeDto.getContent());
         Integer increasedMoney = MoneyManager.earnMoney(user.getUserMoney(), judgeMoney);
         user.updateMoney(increasedMoney);
+
+        // 케릭터 말풍선 및 상태 변경
+        characterService.updateCharacter(diaryTimeDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diaryTimeDto.getContent()), Status.NO_SLEEP);
         return DiaryResponse.of(diary.getDiaryPk(),judgeMoney);
     }
 
