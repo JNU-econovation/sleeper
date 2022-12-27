@@ -24,7 +24,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-@Rollback
+@Rollback(value = false)
 public class DiaryServiceTest {
 
     @Autowired
