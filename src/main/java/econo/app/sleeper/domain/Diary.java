@@ -17,8 +17,8 @@ public class Diary {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryPk;
-    @Lob
-    @Column(name = "DIARY_CONTENT")
+
+    @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
     private String content;
     @Column(name = "DIARY_DATE")
     private LocalDate localDate;

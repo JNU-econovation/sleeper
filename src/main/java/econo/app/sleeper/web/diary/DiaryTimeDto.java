@@ -20,9 +20,7 @@ public class DiaryTimeDto {
     private final LocalDateTime localDateTime;
 
     private final String userId;
-
     private final String content;
-
     public static DiaryTimeDto of(String userId, String content, LocalDateTime localDateTime){
         return DiaryTimeDto.builder()
                 .userId(userId)
