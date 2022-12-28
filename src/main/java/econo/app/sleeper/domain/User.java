@@ -14,11 +14,14 @@ import java.util.List;
 public class User {
 
    @Id
-   @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @GeneratedValue
    private Long userPk;
 
    @OneToMany(mappedBy = "user")
    private List<Diary> diaries = new ArrayList<>();
+
+   @OneToMany(mappedBy = "user")
+   private List<Sleep> sleeps = new ArrayList<>();
 
    private String userId;
 
@@ -34,11 +37,11 @@ public class User {
 
    private Integer userMoney;
 
-   @Column(name = "USER_DEFAULT_SLEEP_TIME", columnDefinition = "TIME")
-   private LocalTime defaultSleepTime;
+   @Column(name = "USER_GOAL_SLEEP_TIME", columnDefinition = "TIME")
+   private LocalTime goalSleepTime;
 
-   @Column(name = "USER_DEFAULT_WAKE_TIME", columnDefinition = "TIME")
-   private LocalTime defaultWakeTime;
+   @Column(name = "USER_GOAL_WAKE_TIME", columnDefinition = "TIME")
+   private LocalTime goalWakeTime;
 
    @OneToOne
    @JoinColumn(name = "CHARACTER_FK")
