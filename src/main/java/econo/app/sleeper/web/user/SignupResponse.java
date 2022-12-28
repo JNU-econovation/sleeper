@@ -12,20 +12,12 @@ import lombok.RequiredArgsConstructor;
 public class SignupResponse {
 
     private final String userId;
-    private final String userNickName;
 
     public static SignupResponse toDto(User user){
         return SignupResponse.builder()
                 .userId(user.getUserId())
-                .userNickName(user.getUserNickName())
                 .build();
     }
 
-    public User toEntity(){
-        return User.builder()
-                .userId(userId)
-                .userNickName(userNickName)
-                .build();
-    }
 
 }

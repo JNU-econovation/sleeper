@@ -60,5 +60,9 @@ public class User {
    public void updateMoney(Integer userMoney){
       this.userMoney = userMoney;
    }
+   public void updateGoalTime(LocalTime goalSleepTime, LocalTime goalWakeTime) {
+      this.goalSleepTime = goalSleepTime;
+      this.goalWakeTime = goalWakeTime;
+   }
 
 }
