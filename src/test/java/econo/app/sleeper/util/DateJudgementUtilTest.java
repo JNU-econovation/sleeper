@@ -3,13 +3,12 @@ package econo.app.sleeper.util;
 import econo.app.sleeper.web.login.SessionConst;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+import org.springframework.test.context.TestExecutionListeners;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Enumeration;
@@ -22,6 +21,8 @@ public class DateJudgementUtilTest {
     public void checkSavingDate1() {
 
         LocalDateTime testTime = LocalDateTime.of(2022,12,1,3,11);
+
+        ZonedDateTime.of(testTime,ZoneId.of("Asia/Seoul"));
 
         LocalDate localDate = DateJudgementUtil.checkSavingDate(testTime);
 
@@ -46,5 +47,7 @@ public class DateJudgementUtilTest {
         Assertions.assertThat(localDate).isEqualTo(expectedTime);
 
     }
+
+
 
 }

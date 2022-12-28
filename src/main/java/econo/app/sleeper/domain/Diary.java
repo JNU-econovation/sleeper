@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -20,10 +19,10 @@ public class Diary {
 
     @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
     private String content;
-    @Column(name = "DIARY_DATE")
+    @Column(name = "DIARY_DATE", columnDefinition = "DATE")
     private LocalDate localDate;
 
-    @Column(name = "DIARY_DELETE_DATE")
+    @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
     private LocalDate deleteLocalDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")

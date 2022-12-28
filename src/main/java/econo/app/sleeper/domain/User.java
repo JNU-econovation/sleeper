@@ -3,6 +3,7 @@ package econo.app.sleeper.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +33,12 @@ public class User {
    private String userMessage;
 
    private Integer userMoney;
+
+   @Column(name = "USER_DEFAULT_SLEEP_TIME", columnDefinition = "TIME")
+   private LocalTime defaultSleepTime;
+
+   @Column(name = "USER_DEFAULT_WAKE_TIME", columnDefinition = "TIME")
+   private LocalTime defaultWakeTime;
 
    @OneToOne
    @JoinColumn(name = "CHARACTER_FK")

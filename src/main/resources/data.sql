@@ -11,6 +11,8 @@ create table user (
     user_nick_name varchar(20),
     user_password varchar(255),
     user_money bigint,
+    user_default_sleep_time time,
+    user_default_wake_time time,
     character_fk bigint,
     primary key (user_pk)
 );
@@ -34,6 +36,6 @@ create table diary (
    primary key (diary_pk)
 );
 
-INSERT INTO USER (USER_ROLE_TYPE, USER_AGE, USER_ID, USER_MESSAGE, USER_NICK_NAME, USER_PASSWORD, USER_MONEY, character_fk) VALUES ('ADMIN',24,'sleeper','관리자다','관리자','sleeper123@',0,1);
+INSERT INTO USER (USER_ROLE_TYPE, USER_AGE, USER_ID, USER_MESSAGE, USER_NICK_NAME, USER_PASSWORD, USER_MONEY, user_default_wake_time, user_default_sleep_time, character_fk) VALUES ('ADMIN',24,'sleeper','관리자다','관리자','sleeper123@',0,'07:30','23:30',1);
 INSERT INTO character (character_color, character_experience, character_level, character_speech_bubble, character_status) VALUES ('GRAY',0,1,'안녕하세요 관리자님','NO_SLEEP');
 INSERT INTO DIARY (diary_content, diary_date, user_fk) VALUES ('행복한 하루 되세요.','2022-12-25',1);
