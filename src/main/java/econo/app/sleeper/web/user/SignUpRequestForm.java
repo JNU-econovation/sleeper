@@ -19,8 +19,6 @@ public class SignUpRequestForm {
     private final Integer userMoney;
 
 
-
-
     public static SignUpRequestForm ofDto(User user){
         return SignUpRequestForm.builder()
                 .userId(user.getUserId())

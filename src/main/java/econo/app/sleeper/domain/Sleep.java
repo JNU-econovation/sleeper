@@ -1,6 +1,7 @@
 package econo.app.sleeper.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,5 +33,15 @@ public class Sleep {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user;
+
+    @Builder
+    public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
+        this.setSleepTime = setSleepTime;
+        this.setWakeTime = setWakeTime;
+    }
+    public void updateActualTime(ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime){
+        this.actualSleepTime = actualSleepTime;
+        this.actualWakeTime = actualWakeTime;
+    }
 
 }
