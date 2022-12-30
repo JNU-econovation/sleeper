@@ -34,7 +34,7 @@ public class DiaryService {
     public DiaryResponse saveDiary(DiaryTimeDto diaryTimeDto){
         LocalDate localDate = DateJudgementUtil.checkSavingDate(diaryTimeDto.getLocalDateTime());
         User user = userRepository.findById(diaryTimeDto.getUserId()).get();// 로그인 할 때 필터링이 되있기 때문에 null 체크 안 함
-        Diary diary = diaryTimeDto.toEntity(localDate, user);
+        Diary diary = diaryTimeDto.toEntity(localDate,diaryTimeDto.getLocalDateTime(),user);
         diaryRepository.save(diary);
         // 돈 증가
         Integer judgeMoney = MoneyManager.judgeMoney(diaryTimeDto.getContent());
@@ -73,5 +73,6 @@ public class DiaryService {
         Long userPk = user.getUserPk();
         return diaryRepository.findByDate(userPk, diaryDateDto.getLocalDate());
     }
+
 
 }

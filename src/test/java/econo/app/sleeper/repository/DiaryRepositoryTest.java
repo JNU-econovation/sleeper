@@ -3,6 +3,7 @@ package econo.app.sleeper.repository;
 import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.RoleType;
 import econo.app.sleeper.domain.User;
+import net.bytebuddy.asm.Advice;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -44,8 +46,9 @@ public class DiaryRepositoryTest {
         userRepository.save(user);
 
         LocalDate localDate = LocalDate.now();
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,user);
+        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
 
         diaryRepository.save(diary);
     }
@@ -63,8 +66,9 @@ public class DiaryRepositoryTest {
         userRepository.save(user);
 
         LocalDate localDate = LocalDate.now();
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,user);
+        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
 
         diaryRepository.save(diary);
 
@@ -92,9 +96,12 @@ public class DiaryRepositoryTest {
         userRepository.save(user1);
 
         LocalDate localDate = LocalDate.now();
+        LocalDateTime localDateTime1 = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,user);
-        Diary diary1 = new Diary("다른 회원이 생성", localDate,user1);
+        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime1,user);
+        LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+
+        Diary diary1 = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
 
         diaryRepository.save(diary);
         diaryRepository.save(diary1);
@@ -124,12 +131,13 @@ public class DiaryRepositoryTest {
         System.out.println(" ======================================================= ");
 //        LocalDateTime localDateTime1 = LocalDateTime.now();
         LocalDate localDate = LocalDate.of(2022,12,22);
+        LocalDateTime localDateTime = LocalDateTime.of(2022,12,23,01,33);
 //        System.out.println("localDateTime = " + localDateTime1);
         System.out.println("localDateTime2 = " + localDate);
         System.out.println(" ======================================================= ");
 
   //      Diary diary1 = new Diary("행복한 하루 되세요",localDateTime1,user);
-        Diary diary2 = new Diary("행복한 하루 되세요",localDate,user);
+        Diary diary2 = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
 
 //        diaryRepository.save(diary1);
         diaryRepository.save(diary2);
@@ -141,4 +149,27 @@ public class DiaryRepositoryTest {
 
         Assertions.assertThat(diaries2.size()).isEqualTo(1);
     }
+
+    @Test
+    public void findRecentDiaryByUser() {
+        User user = userRepository.findById("sleeper").get();
+        LocalDateTime localDateTime = LocalDateTime.of(2022,12,30,10,38);
+        LocalDateTime localDateTime1 = LocalDateTime.of(2022,12,23,01,33);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2022,12,30,01,01);
+        Diary diary = new Diary("오늘도 파이팅",LocalDate.of(2022,12,30),localDateTime,user);
+        Diary diary1 = new Diary("내일도 파이팅",LocalDate.of(2022,12,30),localDateTime2,user);
+        Diary diary2 = new Diary("이번주도 파이팅",LocalDate.of(2022,12,22),localDateTime1,user);
+        diaryRepository.save(diary);
+        diaryRepository.save(diary1);
+        diaryRepository.save(diary2);
+        Diary recentDiaryByUser = diaryRepository.findRecentDiaryByUser(1L);
+        Assertions.assertThat(recentDiaryByUser.getDiaryPk()).isEqualTo(diary.getDiaryPk());
+    }
+
+
+
+
+
+
 }
+

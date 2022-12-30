@@ -29,10 +29,11 @@ public class DiaryTimeDto {
                 .build();
     }
 
-    public Diary toEntity(LocalDate localDate, User user) {
+    public Diary toEntity(LocalDate localDate,LocalDateTime writingTime, User user) {
         return Diary.builder()
                 .content(content)
                 .localDate(localDate)
+                .writingTime(writingTime)
                 .user(user)
                 .build();
     }

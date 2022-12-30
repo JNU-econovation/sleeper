@@ -1,12 +1,19 @@
 package econo.app.sleeper.service.sleep;
 
+import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.User;
+import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
+import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.Converter;
-import econo.app.sleeper.web.sleep.SetTimeRequestForm;
+import econo.app.sleeper.web.sleep.SleepDto;
+import econo.app.sleeper.web.sleep.TimeRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
 
 @Service
 @Transactional(readOnly = true)
@@ -14,12 +21,29 @@ import org.springframework.transaction.annotation.Transactional;
 public class SleepService {
 
     private final SleepRepository sleepRepository;
+    private final UserRepository userRepository;
+    private final DiaryRepository diaryRepository;
 
     @Transactional
-    public Sleep saveSetTime(SetTimeRequestForm setTimeRequestForm){
-        Sleep sleep = SetTimeRequestForm.toEntity(Converter.convertToZoneDateTime(setTimeRequestForm.getSetSleepTime()),
-                Converter.convertToZoneDateTime(setTimeRequestForm.getSetWakeTime()));
+    public Sleep saveSetTime(TimeRequestDto timeRequestDto){
+        System.out.println("timeRequestDto.getWakeTime() = " + timeRequestDto.getWakeTime());
+        System.out.println("timeRequestDto.getSleepTime() = " + timeRequestDto.getSleepTime());
+        Sleep sleep = TimeRequestDto.toEntity(Converter.convertToZoneDateTime(timeRequestDto.getSleepTime()),
+                Converter.convertToZoneDateTime(timeRequestDto.getWakeTime()));
         sleepRepository.save(sleep);
+        return sleep;
+    }
+
+    @Transactional
+    public Sleep updateActualTime(SleepDto sleepDto){
+        User user = userRepository.findById(sleepDto.getUserId()).get();
+        TimeRequestDto timeRequestDto = TimeRequestDto.toDto(diaryRepository.findRecentDiaryByUser(user.getUserPk()).getWritingTime(),
+                sleepDto.getActualRequestParam().getActualWakeTime());
+        ZonedDateTime zonedDateTime1 = Converter.convertToZoneDateTime(timeRequestDto.getSleepTime());
+        ZonedDateTime zonedDateTime2 = Converter.convertToZoneDateTime(timeRequestDto.getWakeTime());
+        Sleep sleep = TimeRequestDto.toEntity(Converter.convertToZoneDateTime(timeRequestDto.getSleepTime()),
+                Converter.convertToZoneDateTime(timeRequestDto.getWakeTime()));
+        sleep.updateActualTime(zonedDateTime1,zonedDateTime2);
         return sleep;
     }
 }

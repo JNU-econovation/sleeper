@@ -11,10 +11,12 @@ import lombok.RequiredArgsConstructor;
 public class SleepResponse {
 
     private final String message;
+    private final Long sleepPk;
 
-    public SleepResponse toDto(String message){
+    public SleepResponse toDto(String message, Long sleepPk){
         return SleepResponse.builder()
                 .message(message)
+                .sleepPk(sleepPk)
                 .build();
     }
 

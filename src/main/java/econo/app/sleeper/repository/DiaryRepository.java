@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +44,16 @@ public class DiaryRepository {
             .setParameter("userPk",userPk)
             .getResultList();
     }
+    
+    //회원의 감사일기들 중 가장 최근의 감사일기 찾기
+    public Diary findRecentDiaryByUser(Long userPk){
+        TypedQuery<Diary> query = em.createQuery("select d from Diary d join d.user u where u.userPk = :userPk order by d.localDate desc", Diary.class)
+                .setParameter("userPk",userPk);
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+        return query.getSingleResult();
+    }
+
 
     // 회원의 감사일기들 중 날짜가 ~인 것들 찾기
     public List<Diary> findByDate(Long userPk, LocalDate localDate){
@@ -51,5 +62,7 @@ public class DiaryRepository {
             .setParameter("localDate",localDate)
             .getResultList();
     }
+    
+    // 회원의 감사일기들 중 
 
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,6 +23,9 @@ public class Diary {
     @Column(name = "DIARY_DATE", columnDefinition = "DATE")
     private LocalDate localDate;
 
+    @Column(name = "DIARY_WRITING_TIME", columnDefinition = "TIMESTAMP")
+    private LocalDateTime writingTime;
+
     @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
     private LocalDate deleteLocalDate;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,8 +33,9 @@ public class Diary {
     private User user; // 연관관계의 주인
 
     @Builder
-    public Diary(String content, LocalDate localDate, User user){
+    public Diary(String content, LocalDate localDate,LocalDateTime writingTime, User user){
         this.content = content;
+        this.writingTime = writingTime;
         this.localDate = localDate;
         this.user = user;
     }
