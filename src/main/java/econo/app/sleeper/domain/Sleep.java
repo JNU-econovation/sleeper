@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -29,6 +30,9 @@ public class Sleep {
 
     @Column(columnDefinition = "TIMESTAMP")
     private ZonedDateTime actualWakeTime;
+
+    @Column(name = "SLEEP_DATE", columnDefinition = "DATE")
+    private LocalDate savingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")

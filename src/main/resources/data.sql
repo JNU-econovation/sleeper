@@ -44,6 +44,7 @@ create table sleep (
    actual_wake_time TIMESTAMP,
    set_sleep_time TIMESTAMP,
    set_wake_time TIMESTAMP,
+   sleep_date DATE,
    user_fk bigint,
    primary key (sleep_pk)
 );
