@@ -28,8 +28,6 @@ import java.util.Optional;
 public class SleepController {
 
     private final SleepService sleepService;
-    private final UserRepository userRepository;
-    private final DiaryRepository diaryRepository;
 
     @PostMapping("/sleeps")
     public ResponseEntity<SleepResponse> saveSetTime(TimeRequestDto timeRequestDto){
@@ -42,10 +40,10 @@ public class SleepController {
     }
 
     @PutMapping("/sleeps/{nu}")
-    public ResponseEntity<CommonResponse> updateActualTime(@SessionAttribute Object loginUser,@PathVariable("nu") Long diaryPk,
+    public ResponseEntity<CommonResponse> updateActualTime(@SessionAttribute Object loginUser,@PathVariable("nu") Long sleepPk,
                                                            ActualRequestParam actualRequestParam){
         LoginUser loginUser1 = (LoginUser) loginUser;
-        SleepDto sleepDto = SleepDto.of(loginUser1.getUserId(), diaryPk, actualRequestParam);
+        SleepDto sleepDto = SleepDto.of(loginUser1.getUserId(), sleepPk, actualRequestParam);
         sleepService.updateActualTime(sleepDto);
         CommonResponse commonResponse = CommonResponse.toDto("실제 수면 시간 저장 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);

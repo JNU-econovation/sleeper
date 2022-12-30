@@ -7,6 +7,7 @@ import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.Converter;
+import econo.app.sleeper.util.DateJudgementUtil;
 import econo.app.sleeper.web.sleep.SleepDto;
 import econo.app.sleeper.web.sleep.TimeRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,8 +28,6 @@ public class SleepService {
 
     @Transactional
     public Sleep saveSetTime(TimeRequestDto timeRequestDto){
-        System.out.println("timeRequestDto.getWakeTime() = " + timeRequestDto.getWakeTime());
-        System.out.println("timeRequestDto.getSleepTime() = " + timeRequestDto.getSleepTime());
         Sleep sleep = TimeRequestDto.toEntity(Converter.convertToZoneDateTime(timeRequestDto.getSleepTime()),
                 Converter.convertToZoneDateTime(timeRequestDto.getWakeTime()));
         sleepRepository.save(sleep);
@@ -43,7 +43,9 @@ public class SleepService {
         ZonedDateTime zonedDateTime2 = Converter.convertToZoneDateTime(timeRequestDto.getWakeTime());
         Sleep sleep = TimeRequestDto.toEntity(Converter.convertToZoneDateTime(timeRequestDto.getSleepTime()),
                 Converter.convertToZoneDateTime(timeRequestDto.getWakeTime()));
-        sleep.updateActualTime(zonedDateTime1,zonedDateTime2);
+        Sleep sleep2 = sleepRepository.findByPk(sleepDto.getSleepPk()).get();
+        sleep2.updateActualTime(zonedDateTime1,zonedDateTime2);
+        sleep2.updateSavingDate(DateJudgementUtil.checkSavingDate(timeRequestDto.getSleepTime()));
         return sleep;
     }
 }

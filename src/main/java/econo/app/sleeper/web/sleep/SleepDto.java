@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 public class SleepDto {
 
     private final String userId;
-    private final Long diaryPk;
+    private final Long sleepPk;
     private final ActualRequestParam actualRequestParam;
 
-    public static SleepDto of(String userId, Long diaryPk, ActualRequestParam actualRequestParam){
+    public static SleepDto of(String userId, Long sleepPk, ActualRequestParam actualRequestParam){
         return SleepDto.builder()
                 .userId(userId)
-                .diaryPk(diaryPk)
+                .sleepPk(sleepPk)
                 .actualRequestParam(actualRequestParam)
                 .build();
     }

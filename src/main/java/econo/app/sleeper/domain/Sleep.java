@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -46,6 +47,10 @@ public class Sleep {
     public void updateActualTime(ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime){
         this.actualSleepTime = actualSleepTime;
         this.actualWakeTime = actualWakeTime;
+    }
+
+    public void updateSavingDate(LocalDate savingDate){
+        this.savingDate = savingDate;
     }
 
 }
