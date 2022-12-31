@@ -8,6 +8,8 @@ import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.Converter;
 import econo.app.sleeper.util.DateJudgementUtil;
+import econo.app.sleeper.web.calendar.CalendarDto;
+import econo.app.sleeper.web.diary.DiaryDateDto;
 import econo.app.sleeper.web.sleep.SleepDto;
 import econo.app.sleeper.web.sleep.TimeRequestDto;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,4 +51,12 @@ public class SleepService {
         sleep2.updateSavingDate(DateJudgementUtil.checkSavingDate(timeRequestDto.getSleepTime()));
         return sleep;
     }
+
+//      해당 날짜에 해당하는 감사일기 찾기
+    public List<Sleep> findSleepsByDate(CalendarDto calendarDto){
+        String userId = calendarDto.getUserId();
+        Long userPk = userRepository.findById(userId).get().getUserPk();
+        return sleepRepository.findSleepsByDate(userPk,calendarDto.getDate());
+    }
+
 }
