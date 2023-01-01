@@ -21,7 +21,7 @@ public class Diary {
     @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
     private String content;
     @Column(name = "DIARY_DATE", columnDefinition = "DATE")
-    private LocalDate localDate;
+    private LocalDate savingDate;
 
     @Column(name = "DIARY_WRITING_TIME", columnDefinition = "TIMESTAMP")
     private LocalDateTime writingTime;
@@ -33,10 +33,10 @@ public class Diary {
     private User user; // 연관관계의 주인
 
     @Builder
-    public Diary(String content, LocalDate localDate,LocalDateTime writingTime, User user){
+    public Diary(String content, LocalDate savingDate, LocalDateTime writingTime, User user){
         this.content = content;
         this.writingTime = writingTime;
-        this.localDate = localDate;
+        this.savingDate = savingDate;
         this.user = user;
     }
 

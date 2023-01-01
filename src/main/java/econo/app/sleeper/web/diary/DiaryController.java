@@ -1,10 +1,7 @@
 package econo.app.sleeper.web.diary;
 
 import econo.app.sleeper.domain.Diary;
-import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
-import econo.app.sleeper.util.InitCharacter;
 import econo.app.sleeper.web.login.LoginUser;
 import econo.app.sleeper.web.login.SessionConst;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +68,7 @@ public class DiaryController {
 
         DiaryResponseForm diaryResponseFormList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
-            diaryResponseFormList = DiaryResponseForm.of(diariesByUser.get(i).getContent(), diariesByUser.get(i).getLocalDate());
+            diaryResponseFormList = DiaryResponseForm.of(diariesByUser.get(i).getContent(), diariesByUser.get(i).getSavingDate());
         }
 
         return new ResponseEntity<>(diaryResponseFormList, HttpStatus.OK);
@@ -87,7 +84,7 @@ public class DiaryController {
 
         DiaryResponseForm diaryResponseFormList = null;
         for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryResponseFormList = DiaryResponseForm.of(diariesByDate.get(i).getContent(), diariesByDate.get(i).getLocalDate());
+            diaryResponseFormList = DiaryResponseForm.of(diariesByDate.get(i).getContent(), diariesByDate.get(i).getSavingDate());
         }
         return new ResponseEntity<>(diaryResponseFormList, HttpStatus.CREATED);
     }

@@ -9,7 +9,6 @@ import econo.app.sleeper.web.diary.DiaryDateDto;
 import econo.app.sleeper.web.login.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,7 @@ public class CalendarController {
         List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryDateDto.of(loginUser1.getUserId(), localDate));
         List<LocalDate> localDates = new ArrayList<>();
         for(Diary d : diaries){
-            localDates = List.of(d.getLocalDate());
+            localDates = List.of(d.getSavingDate());
         }
         CalendarResponse calendarResponse = CalendarResponse.of(localDates);
         return new ResponseEntity<>(calendarResponse,HttpStatus.OK);
