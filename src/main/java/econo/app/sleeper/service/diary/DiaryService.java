@@ -6,7 +6,7 @@ import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.util.DateJudgementUtil;
+import econo.app.sleeper.util.DateManager;
 import econo.app.sleeper.util.MoneyManager;
 import econo.app.sleeper.domain.SpeechBubbleJudgement;
 import econo.app.sleeper.web.diary.DiaryDateDto;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class DiaryService {
 
     @Transactional
     public DiaryResponse saveDiary(DiaryTimeDto diaryTimeDto){
-        LocalDate localDate = DateJudgementUtil.checkSavingDate(diaryTimeDto.getLocalDateTime());
+        LocalDate localDate = DateManager.checkSavingDate(diaryTimeDto.getLocalDateTime());
         User user = userRepository.findById(diaryTimeDto.getUserId()).get();// 로그인 할 때 필터링이 되있기 때문에 null 체크 안 함
         Diary diary = diaryTimeDto.toEntity(localDate,diaryTimeDto.getLocalDateTime(),user);
         diaryRepository.save(diary);
@@ -74,5 +75,9 @@ public class DiaryService {
         return diaryRepository.findByDate(userPk, diaryDateDto.getLocalDate());
     }
 
+    public List<Diary> findDiariesBetWeenDates(DiaryDateDto diaryDateDto){
+        User user = userRepository.findById(diaryDateDto.getUserId()).get();
+        return diaryRepository.findBetweenDate(user.getUserPk(),diaryDateDto.getLocalDate().withDayOfMonth(1),DateManager.giveEndDate(diaryDateDto.getLocalDate()));
+    }
 
 }

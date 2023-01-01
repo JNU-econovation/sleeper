@@ -167,7 +167,30 @@ public class DiaryRepositoryTest {
     }
 
 
+    @Test
+    public void findBetweenDate(){
+        User user = userRepository.findById("sleeper").get();
+        LocalDateTime localDateTime = LocalDateTime.of(2022,11,20,10,38);
+        LocalDateTime localDateTime1 = LocalDateTime.of(2022,12,23,01,33);
+        LocalDateTime localDateTime2 = LocalDateTime.of(2022,12,30,01,01);
+        LocalDateTime localDateTime3 = LocalDateTime.of(2023,01,22,01,01);
+        LocalDateTime localDateTime4 = LocalDateTime.of(2022,12,10,03,01);
+        Diary diary = new Diary("오늘도 파이팅",LocalDate.of(2022,11,20),localDateTime,user);
+        Diary diary1 = new Diary("내일도 파이팅",LocalDate.of(2022,12,23),localDateTime2,user);
+        Diary diary2 = new Diary("이번주도 파이팅",LocalDate.of(2022,12,30),localDateTime1,user);
+        Diary diary3 = new Diary("파이팅",LocalDate.of(2023,01,22),localDateTime3,user);
+        Diary diary4 = new Diary("오늘 하루도 파이팅",LocalDate.of(2022,12,10),localDateTime4,user);
+        diaryRepository.save(diary);
+        diaryRepository.save(diary1);
+        diaryRepository.save(diary2);
+        diaryRepository.save(diary3);
+        diaryRepository.save(diary4);
 
+        LocalDate startDate = LocalDate.of(2022, 12, 1);
+        LocalDate endDate = LocalDate.of(2022, 12, 31);
+        List<Diary> diaries = diaryRepository.findBetweenDate(user.getUserPk(), startDate, endDate);
+        Assertions.assertThat(diaries.size()).isEqualTo(4);
+    }
 
 
 

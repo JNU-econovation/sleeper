@@ -63,6 +63,13 @@ public class DiaryRepository {
             .getResultList();
     }
     
-    // 회원의 감사일기들 중 
+    // 회원의 감사일기들 중 날짜가 x년 x월 인 것 찾기
+    public List<Diary> findBetweenDate(Long userPk, LocalDate startDate, LocalDate endDate){
+        return em.createQuery("select d from Diary d join d.user u where u.userPk = :userPk and d.localDate between :startDate and :endDate order by d.localDate")
+                .setParameter("userPk",userPk)
+                .setParameter("startDate",startDate)
+                .setParameter("endDate",endDate)
+                .getResultList();
+    }
 
 }

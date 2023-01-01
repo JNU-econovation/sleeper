@@ -1,42 +1,22 @@
 package econo.app.sleeper.web.calendar;
 
-import econo.app.sleeper.web.Link;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
-
-
-@Getter
 @RequiredArgsConstructor
+@Getter
 @Builder
 public class CalendarResponse {
 
-    private final String content;
-    private final Long diaryPk;
-    private final ZonedDateTime setSleepTime;
-    private final ZonedDateTime setWakeTime;
-    private final ZonedDateTime actualSleepTime;
-    private final ZonedDateTime actualWakeTime;
-    private final Link link;
+    private final List<LocalDate> localDateList;
 
-    public static CalendarResponse of(String content,Long diaryPk, ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime
-    , Link link){
+    public static CalendarResponse of(List<LocalDate> localDateList){
         return CalendarResponse.builder()
-                .content(content)
-                .diaryPk(diaryPk)
-                .setSleepTime(setSleepTime)
-                .setWakeTime(setWakeTime)
-                .actualSleepTime(actualSleepTime)
-                .actualWakeTime(actualWakeTime)
-                .link(link)
+                .localDateList(localDateList)
                 .build();
     }
-
-
-
 }
-
-
