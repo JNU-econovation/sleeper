@@ -43,7 +43,7 @@ public class DiaryService {
         user.updateMoney(increasedMoney);
 
         // 케릭터 말풍선 및 상태 변경
-        characterService.updateCharacter(diaryTimeDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diaryTimeDto.getContent()), Status.NO_SLEEP);
+        characterService.updateCharacter(diaryTimeDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diaryTimeDto.getContent()), Status.SLEEP);
         return DiaryResponse.of(diary.getDiaryPk(),judgeMoney);
     }
 

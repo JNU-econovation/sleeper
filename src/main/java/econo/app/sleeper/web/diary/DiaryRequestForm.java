@@ -26,7 +26,7 @@ public class DiaryRequestForm {
     public Diary toEntity(LocalDate localDate,User user){
         return Diary.builder()
                 .content(content)
-                .localDate(localDate)
+                .savingDate(localDate)
                 .user(user)
                 .build();
     }

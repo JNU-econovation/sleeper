@@ -32,7 +32,7 @@ public class DiaryTimeDto {
     public Diary toEntity(LocalDate localDate,LocalDateTime writingTime, User user) {
         return Diary.builder()
                 .content(content)
-                .localDate(localDate)
+                .savingDate(localDate)
                 .writingTime(writingTime)
                 .user(user)
                 .build();

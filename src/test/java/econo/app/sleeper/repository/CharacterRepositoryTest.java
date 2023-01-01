@@ -10,8 +10,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -23,7 +21,7 @@ public class CharacterRepositoryTest {
 
     @Test
     public void findByPk() {
-        Character character = characterRepository.findByPk("sleeper");
+        Character character = characterRepository.findById("sleeper").get();
         Assertions.assertThat(character.getUser().getUserId()).isEqualTo("sleeper");
     }
 }

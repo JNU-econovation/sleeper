@@ -49,7 +49,7 @@ create table sleep (
    primary key (sleep_pk)
 );
 
-INSERT INTO SLEEP (actual_sleep_time, actual_wake_time, set_sleep_time, set_wake_time,sleep_date,user_fk) VALUES ('2022-12-26T12:36','2022-12-26T08:10','2022-12-26T12:00','2022-12-26T07:00','2022-12-25',1);
+INSERT INTO SLEEP (actual_sleep_time, actual_wake_time, set_sleep_time, set_wake_time,sleep_date,user_fk) VALUES ('2023-01-02T01:36','2023-01-02T08:10','2023-01-02T00:10','2023-01-02T07:00','2023-01-01',1);
 INSERT INTO USER (USER_ROLE_TYPE, USER_AGE, USER_ID, USER_MESSAGE, USER_NICK_NAME, USER_PASSWORD, USER_MONEY, user_goal_wake_time, user_goal_sleep_time, character_fk) VALUES ('ADMIN',24,'sleeper','관리자다','관리자','sleeper123@',0,'07:30','23:30',1);
 INSERT INTO character (character_color, character_experience, character_level, character_speech_bubble, character_status) VALUES ('GRAY',0,1,'안녕하세요 관리자님','NO_SLEEP');
-INSERT INTO DIARY (diary_content, diary_date, diary_writing_time, user_fk) VALUES ('행복한 하루 되세요.','2022-12-25','2022-12-26T12:36',1);
+INSERT INTO DIARY (diary_content, diary_date, diary_writing_time, user_fk) VALUES ('행복한 하루 되세요.','2023-01-01','2023-01-02T01:36',1);

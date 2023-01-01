@@ -5,6 +5,7 @@ import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.service.user.UserService;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class SleepController {
 
     private final SleepService sleepService;
+    private final CharacterService characterService;
 
     @PostMapping("/sleeps")
     public ResponseEntity<SleepResponse> saveSetTime(TimeRequestDto timeRequestDto){
@@ -43,8 +45,10 @@ public class SleepController {
     public ResponseEntity<CommonResponse> updateActualTime(@SessionAttribute Object loginUser,@PathVariable("nu") Long sleepPk,
                                                            ActualRequestParam actualRequestParam){
         LoginUser loginUser1 = (LoginUser) loginUser;
-        SleepDto sleepDto = SleepDto.of(loginUser1.getUserId(), sleepPk, actualRequestParam);
+        SleepDto sleepDto = SleepDto.of(loginUser1.getUserId(),sleepPk,actualRequestParam);
         sleepService.updateActualTime(sleepDto);
+        SleepCharacterDto sleepCharacterDto = SleepCharacterDto.of(loginUser1.getUserId(), sleepPk);
+        characterService.updateCharacter(sleepCharacterDto);
         CommonResponse commonResponse = CommonResponse.toDto("실제 수면 시간 저장 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }

@@ -4,7 +4,6 @@ import econo.app.sleeper.domain.Character;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.web.login.LoginUser;
 import econo.app.sleeper.web.login.SessionConst;
-import io.swagger.models.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -38,7 +37,7 @@ public class CharacterController{
     public ResponseEntity<CharacterDto> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
         LoginUser loginUser1 = (LoginUser)loginUser;
         String userId = loginUser1.getUserId();
-        Character character = characterRepository.findByPk(userId);
+        Character character = characterRepository.findById(userId).get();
         CharacterDto characterDto = CharacterDto.builder()
                 .color(character.getColor())
                 .status(character.getStatus())
