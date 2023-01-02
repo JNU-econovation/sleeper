@@ -1,29 +1,20 @@
 package econo.app.sleeper.util;
 
-import econo.app.sleeper.web.login.SessionConst;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Enumeration;
+import java.time.*;
 
-import static org.junit.Assert.*;
-
-public class DateJudgementUtilTest {
+public class DateManagerTest {
 
     @Test
     public void checkSavingDate1() {
 
         LocalDateTime testTime = LocalDateTime.of(2022,12,1,3,11);
 
-        LocalDate localDate = DateJudgementUtil.checkSavingDate(testTime);
+        ZonedDateTime.of(testTime,ZoneId.of("Asia/Seoul"));
+
+        LocalDate localDate = DateManager.checkSavingDate(testTime);
 
         LocalDate expectedTime = LocalDate.of(2022,11,30);
 
@@ -39,12 +30,14 @@ public class DateJudgementUtilTest {
 
         System.out.println("testTime = " + testTime);
 
-        LocalDate localDate = DateJudgementUtil.checkSavingDate(testTime);
+        LocalDate localDate = DateManager.checkSavingDate(testTime);
 
         LocalDate expectedTime = LocalDate.of(2022,12,21);
 
         Assertions.assertThat(localDate).isEqualTo(expectedTime);
 
     }
+
+
 
 }

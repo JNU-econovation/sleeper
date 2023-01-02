@@ -1,24 +1,16 @@
 package econo.app.sleeper.service.character;
 
 import econo.app.sleeper.domain.Character;
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.Status;
-import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.repository.DiaryRepository;
-import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.util.DateJudgementUtil;
-import econo.app.sleeper.util.MoneyManager;
-import econo.app.sleeper.web.character.CharacterDto;
-import econo.app.sleeper.web.diary.DiaryResponse;
-import econo.app.sleeper.web.diary.DiaryTimeDto;
+import econo.app.sleeper.repository.SleepRepository;
+import econo.app.sleeper.util.ExperienceManager;
+import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.web.sleep.SleepCharacterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,13 +18,24 @@ import java.util.Optional;
 public class CharacterService {
 
     private final CharacterRepository characterRepository;
-    private final UserService userService;
-    private final UserRepository userRepository;
+    private final SleepRepository sleepRepository;
 
+    // 잠에 들 때
     @Transactional
     public void updateCharacter(String userId, String speechBubble, Status status) {
-        Character character = characterRepository.findByPk(userId);
-        character.updateSpeechAndStatus(speechBubble,status);
+        Character character = characterRepository.findById(userId).get();
+        character.updateCharacter(speechBubble,status);
     }
+
+    // 일어날 때
+    @Transactional
+    public void updateCharacter(SleepCharacterDto sleepCharacterDto){
+        Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();
+        Sleep sleep = sleepRepository.findByPk(sleepCharacterDto.getSleepPk()).get();
+        Integer experience = ExperienceManager.assessExperience(sleep.getSetSleepTime(), sleep.getSetWakeTime(), sleep.getActualSleepTime(), sleep.getActualWakeTime());
+        Long level = ExperienceManager.convertExToLevel(character.getExperience(), experience);
+        character.updateCharacter(experience,level,Status.NO_SLEEP,SpeechBubbleJudgement.judgeSpeechBubble(experience));
+    }
+
 
 }

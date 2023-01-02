@@ -4,7 +4,6 @@ import econo.app.sleeper.domain.Character;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.web.login.LoginUser;
 import econo.app.sleeper.web.login.SessionConst;
-import io.swagger.models.Response;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -35,17 +34,17 @@ public class CharacterController{
 
 
     @GetMapping("/character")
-    public ResponseEntity<CharacterDto> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
+    public ResponseEntity<CharacterResponse> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
         LoginUser loginUser1 = (LoginUser)loginUser;
         String userId = loginUser1.getUserId();
-        Character character = characterRepository.findByPk(userId);
-        CharacterDto characterDto = CharacterDto.builder()
+        Character character = characterRepository.findById(userId).get();
+        CharacterResponse characterResponse = CharacterResponse.builder()
                 .color(character.getColor())
                 .status(character.getStatus())
                 .experience(character.getExperience())
                 .level(character.getLevel())
                 .speechBubble(character.getSpeechBubble())
                 .build();
-        return new ResponseEntity<>(characterDto, HttpStatus.OK);
+        return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }
 }

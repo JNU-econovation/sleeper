@@ -40,14 +40,20 @@ public class Character {
         this.user = user;
     }
 
-    public void updateExAndLevel(Integer experience, Long level) {
+    public void updateCharacter(Integer experience, Long level, Status status, String speechBubble) {
         this.experience = experience;
         this.level = level;
+        this.status = status;
+        this.speechBubble = speechBubble;
     }
 
-    public void updateSpeechAndStatus(String speechBubble, Status status) {
+    public void updateCharacter(String speechBubble, Status status) {
         this.speechBubble = speechBubble;
         this.status = status;
+    }
+
+    public void updateCharacter(String speechBubble) {
+        this.speechBubble = speechBubble;
     }
 
 }

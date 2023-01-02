@@ -1,7 +1,6 @@
 package econo.app.sleeper.web.user;
 
 import econo.app.sleeper.domain.User;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +17,7 @@ public class SignUpRequestForm {
     private final Long userAge;
 
     private final Integer userMoney;
+
 
     public static SignUpRequestForm ofDto(User user){
         return SignUpRequestForm.builder()

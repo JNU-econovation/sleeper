@@ -17,22 +17,26 @@ public class Diary {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryPk;
-    @Lob
-    @Column(name = "DIARY_CONTENT")
-    private String content;
-    @Column(name = "DIARY_DATE")
-    private LocalDate localDate;
 
-    @Column(name = "DIARY_DELETE_DATE")
+    @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
+    private String content;
+    @Column(name = "DIARY_DATE", columnDefinition = "DATE")
+    private LocalDate savingDate;
+
+    @Column(name = "DIARY_WRITING_TIME", columnDefinition = "TIMESTAMP")
+    private LocalDateTime writingTime;
+
+    @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
     private LocalDate deleteLocalDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user; // 연관관계의 주인
 
     @Builder
-    public Diary(String content, LocalDate localDate, User user){
+    public Diary(String content, LocalDate savingDate, LocalDateTime writingTime, User user){
         this.content = content;
-        this.localDate = localDate;
+        this.writingTime = writingTime;
+        this.savingDate = savingDate;
         this.user = user;
     }
 

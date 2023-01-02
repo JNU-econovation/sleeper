@@ -3,18 +3,19 @@ package econo.app.sleeper.util;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import net.bytebuddy.asm.Advice;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.TimeZone;
+import java.time.YearMonth;
+import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class DateJudgementUtil {
+public class DateManager {
 
-    private DateJudgementUtil(){
+    private DateManager(){
         // 사용 x
     }
 
@@ -39,6 +40,11 @@ public class DateJudgementUtil {
         }
 
         return localDate;
+    }
+
+    public static LocalDate giveEndDate(LocalDate localDate){
+        YearMonth month = YearMonth.from(localDate);
+        return month.atEndOfMonth();
     }
 
 

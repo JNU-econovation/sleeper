@@ -20,9 +20,7 @@ public class DiaryTimeDto {
     private final LocalDateTime localDateTime;
 
     private final String userId;
-
     private final String content;
-
     public static DiaryTimeDto of(String userId, String content, LocalDateTime localDateTime){
         return DiaryTimeDto.builder()
                 .userId(userId)
@@ -31,10 +29,11 @@ public class DiaryTimeDto {
                 .build();
     }
 
-    public Diary toEntity(LocalDate localDate, User user) {
+    public Diary toEntity(LocalDate localDate,LocalDateTime writingTime, User user) {
         return Diary.builder()
                 .content(content)
-                .localDate(localDate)
+                .savingDate(localDate)
+                .writingTime(writingTime)
                 .user(user)
                 .build();
     }
