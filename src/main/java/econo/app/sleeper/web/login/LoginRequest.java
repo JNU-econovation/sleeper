@@ -1,12 +1,11 @@
 package econo.app.sleeper.web.login;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class LoginRequestForm {
+public class LoginRequest {
 
     // validation 해야됨
     private final String userId;
