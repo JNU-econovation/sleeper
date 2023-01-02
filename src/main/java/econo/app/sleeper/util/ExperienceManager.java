@@ -38,5 +38,23 @@ public class ExperienceManager {
         }
         return 0;
     }
+
+    public static Boolean approachLevel(Integer experience){
+
+        if (Level.ONE.getExperience()*0.9 < experience & Level.ONE.getExperience() > experience) {
+            return true;
+        } else if (Level.TWO.getExperience()*0.9 < experience & Level.TWO.getExperience() > experience) {
+            return true;
+        } else if (Level.THREE.getExperience()*0.9 < experience & Level.THREE.getExperience() > experience) {
+            return true;
+        } else if (Level.FOUR.getExperience()*0.9 < experience & Level.FOUR.getExperience() > experience) {
+            return true;
+        } else if (Level.FIVE.getExperience()*0.9 < experience & Level.FIVE.getExperience() > experience) {
+            return true;
+        } else if (Level.SIX.getExperience()*0.9 < experience & Level.SIX.getExperience() > experience) {
+            return true;
+        }
+        return false;
+    }
 }
     

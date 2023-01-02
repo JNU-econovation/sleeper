@@ -1,4 +1,4 @@
-package econo.app.sleeper.domain;
+package econo.app.sleeper.util;
 
 public enum SpeechBubbleKind {
 
@@ -7,8 +7,10 @@ public enum SpeechBubbleKind {
     SLEEP("ZZZZZ.."),
     NO_SLEEP("오늘 하루도 파이팅!"),
     BEFORE_SLEEP("오늘 하루도 고생했어"),
+    SOON_LEVEL_UP("레벨업이 얼마 남지 않았어요"),
 
-    TIME_GET_SLEEP("먼지 졸려요");
+    CAN_DO_IT("할 수 있어요")
+    ;
 
     private final String message;
 

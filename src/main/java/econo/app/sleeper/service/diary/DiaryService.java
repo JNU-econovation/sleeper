@@ -8,7 +8,7 @@ import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.util.DateManager;
 import econo.app.sleeper.util.MoneyManager;
-import econo.app.sleeper.domain.SpeechBubbleJudgement;
+import econo.app.sleeper.util.SpeechBubbleJudgement;
 import econo.app.sleeper.web.diary.DiaryDateDto;
 import econo.app.sleeper.web.diary.DiaryTimeDto;
 import econo.app.sleeper.web.diary.DiaryResponse;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

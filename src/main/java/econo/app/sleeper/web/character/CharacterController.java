@@ -34,17 +34,17 @@ public class CharacterController{
 
 
     @GetMapping("/character")
-    public ResponseEntity<CharacterDto> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
+    public ResponseEntity<CharacterResponse> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
         LoginUser loginUser1 = (LoginUser)loginUser;
         String userId = loginUser1.getUserId();
         Character character = characterRepository.findById(userId).get();
-        CharacterDto characterDto = CharacterDto.builder()
+        CharacterResponse characterResponse = CharacterResponse.builder()
                 .color(character.getColor())
                 .status(character.getStatus())
                 .experience(character.getExperience())
                 .level(character.getLevel())
                 .speechBubble(character.getSpeechBubble())
                 .build();
-        return new ResponseEntity<>(characterDto, HttpStatus.OK);
+        return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }
 }

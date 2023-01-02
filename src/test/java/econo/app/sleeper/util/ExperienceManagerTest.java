@@ -1,5 +1,6 @@
 package econo.app.sleeper.util;
 
+import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.time.LocalDateTime;
@@ -21,6 +22,18 @@ public class ExperienceManagerTest {
 
         Integer experience = ExperienceManager.assessExperience(zonedDateTime3, zonedDateTime4, zonedDateTime1, zonedDateTime2);
         System.out.println("experience = " + experience);
+    }
+
+    @Test
+    public void assessLevel(){
+        Boolean aBoolean = ExperienceManager.approachLevel(45);
+        Assertions.assertThat(aBoolean).isEqualTo(true);
+    }
+
+    @Test
+    public void assessLevel1(){
+        Boolean aBoolean = ExperienceManager.approachLevel(2);
+        Assertions.assertThat(aBoolean).isEqualTo(false);
     }
 
 }
