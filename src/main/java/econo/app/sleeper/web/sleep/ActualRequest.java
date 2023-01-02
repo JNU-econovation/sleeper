@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class ActualRequestParam {
+public class ActualRequest {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime actualWakeTime;

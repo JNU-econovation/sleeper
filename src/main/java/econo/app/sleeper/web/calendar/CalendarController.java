@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.Link;
+import econo.app.sleeper.util.Link;
 import econo.app.sleeper.web.diary.DiaryDateDto;
 import econo.app.sleeper.web.login.LoginUser;
 import lombok.RequiredArgsConstructor;

@@ -46,6 +46,7 @@ public class Sleep {
         this.setWakeTime = setWakeTime;
         this.user = user;
     }
+
     public void updateActualTime(ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime){
         this.actualSleepTime = actualSleepTime;
         this.actualWakeTime = actualWakeTime;

@@ -1,4 +1,4 @@
-package econo.app.sleeper.web;
+package econo.app.sleeper.util;
 
 import lombok.Builder;
 import lombok.Getter;

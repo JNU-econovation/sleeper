@@ -15,23 +15,23 @@ import java.time.ZonedDateTime;
 public class SetTimeRequest {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime sleepTime;
+    private final LocalDateTime setSleepTime;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime wakeTime;
+    private final LocalDateTime setWakeTime;
 
 
-    public static Sleep toEntity(ZonedDateTime sleepTime, ZonedDateTime wakeTime){
+    public static Sleep toEntity(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
         return Sleep.builder()
-                .setSleepTime(sleepTime)
-                .setWakeTime(wakeTime)
+                .setSleepTime(setSleepTime)
+                .setWakeTime(setWakeTime)
                 .build();
     }
 
-    public static SetTimeRequest toDto(LocalDateTime sleepTime, LocalDateTime wakeTime){
+    public static SetTimeRequest of(LocalDateTime setSleepTime, LocalDateTime setWakeTime){
         return SetTimeRequest.builder()
-                .sleepTime(sleepTime)
-                .wakeTime(wakeTime)
+                .setSleepTime(setSleepTime)
+                .setWakeTime(setWakeTime)
                 .build();
     }
 }

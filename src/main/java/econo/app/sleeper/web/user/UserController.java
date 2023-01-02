@@ -3,7 +3,7 @@ package econo.app.sleeper.web.user;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.TimeManager;
-import econo.app.sleeper.web.CommonResponse;
+import econo.app.sleeper.util.CommonResponse;
 import econo.app.sleeper.web.login.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

@@ -19,7 +19,7 @@ public class SignUpRequest {
     private final Integer userMoney;
 
 
-    public static SignUpRequest ofDto(User user){
+    public static SignUpRequest of(User user){
         return SignUpRequest.builder()
                 .userId(user.getUserId())
                 .userPassword(user.getUserPassword())
