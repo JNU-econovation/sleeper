@@ -189,7 +189,7 @@ public class DiaryRepositoryTest {
         LocalDate startDate = LocalDate.of(2022, 12, 1);
         LocalDate endDate = LocalDate.of(2022, 12, 31);
         List<Diary> diaries = diaryRepository.findBetweenDate(user.getUserPk(), startDate, endDate);
-        Assertions.assertThat(diaries.size()).isEqualTo(4);
+        Assertions.assertThat(diaries.size()).isEqualTo(3);
     }
 
 

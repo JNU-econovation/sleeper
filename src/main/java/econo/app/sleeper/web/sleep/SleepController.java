@@ -19,8 +19,10 @@ public class SleepController {
     private final CharacterService characterService;
 
     @PostMapping("/sleeps")
-    public ResponseEntity<SleepResponse> saveSetTime(TimeRequestDto timeRequestDto){
-        Sleep sleep = sleepService.saveSetTime(timeRequestDto);
+    public ResponseEntity<SleepResponse> saveSetTime(@SessionAttribute Object loginUser, SetTimeRequest setTimeRequest){
+        LoginUser loginUser1 = (LoginUser) loginUser;
+        SetTimeDto setTimeDto = SetTimeDto.of(setTimeRequest.getSleepTime(), setTimeRequest.getWakeTime(), loginUser1.getUserId());
+        Sleep sleep = sleepService.saveSetTime(setTimeDto);
         SleepResponse sleepResponse = SleepResponse.builder()
                 .message("수면 설정 시간 저장 완료")
                 .sleepPk(sleep.getSleepPk())

@@ -1,6 +1,9 @@
 package econo.app.sleeper.repository;
 
 import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.service.sleep.SleepService;
+import econo.app.sleeper.web.sleep.SetTimeDto;
+import econo.app.sleeper.web.sleep.SetTimeRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -22,6 +24,9 @@ public class SleepRepositoryTest {
 
     @Autowired
     SleepRepository sleepRepository;
+
+    @Autowired
+    SleepService sleepService;
     
     @Test
     public void findSleepsByDate(){
@@ -34,7 +39,13 @@ public class SleepRepositoryTest {
             System.out.println("s.getActualSleepTime() = " + s.getActualSleepTime());
         }
     }
-    
+
+    @Test
+    public void findRecentSleepByUser(){
+        LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
+        LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
+        sleepService.saveSetTime(SetTimeDto.of(setSleepTime,setWakeTime,"sleeper"));
+    }
     
 
 }

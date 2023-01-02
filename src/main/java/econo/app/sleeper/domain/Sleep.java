@@ -39,10 +39,12 @@ public class Sleep {
     @JoinColumn(name = "USER_FK")
     private User user;
 
+
     @Builder
-    public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
+    public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
         this.setSleepTime = setSleepTime;
         this.setWakeTime = setWakeTime;
+        this.user = user;
     }
     public void updateActualTime(ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime){
         this.actualSleepTime = actualSleepTime;

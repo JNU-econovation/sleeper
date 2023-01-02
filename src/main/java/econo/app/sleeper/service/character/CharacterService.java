@@ -37,4 +37,5 @@ public class CharacterService {
         character.updateCharacter(experience,level,Status.NO_SLEEP,SpeechBubbleJudgement.judgeSpeechBubble(experience));
     }
 
+
 }

@@ -1,6 +1,7 @@
 package econo.app.sleeper.web.sleep;
 
 import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.ZonedDateTime;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class TimeRequestDto {
+public class SetTimeDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime sleepTime;
@@ -20,18 +21,21 @@ public class TimeRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime wakeTime;
 
-    public static Sleep toEntity(ZonedDateTime sleepTime, ZonedDateTime wakeTime){
+    private final String userId;
+
+    public static SetTimeDto of(LocalDateTime sleepTime, LocalDateTime wakeTime, String userId){
+        return SetTimeDto.builder()
+                .sleepTime(sleepTime)
+                .wakeTime(wakeTime)
+                .userId(userId)
+                .build();
+    }
+
+    public static Sleep toEntity(ZonedDateTime sleepTime, ZonedDateTime wakeTime, User user){
         return Sleep.builder()
                 .setSleepTime(sleepTime)
                 .setWakeTime(wakeTime)
-                .build();
-    }
-
-    public static TimeRequestDto toDto(LocalDateTime sleepTime,LocalDateTime wakeTime){
-        return TimeRequestDto.builder()
-                .sleepTime(sleepTime)
-                .wakeTime(wakeTime)
+                .user(user)
                 .build();
     }
 }
-
