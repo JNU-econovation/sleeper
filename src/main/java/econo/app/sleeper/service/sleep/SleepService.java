@@ -1,12 +1,16 @@
 package econo.app.sleeper.service.sleep;
 
+import econo.app.sleeper.domain.Character;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.User;
+import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.util.DateTypeConverter;
 import econo.app.sleeper.util.DateManager;
+import econo.app.sleeper.util.SpeechBubbleKind;
 import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
 import econo.app.sleeper.web.sleep.SleepDto;
@@ -27,6 +31,8 @@ public class SleepService {
     private final SleepRepository sleepRepository;
     private final UserRepository userRepository;
     private final DiaryRepository diaryRepository;
+
+    private final CharacterRepository characterRepository;
 
     @Transactional
     public Sleep saveSetTime(SetTimeDto setTimeDto){
@@ -59,13 +65,16 @@ public class SleepService {
         return sleepRepository.findSleepsByDate(userPk,calendarDto.getDate());
     }
 
-    // 설정한 수면시간이 자났을 때, 잠에 들 지 않았을 때
+
     @Transactional
-    public void checkUserSleep(String userId){
-        // 해당 회원의 가장 최근의 sleep 기록 중에서
-        // 실제 수면 시작 시간이 없는 기록이 있으면
-        // 케릭터의 상태 변경
-        
+    public void checkOverSetSleep(String userId){
+        User user = userRepository.findById(userId).get();
+        Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(user.getUserPk());
+
+        if(recentSleepByUser.getActualSleepTime() == null){
+            Character character = characterRepository.findById(userId).get();
+            character.updateCharacter(SpeechBubbleKind.SLEEP.message());
+        }
     }
 
 }

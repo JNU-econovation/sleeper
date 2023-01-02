@@ -52,4 +52,8 @@ public class Character {
         this.status = status;
     }
 
+    public void updateCharacter(String speechBubble) {
+        this.speechBubble = speechBubble;
+    }
+
 }
