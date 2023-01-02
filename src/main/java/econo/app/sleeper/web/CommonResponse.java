@@ -10,10 +10,12 @@ import lombok.RequiredArgsConstructor;
 public class CommonResponse {
 
     private final String message;
+    private final String userId;
 
-    public static CommonResponse toDto(String message){
+    public static CommonResponse of(String message, String userId){
         return CommonResponse.builder()
                 .message(message)
+                .userId(userId)
                 .build();
     }
 

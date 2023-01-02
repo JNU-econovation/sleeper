@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 //Setter()를 사용하지 않는 이유 : 계층간 이동시 데이터 변조 위험 x
 @RequiredArgsConstructor
 @Builder
-public class SignUpRequestForm {
+public class SignUpRequest {
 
     private final String userId;
     private final String userPassword;
@@ -19,8 +19,8 @@ public class SignUpRequestForm {
     private final Integer userMoney;
 
 
-    public static SignUpRequestForm ofDto(User user){
-        return SignUpRequestForm.builder()
+    public static SignUpRequest ofDto(User user){
+        return SignUpRequest.builder()
                 .userId(user.getUserId())
                 .userPassword(user.getUserPassword())
                 .userNickName(user.getUserNickName())

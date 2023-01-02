@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.util.InitCharacter;
 import econo.app.sleeper.web.user.GoalTimeDto;
-import econo.app.sleeper.web.user.SignUpRequestForm;
+import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,8 @@ public class UserService {
     private final CharacterRepository characterRepository;
 
     @Transactional
-    public User join(SignUpRequestForm signUpRequestForm) {
-        User user = signUpRequestForm.toEntity();
+    public User join(SignUpRequest signUpRequest) {
+        User user = signUpRequest.toEntity();
         // ID 중복체크 구현
         userRepository.save(user);
         // 케릭터 생성
@@ -34,7 +34,7 @@ public class UserService {
         user.updateGoalTime(goalTimeDto.getGoalSleepTime(),goalTimeDto.getGoalWakeTime());
     }
 
-    public User readGoalTime(String userId){
+    public User readGoalTime(String userId) {
         return userRepository.findById(userId).get();
     }
 

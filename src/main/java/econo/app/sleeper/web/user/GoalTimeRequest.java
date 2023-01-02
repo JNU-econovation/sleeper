@@ -1,6 +1,5 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.domain.Sleep;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import java.time.LocalTime;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class GoalTimeRequestForm {
+public class GoalTimeRequest {
 
     @DateTimeFormat(pattern = "HH:mm")
     private final LocalTime goalSleepTime;

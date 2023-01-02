@@ -33,7 +33,6 @@ public class UserRepository {
         return em.createQuery("select u from User u",User.class).getResultList();
     }
 
-    // 로그인시 사용
     public Optional<User> findById(String userId){
        return em.createQuery("select u from User u where u.userId = :userId ",User.class)
                 .setParameter("userId",userId)

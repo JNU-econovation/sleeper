@@ -20,9 +20,6 @@ public class DiaryRequestForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime localDateTime; // 사용자의 날짜와 시간을 받음
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-
-
     public Diary toEntity(LocalDate localDate,User user){
         return Diary.builder()
                 .content(content)

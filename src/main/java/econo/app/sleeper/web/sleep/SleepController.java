@@ -38,7 +38,7 @@ public class SleepController {
         sleepService.updateActualTime(sleepDto);
         SleepCharacterDto sleepCharacterDto = SleepCharacterDto.of(loginUser1.getUserId(), sleepPk);
         characterService.updateCharacter(sleepCharacterDto);
-        CommonResponse commonResponse = CommonResponse.toDto("실제 수면 시간 저장 완료");
+        CommonResponse commonResponse = CommonResponse.of("실제 수면 시간 저장 완료", loginUser1.getUserId());
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
 

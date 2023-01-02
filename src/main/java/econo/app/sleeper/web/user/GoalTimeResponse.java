@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalTime;
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class GoalTImeResponse {
+public class GoalTimeResponse {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private final LocalTime goalSleepTime;
@@ -23,10 +22,10 @@ public class GoalTImeResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss", timezone = "Asia/Seoul")
     private final List<LocalTime> suggestedWakeTimes;
 
-    public GoalTImeResponse toDto(LocalTime goalSleepTime, LocalTime goalWakeTime, List<LocalTime> suggestedWakeTimes){
-        return GoalTImeResponse.builder()
+    public static GoalTimeResponse of(LocalTime goalSleepTime, LocalTime goalWakeTime, List<LocalTime> suggestedWakeTimes){
+        return GoalTimeResponse.builder()
                 .goalSleepTime(goalSleepTime)
-                .goalSleepTime(goalWakeTime)
+                .goalWakeTime(goalWakeTime)
                 .suggestedWakeTimes(suggestedWakeTimes)
                 .build();
     }
