@@ -10,8 +10,7 @@ public class DateTimeManager {
     private final LocalDateTime nowDateTime;
 
     public DateTimeManager() {
-        LocalDateTime DateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        this.nowDateTime = DateTime;
+        this.nowDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
     public LocalDate giveSavingDate() {
