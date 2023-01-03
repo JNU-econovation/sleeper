@@ -30,7 +30,6 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),

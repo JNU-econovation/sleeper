@@ -24,4 +24,5 @@ public class DiaryFindDto {
                 .localDate(localDate)
                 .build();
     }
+
 }

@@ -22,9 +22,7 @@ public class User {
 
    @OneToMany(mappedBy = "user")
    private List<Sleep> sleeps = new ArrayList<>();
-
    private String userId;
-
    private String userPassword;
    @Column(length = 20)
    private String userNickName;
@@ -60,6 +58,7 @@ public class User {
    public void updateMoney(Integer userMoney){
       this.userMoney = userMoney;
    }
+
    public void updateGoalTime(LocalTime goalSleepTime, LocalTime goalWakeTime) {
       this.goalSleepTime = goalSleepTime;
       this.goalWakeTime = goalWakeTime;

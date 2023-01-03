@@ -2,8 +2,6 @@ package econo.app.sleeper.util;
 
 public class SpeechBubbleJudgement {
 
-
-
     public static String judgeSpeechBubble(String content){
 
         String speechBubble = "";
@@ -15,8 +13,6 @@ public class SpeechBubbleJudgement {
         speechBubble = SpeechBubbleKind.BEFORE_SLEEP.message();
         return speechBubble;
     }
-
-
     public static String judgeSpeechBubble(Integer experience){
         String speechBubble = "";
         if(ExperienceManager.approachLevel(experience)){
@@ -26,6 +22,5 @@ public class SpeechBubbleJudgement {
         speechBubble = SpeechBubbleKind.CAN_DO_IT.message();
         return speechBubble;
     }
-
 
 }
