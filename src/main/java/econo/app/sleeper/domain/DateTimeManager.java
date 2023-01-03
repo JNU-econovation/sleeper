@@ -1,28 +1,23 @@
-package econo.app.sleeper.util;
+package econo.app.sleeper.domain;
 
 import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-import net.bytebuddy.asm.Advice;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.util.List;
+import java.time.*;
 
 @Getter
-@Setter
-@ToString
-public class DateManager {
+public class DateTimeManager {
 
-    private DateManager(){
-        // 사용 x
+    private final LocalDateTime nowDateTime;
+
+    public DateTimeManager() {
+        LocalDateTime DateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        this.nowDateTime = DateTime;
     }
 
-    public static LocalDate checkSavingDate(LocalDateTime nowTime) {
-        int dayOfMonth = nowTime.getDayOfMonth();
-        int hour = nowTime.getHour();
-        LocalDate localDate = nowTime.toLocalDate();
+    public LocalDate giveSavingDate() {
+        int dayOfMonth = nowDateTime.getDayOfMonth();
+        int hour = nowDateTime.getHour();
+        LocalDate localDate = nowDateTime.toLocalDate();
 
         if (dayOfMonth == 1) {
             if (hour >= 0 && hour <= 5) {

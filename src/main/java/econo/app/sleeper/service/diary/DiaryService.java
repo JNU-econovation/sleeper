@@ -7,8 +7,7 @@ import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.util.DateManager;
-import econo.app.sleeper.util.MoneyManager;
+import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.util.SpeechBubbleJudgement;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.DiaryFindDto;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -35,9 +33,9 @@ public class DiaryService {
 
     @Transactional
     public DiaryResponse saveDiary(DiarySaveDto diarySaveDto){
-        LocalDate savingDate = DateManager.checkSavingDate(diarySaveDto.getLocalDateTime());
+        DateTimeManager dateTimeManager = new DateTimeManager();
         User user = userRepository.findById(diarySaveDto.getUserId()).get();
-        Diary diary = diarySaveDto.toEntity(savingDate, diarySaveDto.getLocalDateTime(), user);
+        Diary diary = diarySaveDto.toEntity(dateTimeManager.giveSavingDate(), diarySaveDto.getLocalDateTime(), user);
         diaryRepository.save(diary);
         MoneyDto moneyDto = MoneyDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId());
         userService.updateMoney(moneyDto);
@@ -76,7 +74,7 @@ public class DiaryService {
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
         User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),DateManager.giveEndDate(diaryFindDto.getLocalDate()));
+        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
     }
 
 }

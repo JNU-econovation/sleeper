@@ -8,13 +8,12 @@ import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
-import econo.app.sleeper.util.DateManager;
+import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.util.SpeechBubbleKind;
 import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.ActualTimeDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
 import econo.app.sleeper.web.sleep.SleepDto;
-import econo.app.sleeper.web.sleep.SetTimeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +50,8 @@ public class SleepService {
         ZonedDateTime actualWakeTime = DateTypeConverter.convertToZoneDateTime(actualTimeDto.getActualWakeTime());
         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk()).get();
         sleep.updateActualTime(actualSleepTime,actualWakeTime);
-        sleep.updateSavingDate(DateManager.checkSavingDate(actualTimeDto.getActualSleepTime()));
+        DateTimeManager dateTimeManager = new DateTimeManager();
+        sleep.updateSavingDate(dateTimeManager.giveSavingDate());
     }
 
 

@@ -1,11 +1,12 @@
 package econo.app.sleeper.util;
 
+import econo.app.sleeper.domain.DateTimeManager;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.time.*;
 
-public class DateManagerTest {
+public class DateTimeManagerTest {
 
     @Test
     public void checkSavingDate1() {
@@ -14,7 +15,7 @@ public class DateManagerTest {
 
         ZonedDateTime.of(testTime,ZoneId.of("Asia/Seoul"));
 
-        LocalDate localDate = DateManager.checkSavingDate(testTime);
+        LocalDate localDate = DateTimeManager.giveSavingDate(testTime);
 
         LocalDate expectedTime = LocalDate.of(2022,11,30);
 
@@ -30,7 +31,7 @@ public class DateManagerTest {
 
         System.out.println("testTime = " + testTime);
 
-        LocalDate localDate = DateManager.checkSavingDate(testTime);
+        LocalDate localDate = DateTimeManager.giveSavingDate(testTime);
 
         LocalDate expectedTime = LocalDate.of(2022,12,21);
 
