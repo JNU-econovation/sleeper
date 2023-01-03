@@ -20,12 +20,8 @@ public class DateManager {
     }
 
     public static LocalDate checkSavingDate(LocalDateTime nowTime) {
-        System.out.println("nowTime = " + nowTime);
         int dayOfMonth = nowTime.getDayOfMonth();
-        System.out.println("dayOfMonth = " + dayOfMonth);
         int hour = nowTime.getHour();
-        System.out.println("hour = " + hour);
-
         LocalDate localDate = nowTime.toLocalDate();
 
         if (dayOfMonth == 1) {
