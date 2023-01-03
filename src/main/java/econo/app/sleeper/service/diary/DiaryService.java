@@ -6,12 +6,15 @@ import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.character.CharacterService;
+import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.DateManager;
 import econo.app.sleeper.util.MoneyManager;
 import econo.app.sleeper.util.SpeechBubbleJudgement;
-import econo.app.sleeper.web.diary.DiaryDateDto;
-import econo.app.sleeper.web.diary.DiaryTimeDto;
+import econo.app.sleeper.web.character.CharacterDto;
+import econo.app.sleeper.web.diary.DiaryFindDto;
+import econo.app.sleeper.web.diary.DiarySaveDto;
 import econo.app.sleeper.web.diary.DiaryResponse;
+import econo.app.sleeper.web.user.MoneyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,35 +30,32 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
-
+    private final UserService userService;
     private final CharacterService characterService;
 
     @Transactional
-    public DiaryResponse saveDiary(DiaryTimeDto diaryTimeDto){
-        LocalDate localDate = DateManager.checkSavingDate(diaryTimeDto.getLocalDateTime());
-        User user = userRepository.findById(diaryTimeDto.getUserId()).get();// 로그인 할 때 필터링이 되있기 때문에 null 체크 안 함
-        Diary diary = diaryTimeDto.toEntity(localDate,diaryTimeDto.getLocalDateTime(),user);
+    public DiaryResponse saveDiary(DiarySaveDto diarySaveDto){
+        LocalDate savingDate = DateManager.checkSavingDate(diarySaveDto.getLocalDateTime());
+        User user = userRepository.findById(diarySaveDto.getUserId()).get();
+        Diary diary = diarySaveDto.toEntity(savingDate, diarySaveDto.getLocalDateTime(), user);
         diaryRepository.save(diary);
-        // 돈 증가
-        Integer judgeMoney = MoneyManager.judgeMoney(diaryTimeDto.getContent());
-        Integer increasedMoney = MoneyManager.earnMoney(user.getUserMoney(), judgeMoney);
-        user.updateMoney(increasedMoney);
-
-        // 케릭터 말풍선 및 상태 변경
-        characterService.updateCharacter(diaryTimeDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diaryTimeDto.getContent()), Status.SLEEP);
-        return DiaryResponse.of(diary.getDiaryPk(),judgeMoney);
+        MoneyDto moneyDto = MoneyDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId());
+        userService.updateMoney(moneyDto);
+        CharacterDto characterDto = CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP);
+        characterService.updateCharacter(characterDto);
+        return DiaryResponse.of(diary.getDiaryPk());
     }
 
     @Transactional
     public void updateDiary(Long diaryPk,String content) {
-        Optional<Diary> Odiary = diaryRepository.findByPk(diaryPk);
-        Odiary.get().updateContent(content);
+        Diary diary = diaryRepository.findByPk(diaryPk).get();
+        diary.updateContent(content);
     }
 
     @Transactional
     public void deleteDiary(Long diaryPk){
-        Optional<Diary> Odiary = diaryRepository.findByPk(diaryPk);
-        diaryRepository.delete(Odiary.get());
+        Diary diary = diaryRepository.findByPk(diaryPk).get();
+        diaryRepository.delete(diary);
     }
 
     // 관리자에서 이용
@@ -68,15 +68,15 @@ public class DiaryService {
         return diaryRepository.findAllByPk(user.getUserPk());
     }
 
-    public List<Diary> findDiariesByDate(DiaryDateDto diaryDateDto){
-        User user = userRepository.findById(diaryDateDto.getUserId()).get();
+    public List<Diary> findDiariesByDate(DiaryFindDto diaryFindDto){
+        User user = userRepository.findById(diaryFindDto.getUserId()).get();
         Long userPk = user.getUserPk();
-        return diaryRepository.findByDate(userPk, diaryDateDto.getLocalDate());
+        return diaryRepository.findByDate(userPk, diaryFindDto.getLocalDate());
     }
 
-    public List<Diary> findDiariesBetWeenDates(DiaryDateDto diaryDateDto){
-        User user = userRepository.findById(diaryDateDto.getUserId()).get();
-        return diaryRepository.findBetweenDate(user.getUserPk(),diaryDateDto.getLocalDate().withDayOfMonth(1),DateManager.giveEndDate(diaryDateDto.getLocalDate()));
+    public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
+        User user = userRepository.findById(diaryFindDto.getUserId()).get();
+        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),DateManager.giveEndDate(diaryFindDto.getLocalDate()));
     }
 
 }

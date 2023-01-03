@@ -10,14 +10,11 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class DiaryResponse {
 
-
     private final Long diaryPk;
-    private final Integer increasedMoney;
 
-    public static DiaryResponse of(Long diaryPk,Integer increasedMoney){
+    public static DiaryResponse of(Long diaryPk){
         return DiaryResponse.builder()
                 .diaryPk(diaryPk)
-                .increasedMoney(increasedMoney)
                 .build();
     }
 }

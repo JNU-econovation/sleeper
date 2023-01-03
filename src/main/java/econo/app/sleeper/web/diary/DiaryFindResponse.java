@@ -10,15 +10,15 @@ import java.time.LocalDate;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class DiaryResponseForm {
+public class DiaryFindResponse {
 
     private final String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private final LocalDate localDate;
 
-    public static DiaryResponseForm of(String content, LocalDate localDate){
-        return DiaryResponseForm.builder()
+    public static DiaryFindResponse of(String content, LocalDate localDate){
+        return DiaryFindResponse.builder()
                 .content(content)
                 .localDate(localDate)
                 .build();

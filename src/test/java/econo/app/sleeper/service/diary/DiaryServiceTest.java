@@ -4,9 +4,8 @@ import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.diary.DiaryDateDto;
-import econo.app.sleeper.web.diary.DiaryTimeDto;
-import econo.app.sleeper.web.diary.DiaryRequestForm;
+import econo.app.sleeper.web.diary.DiaryFindDto;
+import econo.app.sleeper.web.diary.DiarySaveDto;
 import econo.app.sleeper.web.diary.DiaryResponse;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -38,17 +37,17 @@ public class DiaryServiceTest {
     @Test
     public void saveDiary() {
 
-        DiaryTimeDto diaryTimeDto = DiaryTimeDto.builder()
+        DiarySaveDto diarySaveDto = DiarySaveDto.builder()
                 .userId("sleeper")
                 .localDateTime(LocalDateTime.of(2022, 12, 23, 8, 46))
                 .content("오늘도 파이팅입니다.")
                 .build();
 
-        DiaryResponse diaryResponse = diaryService.saveDiary(diaryTimeDto);
+        DiaryResponse diaryResponse = diaryService.saveDiary(diarySaveDto);
 
-        DiaryDateDto diaryDateDto = DiaryDateDto.of("sleeper", LocalDate.of(2022, 12, 23));
+        DiaryFindDto diaryFindDto = DiaryFindDto.of("sleeper", LocalDate.of(2022, 12, 23));
 
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryDateDto);
+        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
         User user = userRepository.findById("sleeper").get();
 
         Assertions.assertThat("오늘도 파이팅입니다.").isEqualTo(diariesByDate.get(0).getContent());

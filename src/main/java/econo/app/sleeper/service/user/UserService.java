@@ -3,12 +3,16 @@ package econo.app.sleeper.service.user;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.util.InitCharacter;
+import econo.app.sleeper.util.MoneyManager;
 import econo.app.sleeper.web.user.GoalTimeDto;
+import econo.app.sleeper.web.user.MoneyDto;
 import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +42,13 @@ public class UserService {
         return userRepository.findById(userId).get();
     }
 
+    @Transactional
+    public void updateMoney(MoneyDto moneyDto){
+        Integer judgeMoney = MoneyManager.judgeMoney(moneyDto.getContent());
+        User user = userRepository.findById(moneyDto.getUserId()).get();
+        Integer increasedMoney = MoneyManager.earnMoney(user.getUserMoney(), judgeMoney);
+        user.updateMoney(increasedMoney);
+    }
 
 }
 

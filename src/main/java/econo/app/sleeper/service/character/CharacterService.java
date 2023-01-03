@@ -7,6 +7,7 @@ import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.util.ExperienceManager;
 import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.sleep.SleepCharacterDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,14 +21,12 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
     private final SleepRepository sleepRepository;
 
-    // 잠에 들 때
     @Transactional
-    public void updateCharacter(String userId, String speechBubble, Status status) {
-        Character character = characterRepository.findById(userId).get();
-        character.updateCharacter(speechBubble,status);
+    public void updateCharacter(CharacterDto characterDto) {
+        Character character = characterRepository.findById(characterDto.getUserId()).get();
+        character.updateCharacter(character.getSpeechBubble(),characterDto.getStatus());
     }
 
-    // 일어날 때
     @Transactional
     public void updateCharacter(SleepCharacterDto sleepCharacterDto){
         Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();

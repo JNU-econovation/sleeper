@@ -13,20 +13,8 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class DiaryRequestForm {
+public class DiaryRequest {
 
     private final String content;
-
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime localDateTime; // 사용자의 날짜와 시간을 받음
-
-    public Diary toEntity(LocalDate localDate,User user){
-        return Diary.builder()
-                .content(content)
-                .savingDate(localDate)
-                .user(user)
-                .build();
-    }
-
 
 }

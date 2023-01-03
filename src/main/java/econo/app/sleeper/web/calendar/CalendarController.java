@@ -5,7 +5,7 @@ import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.util.Link;
-import econo.app.sleeper.web.diary.DiaryDateDto;
+import econo.app.sleeper.web.diary.DiaryFindDto;
 import econo.app.sleeper.web.login.LoginUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +35,7 @@ public class CalendarController {
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
         LoginUser loginUser1 = (LoginUser) loginUser;
         String userId = loginUser1.getUserId();
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryDateDto.of(userId, localDate));
+        List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryFindDto.of(userId, localDate));
         List<Sleep> sleepsByDate = sleepService.findSleepsByDate(CalendarDto.of(userId, localDate));
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
         for(int i=0;i<diariesByDate.size();i++){
@@ -50,7 +50,7 @@ public class CalendarController {
     public ResponseEntity<CalendarResponse> readCalendar(@SessionAttribute Object loginUser){
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LoginUser loginUser1 = (LoginUser) loginUser;
-        List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryDateDto.of(loginUser1.getUserId(), localDate));
+        List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(loginUser1.getUserId(), localDate));
         List<LocalDate> localDates = new ArrayList<>();
         for(Diary d : diaries){
             localDates = List.of(d.getSavingDate());

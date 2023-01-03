@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class DiaryTimeDto {
+public class DiarySaveDto {
 
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -21,8 +21,8 @@ public class DiaryTimeDto {
 
     private final String userId;
     private final String content;
-    public static DiaryTimeDto of(String userId, String content, LocalDateTime localDateTime){
-        return DiaryTimeDto.builder()
+    public static DiarySaveDto of(String userId, String content, LocalDateTime localDateTime){
+        return DiarySaveDto.builder()
                 .userId(userId)
                 .localDateTime(localDateTime)
                 .content(content)
