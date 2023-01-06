@@ -39,16 +39,10 @@ public class UserController {
     })
 
     @PostMapping("/users")
-    public ResponseEntity<SignupResponse> signupUser(SignUpRequest signUpRequest) {
+    public ResponseEntity<CommonResponse> signupUser(SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
-        SignupResponse signupResponse = SignupResponse.builder()
-                .userId(user.getUserId())
-                .build();
-        NewCharacterDto newCharacterDto = NewCharacterDto.of(user);
-        characterService.init(newCharacterDto);
-        InitialMoneyDto initialMoneyDto = InitialMoneyDto.of(user);
-        moneyService.init(initialMoneyDto);
-        return new ResponseEntity<>(signupResponse,HttpStatus.CREATED);
+        CommonResponse commonResponse = CommonResponse.of("회원가입 완료", user.getUserId());
+        return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/users/time")
