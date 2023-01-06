@@ -10,14 +10,12 @@ import lombok.RequiredArgsConstructor;
 public class DiaryRewardDto {
 
     private final String content;
-    private final String userId;
-    private final Long diaryPk;
+    private final Long userPk;
 
-    public static DiaryRewardDto of(String content, String userId, Long diaryPk){
+    public static DiaryRewardDto of(String content, Long userPk){
         return DiaryRewardDto.builder()
                 .content(content)
-                .userId(userId)
-                .diaryPk(diaryPk)
+                .userPk(userPk)
                 .build();
     }
 }

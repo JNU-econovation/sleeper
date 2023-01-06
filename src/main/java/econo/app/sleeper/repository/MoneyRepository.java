@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.Optional;
 
 @Slf4j
@@ -29,4 +30,11 @@ public class MoneyRepository {
         return Optional.of(money);
     }
 
+    public Money findRecentDiaryByUser(Long userPk){
+        TypedQuery<Money> query = em.createQuery("select m from Money m join m.user u where u.userPk = :userPk order by m.dateMoney desc", Money.class)
+                .setParameter("userPk",userPk);
+        query.setFirstResult(0);
+        query.setMaxResults(1);
+        return query.getSingleResult();
+    }
 }

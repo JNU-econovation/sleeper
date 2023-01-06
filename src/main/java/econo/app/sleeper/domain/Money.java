@@ -34,6 +34,7 @@ public class Money {
     @Column(name = "MONEY_DATE")
     private ZonedDateTime dateMoney;
 
+
     @Builder
     public Money(User user, Integer holdingMoney, Integer changingMoney, ZonedDateTime dateMoney){
         this.user = user;
@@ -41,6 +42,7 @@ public class Money {
         this.changingMoney = changingMoney;
         this.dateMoney = dateMoney;
     }
+
 
     public static Money initMoney(User user){
         Money money = Money.builder()
@@ -53,10 +55,10 @@ public class Money {
         return money;
     }
 
-    public Money use(Integer money, User user) {
+    public Money use(Integer changingMoney, Integer holdingMoney ,User user) {
         return Money.builder()
-                .changingMoney(money)
-                .holdingMoney(this.holdingMoney + money)
+                .changingMoney(changingMoney)
+                .holdingMoney(holdingMoney + changingMoney)
                 .user(user)
                 .dateMoney(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();

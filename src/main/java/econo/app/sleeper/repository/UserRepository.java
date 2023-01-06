@@ -23,7 +23,7 @@ public class UserRepository {
         log.info("save: member={}", user);
     }
 
-    public Optional<User> findOne(Long pk) {
+    public Optional<User> find(Long pk) {
         User user = em.find(User.class,pk);
         Optional<User> optionalUser = Optional.of(user);
         return optionalUser;

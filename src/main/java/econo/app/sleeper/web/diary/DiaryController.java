@@ -5,6 +5,7 @@ import econo.app.sleeper.domain.Status;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.util.CommonResponse;
 import econo.app.sleeper.util.SpeechBubbleJudgement;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.login.LoginUser;
@@ -43,16 +44,12 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(DiaryRequest diaryRequest, @SessionAttribute Object loginUser) {
+    public ResponseEntity<CommonResponse> saveDiary(DiaryRequest diaryRequest, @SessionAttribute Object loginUser) {
         LoginUser loginUser1 = (LoginUser) loginUser;
-        LocalDateTime nowTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
-        DiarySaveDto diarySaveDto = DiarySaveDto.of(loginUser1.getUserId(), diaryRequest.getContent(),nowTime);
-        DiaryResponse diaryResponse = diaryService.save(diarySaveDto);
-        DiaryRewardDto diaryRewardDto = DiaryRewardDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId(),diaryResponse.getDiaryPk());
-        moneyService.get(diaryRewardDto);
-        CharacterDto characterDto = CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP);
-        characterService.update(characterDto);
-        return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);
+        DiarySaveDto diarySaveDto = DiarySaveDto.of(loginUser1.getUserId(), diaryRequest.getContent(),LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+        diaryService.save(diarySaveDto);
+        CommonResponse commonResponse = CommonResponse.of("감사일기 저장 완료", ((LoginUser) loginUser).getUserId());
+        return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/diaries/{nu}")

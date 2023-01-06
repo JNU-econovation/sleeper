@@ -44,17 +44,5 @@ public class Diary {
         this.content = content;
     }
 
-    public Money reward(String content){
-
-        Integer length = content.length();
-
-        if(length<1){
-            return user.getMoney().use(0,user);
-        }else if(length < 10){
-            return user.getMoney().use(5,user);
-        }else{
-            return user.getMoney().use(10,user);
-        }
-    }
 
 }

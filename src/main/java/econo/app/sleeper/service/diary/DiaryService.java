@@ -1,11 +1,17 @@
 package econo.app.sleeper.service.diary;
 
 import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.Status;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.domain.DateTimeManager;
+import econo.app.sleeper.service.character.CharacterService;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.DiaryFindDto;
+import econo.app.sleeper.web.diary.DiaryRewardDto;
 import econo.app.sleeper.web.diary.DiarySaveDto;
 import econo.app.sleeper.web.diary.DiaryResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +27,16 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
+    private final MoneyService moneyService;
+    private final CharacterService characterService;
 
     @Transactional
-    public DiaryResponse save(DiarySaveDto diarySaveDto){
-        DateTimeManager dateTimeManager = new DateTimeManager();
+    public void save(DiarySaveDto diarySaveDto){
         User user = userRepository.findById(diarySaveDto.getUserId()).get();
-        Diary diary = diarySaveDto.toEntity(dateTimeManager.giveSavingDate(), diarySaveDto.getLocalDateTime(), user);
+        Diary diary = diarySaveDto.toEntity(new DateTimeManager().giveSavingDate(), diarySaveDto.getLocalDateTime(), user);
         diaryRepository.save(diary);
-        return DiaryResponse.of(diary.getDiaryPk());
+        moneyService.obtain(DiaryRewardDto.of(diarySaveDto.getContent(), user.getUserPk()));
+        characterService.update(CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP));
     }
 
     @Transactional
