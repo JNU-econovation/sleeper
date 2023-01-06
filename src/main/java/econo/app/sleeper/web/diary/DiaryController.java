@@ -4,7 +4,9 @@ import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.Status;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
+import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.login.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,6 +31,8 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final MoneyService moneyService;
+    private final CharacterService characterService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -43,7 +47,11 @@ public class DiaryController {
         LoginUser loginUser1 = (LoginUser) loginUser;
         LocalDateTime nowTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         DiarySaveDto diarySaveDto = DiarySaveDto.of(loginUser1.getUserId(), diaryRequest.getContent(),nowTime);
-        DiaryResponse diaryResponse = diaryService.saveDiary(diarySaveDto);
+        DiaryResponse diaryResponse = diaryService.save(diarySaveDto);
+        DiaryRewardDto diaryRewardDto = DiaryRewardDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId(),diaryResponse.getDiaryPk());
+        moneyService.get(diaryRewardDto);
+        CharacterDto characterDto = CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP);
+        characterService.update(characterDto);
         return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);
     }
 

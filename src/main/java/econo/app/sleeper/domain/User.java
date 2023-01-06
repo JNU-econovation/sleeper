@@ -14,7 +14,7 @@ import java.util.List;
 public class User {
 
    @Id
-   @GeneratedValue
+   @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long userPk;
 
    @OneToMany(mappedBy = "user")
@@ -33,7 +33,9 @@ public class User {
 
    private String userMessage;
 
-   private Integer userMoney;
+   @OneToOne
+   @JoinColumn(name = "MONEY_FK")
+   private Money money;
 
    @Column(name = "USER_GOAL_SLEEP_TIME", columnDefinition = "TIME")
    private LocalTime goalSleepTime;
@@ -54,12 +56,15 @@ public class User {
       this.roleType = roleType;
    }
 
-
-   public void updateMoney(Integer userMoney){
-      this.userMoney = userMoney;
+   public void associate(Character character){
+      this.character = character;
    }
 
-   public void updateGoalTime(LocalTime goalSleepTime, LocalTime goalWakeTime) {
+   public void associate(Money money){
+      this.money = money;
+   }
+
+   public void update(LocalTime goalSleepTime, LocalTime goalWakeTime) {
       this.goalSleepTime = goalSleepTime;
       this.goalWakeTime = goalWakeTime;
    }

@@ -1,24 +1,17 @@
 package econo.app.sleeper.service.diary;
 
 import econo.app.sleeper.domain.Diary;
-import econo.app.sleeper.domain.Status;
 import econo.app.sleeper.domain.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.domain.DateTimeManager;
-import econo.app.sleeper.util.SpeechBubbleJudgement;
-import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.DiaryFindDto;
 import econo.app.sleeper.web.diary.DiarySaveDto;
 import econo.app.sleeper.web.diary.DiaryResponse;
-import econo.app.sleeper.web.user.MoneyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -28,26 +21,20 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
-    private final CharacterService characterService;
 
     @Transactional
-    public DiaryResponse saveDiary(DiarySaveDto diarySaveDto){
+    public DiaryResponse save(DiarySaveDto diarySaveDto){
         DateTimeManager dateTimeManager = new DateTimeManager();
         User user = userRepository.findById(diarySaveDto.getUserId()).get();
         Diary diary = diarySaveDto.toEntity(dateTimeManager.giveSavingDate(), diarySaveDto.getLocalDateTime(), user);
         diaryRepository.save(diary);
-        MoneyDto moneyDto = MoneyDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId());
-        userService.updateMoney(moneyDto);
-        CharacterDto characterDto = CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP);
-        characterService.updateCharacter(characterDto);
         return DiaryResponse.of(diary.getDiaryPk());
     }
 
     @Transactional
     public void updateDiary(Long diaryPk,String content) {
         Diary diary = diaryRepository.findByPk(diaryPk).get();
-        diary.updateContent(content);
+        diary.update(content);
     }
 
     @Transactional
@@ -76,5 +63,7 @@ public class DiaryService {
         User user = userRepository.findById(diaryFindDto.getUserId()).get();
         return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
     }
+
+
 
 }

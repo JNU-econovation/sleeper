@@ -1,5 +1,6 @@
 package econo.app.sleeper.domain;
 
+import econo.app.sleeper.util.SpeechBubbleKind;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,6 +55,19 @@ public class Character {
 
     public void updateCharacter(String speechBubble) {
         this.speechBubble = speechBubble;
+    }
+
+    public static Character initCharacter(User user){
+        Character character = Character.builder()
+                .color(Color.GRAY)
+                .status(Status.NO_SLEEP)
+                .experience(0)
+                .level(1L)
+                .speechBubble(SpeechBubbleKind.NO_SLEEP.message())
+                .user(user)
+                .build();
+        user.associate(character);
+        return character;
     }
 
 }

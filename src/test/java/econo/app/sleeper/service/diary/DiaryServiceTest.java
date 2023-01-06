@@ -43,7 +43,7 @@ public class DiaryServiceTest {
                 .content("오늘도 파이팅입니다.")
                 .build();
 
-        DiaryResponse diaryResponse = diaryService.saveDiary(diarySaveDto);
+        DiaryResponse diaryResponse = diaryService.save(diarySaveDto);
 
         DiaryFindDto diaryFindDto = DiaryFindDto.of("sleeper", LocalDate.of(2022, 12, 23));
 
