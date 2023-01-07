@@ -1,7 +1,6 @@
 package econo.app.sleeper.web.money;
 
-import econo.app.sleeper.domain.User;
-import econo.app.sleeper.web.character.NewCharacterDto;
+import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
-package econo.app.sleeper.domain;
+package econo.app.sleeper.domain.character;
 
-import econo.app.sleeper.util.SpeechBubbleKind;
+import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,38 +22,36 @@ public class Character {
     @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_STATUS")
     private Status status;
-    @Column(name = "CHARACTER_EXPERIENCE")
-    private Integer experience;
-    @Column(name = "CHARACTER_LEVEL")
-    private Long level;
 
+    @Embedded
+    private Growth growth;
+    @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_SPEECH_BUBBLE")
-    private String speechBubble;
+    private SpeechBubble speechBubble;
     @OneToOne(mappedBy = "character", fetch = FetchType.LAZY)
     private User user;
+
     @Builder
-    public Character(Color color, Status status, Integer experience, Long level, String speechBubble, User user){
+    public Character(Color color, Status status, Growth growth, SpeechBubble speechBubble, User user){
         this.color = color;
         this.status = status;
-        this.experience = experience;
-        this.level = level;
+        this.growth = growth;
         this.speechBubble = speechBubble;
         this.user = user;
     }
 
-    public void updateCharacter(Integer experience, Long level, Status status, String speechBubble) {
-        this.experience = experience;
-        this.level = level;
+    public void updateCharacter(Growth growth, Status status, SpeechBubble speechBubble) {
+        this.growth = growth;
         this.status = status;
         this.speechBubble = speechBubble;
     }
 
-    public void updateCharacter(String speechBubble, Status status) {
+    public void updateCharacter(SpeechBubble speechBubble, Status status) {
         this.speechBubble = speechBubble;
         this.status = status;
     }
 
-    public void updateCharacter(String speechBubble) {
+    public void updateCharacter(SpeechBubble speechBubble) {
         this.speechBubble = speechBubble;
     }
 
@@ -61,9 +59,8 @@ public class Character {
         Character character = Character.builder()
                 .color(Color.GRAY)
                 .status(Status.NO_SLEEP)
-                .experience(0)
-                .level(1L)
-                .speechBubble(SpeechBubbleKind.NO_SLEEP.message())
+                .growth(new Growth(0,0L))
+                .speechBubble(SpeechBubble.NO_SLEEP)
                 .user(user)
                 .build();
         user.associate(character);

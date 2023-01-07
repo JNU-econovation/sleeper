@@ -1,4 +1,4 @@
-package econo.app.sleeper.util;
+package econo.app.sleeper.domain;
 
 import econo.app.sleeper.domain.Money;
 import lombok.Getter;
@@ -7,22 +7,18 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class RewardManager {
-
-    private final String content;
+    private final Integer contentLength;
 
     public Integer reward(){
 
-        Integer length = content.length();
-
-        if(length<1){
+        if(contentLength < 1){
             return RewardStage.BRONZE_REWARD.getReward();
-        }else if(length < 10){
+        }else if(contentLength < 10){
             return RewardStage.SILVER_REWARD.getReward();
         }else{
             return RewardStage.BRONZE_REWARD.getReward();
         }
     }
-
     @RequiredArgsConstructor
     @Getter
     private enum RewardStage{
@@ -33,7 +29,5 @@ public class RewardManager {
         private final Integer grade;
         private final Integer reward;
     }
-
-
 
 }

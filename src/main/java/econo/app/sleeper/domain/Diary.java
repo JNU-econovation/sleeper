@@ -1,5 +1,6 @@
 package econo.app.sleeper.domain;
 
+import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

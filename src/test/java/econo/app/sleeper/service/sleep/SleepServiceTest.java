@@ -1,9 +1,9 @@
 package econo.app.sleeper.service.sleep;
 
-import econo.app.sleeper.domain.Character;
+import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.util.SpeechBubbleKind;
+import econo.app.sleeper.domain.character.SpeechBubble;
 import econo.app.sleeper.web.sleep.SetTimeDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -15,9 +15,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -50,7 +47,7 @@ public class SleepServiceTest {
         sleepService.checkOverSetSleep("sleeper");
         Character character = characterRepository.findById("sleeper").get();
 
-        Assertions.assertThat(character.getSpeechBubble()).isEqualTo(SpeechBubbleKind.SLEEP.message());
+        Assertions.assertThat(character.getSpeechBubble()).isEqualTo(SpeechBubble.SLEEP.message());
 
     }
 

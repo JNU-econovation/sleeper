@@ -2,7 +2,7 @@ package econo.app.sleeper.web.sleep;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.util.CommonResponse;
+import econo.app.sleeper.web.CommonResponse;
 import econo.app.sleeper.web.login.LoginUser;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

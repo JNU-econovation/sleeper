@@ -1,15 +1,15 @@
 package econo.app.sleeper.service.sleep;
 
-import econo.app.sleeper.domain.Character;
+import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.Sleep;
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
 import econo.app.sleeper.domain.DateTimeManager;
-import econo.app.sleeper.util.SpeechBubbleKind;
+import econo.app.sleeper.domain.character.SpeechBubble;
 import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.ActualTimeDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
@@ -69,7 +69,7 @@ public class SleepService {
 
         if(recentSleepByUser.getActualSleepTime() == null){
             Character character = characterRepository.findById(userId).get();
-            character.updateCharacter(SpeechBubbleKind.SLEEP.message());
+            character.updateCharacter(SpeechBubble.SLEEP);
         }
     }
 

@@ -1,14 +1,12 @@
 package econo.app.sleeper.domain;
 
-import econo.app.sleeper.util.SpeechBubbleKind;
-import io.swagger.models.auth.In;
+import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -55,11 +53,11 @@ public class Money {
         return money;
     }
 
-    public Money use(Integer changingMoney, Integer holdingMoney ,User user) {
+    public Money use(Integer changingMoney) {
         return Money.builder()
                 .changingMoney(changingMoney)
-                .holdingMoney(holdingMoney + changingMoney)
-                .user(user)
+                .holdingMoney(this.holdingMoney + changingMoney)
+                .user(this.user)
                 .dateMoney(ZonedDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
     }

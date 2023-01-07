@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;

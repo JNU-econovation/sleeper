@@ -1,7 +1,6 @@
 package econo.app.sleeper.service.user;
 
-import econo.app.sleeper.domain.User;
-import econo.app.sleeper.repository.CharacterRepository;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.web.character.NewCharacterDto;

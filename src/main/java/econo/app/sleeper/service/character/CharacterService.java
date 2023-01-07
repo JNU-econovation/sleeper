@@ -1,13 +1,12 @@
 package econo.app.sleeper.service.character;
 
-import econo.app.sleeper.domain.Character;
+import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.Sleep;
-import econo.app.sleeper.domain.Status;
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.character.Status;
+import econo.app.sleeper.domain.character.Growth;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.util.ExperienceManager;
-import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.domain.character.SpeechBubbleJudgement;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.character.NewCharacterDto;
 import econo.app.sleeper.web.sleep.SleepCharacterDto;
@@ -38,12 +37,9 @@ public class CharacterService {
     public void update(SleepCharacterDto sleepCharacterDto){
         Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();
         Sleep sleep = sleepRepository.findByPk(sleepCharacterDto.getSleepPk()).get();
-        Integer experience = ExperienceManager.assessExperience(sleep.getSetSleepTime(), sleep.getSetWakeTime(), sleep.getActualSleepTime(), sleep.getActualWakeTime());
-        Long level = ExperienceManager.convertExToLevel(character.getExperience(), experience);
-        character.updateCharacter(experience,level,Status.NO_SLEEP,SpeechBubbleJudgement.judgeSpeechBubble(experience));
+        Integer plusExperience = sleep.assessExperience(sleep.getSetSleepTime(), sleep.getSetWakeTime(), sleep.getActualSleepTime(), sleep.getActualWakeTime());
+        Growth growth = character.getGrowth().growth(plusExperience);
+        character.updateCharacter(growth,Status.NO_SLEEP,growth.judgeSpeechBubble());
     }
-
-
-
 
 }

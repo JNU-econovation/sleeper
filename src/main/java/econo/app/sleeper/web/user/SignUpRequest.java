@@ -1,7 +1,7 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.domain.RoleType;
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.RoleType;
+import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,8 @@
 package econo.app.sleeper.repository;
 
 import econo.app.sleeper.domain.Diary;
-import econo.app.sleeper.domain.RoleType;
-import econo.app.sleeper.domain.User;
-import net.bytebuddy.asm.Advice;
+import econo.app.sleeper.domain.user.RoleType;
+import econo.app.sleeper.domain.user.User;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,14 +12,10 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.lang.model.element.Name;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Optional;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

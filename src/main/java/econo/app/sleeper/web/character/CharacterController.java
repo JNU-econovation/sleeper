@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.character;
 
-import econo.app.sleeper.domain.Character;
+import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.web.login.LoginUser;
 import econo.app.sleeper.web.login.SessionConst;
@@ -34,16 +34,14 @@ public class CharacterController{
 
 
     @GetMapping("/character")
-    public ResponseEntity<CharacterResponse> readCharacter(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser){
+    public ResponseEntity<CharacterResponse> readCharacter(@SessionAttribute Object loginUser){
         LoginUser loginUser1 = (LoginUser)loginUser;
-        String userId = loginUser1.getUserId();
-        Character character = characterRepository.findById(userId).get();
+        Character character = characterRepository.findById(loginUser1.getUserId()).get();
         CharacterResponse characterResponse = CharacterResponse.builder()
                 .color(character.getColor())
                 .status(character.getStatus())
-                .experience(character.getExperience())
-                .level(character.getLevel())
-                .speechBubble(character.getSpeechBubble())
+                .growth(character.getGrowth())
+                .speechBubble(character.getSpeechBubble().message())
                 .build();
         return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }
