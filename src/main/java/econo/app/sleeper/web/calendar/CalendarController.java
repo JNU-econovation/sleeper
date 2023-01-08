@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.calendar;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
@@ -39,7 +39,7 @@ public class CalendarController {
         List<Sleep> sleepsByDate = sleepService.findSleepsByDate(CalendarDto.of(userId, localDate));
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
         for(int i=0;i<diariesByDate.size();i++){
-            calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent(),diariesByDate.get(i).getDiaryPk(), sleepsByDate.get(i).getSetSleepTime()
+            calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getDiaryPk(), sleepsByDate.get(i).getSetSleepTime()
                     , sleepsByDate.get(i).getSetWakeTime(), sleepsByDate.get(i).getActualSleepTime(), sleepsByDate.get(i).getActualWakeTime()
                     ,Link.of("diary", "/diaries/" + diariesByDate.get(i).getDiaryPk(), "GET", List.of("application/x-www-form-urlenceded"))));
         }

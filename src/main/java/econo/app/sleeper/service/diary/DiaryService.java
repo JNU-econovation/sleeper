@@ -1,6 +1,6 @@
 package econo.app.sleeper.service.diary;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.DiaryRepository;
@@ -8,7 +8,6 @@ import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
-import econo.app.sleeper.domain.character.SpeechBubbleJudgement;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.*;
 import lombok.RequiredArgsConstructor;
@@ -32,8 +31,8 @@ public class DiaryService {
         User user = userRepository.findById(diaryRequest.getUserId()).get();
         Diary diary = diaryRequest.toEntity(new DateTimeManager().giveSavingDate(), user);
         diaryRepository.save(diary);
-        moneyService.obtain(DiaryRewardDto.of(diary.getContent(), user.getUserPk()));
-        characterService.update(CharacterDto.of(user.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diaryRequest.getContent()), Status.SLEEP));
+        moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
+        characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
     }
 
     @Transactional

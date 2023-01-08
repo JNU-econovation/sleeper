@@ -22,9 +22,9 @@ public class Character {
     @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_STATUS")
     private Status status;
-
     @Embedded
     private Growth growth;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_SPEECH_BUBBLE")
     private SpeechBubble speechBubble;

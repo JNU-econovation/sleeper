@@ -4,9 +4,9 @@ import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
+import econo.app.sleeper.domain.diary.Content;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.domain.character.SpeechBubbleJudgement;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.character.NewCharacterDto;
 import econo.app.sleeper.web.sleep.SleepCharacterDto;
@@ -30,7 +30,7 @@ public class CharacterService {
     @Transactional
     public void update(CharacterDto characterDto) {
         Character character = characterRepository.findById(characterDto.getUserId()).get();
-        character.updateCharacter(character.getSpeechBubble(),characterDto.getStatus());
+        character.updateCharacter(new Content(characterDto.getContent()).judgeSpeechBubble(),Status.SLEEP);
     }
 
     @Transactional

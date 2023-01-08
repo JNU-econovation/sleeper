@@ -1,10 +1,5 @@
 package econo.app.sleeper.util;
 
-import econo.app.sleeper.domain.character.SpeechBubbleJudgement;
-import econo.app.sleeper.domain.character.SpeechBubble;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-
 public class SpeechBubbleJudgementTest {
 
 //    @Test

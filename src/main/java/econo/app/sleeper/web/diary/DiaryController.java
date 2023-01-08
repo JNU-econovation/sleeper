@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.diary;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.money.MoneyService;
@@ -18,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -71,7 +69,7 @@ public class DiaryController {
         List<Diary> diariesByUser = diaryService.findDiariesByUser(loginUser1.getUserId());
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent(), diariesByUser.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate());
         }
         return new ResponseEntity<>(diaryFindResponseList, HttpStatus.OK);
     }
@@ -86,7 +84,7 @@ public class DiaryController {
 
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent(), diariesByDate.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate());
         }
         return new ResponseEntity<>(diaryFindResponseList, HttpStatus.CREATED);
     }

@@ -1,6 +1,7 @@
 package econo.app.sleeper.web.diary;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Content;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,7 +27,7 @@ public class DiaryRequest {
                 .savingDate(savingDate)
                 .user(user)
                 .writingTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
-                .content(content)
+                .content(new Content(content))
                 .build();
     }
 

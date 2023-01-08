@@ -1,6 +1,6 @@
 package econo.app.sleeper.domain.user;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.Money;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.character.Character;

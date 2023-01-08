@@ -1,6 +1,7 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Content;
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import org.assertj.core.api.Assertions;
@@ -43,7 +44,7 @@ public class DiaryRepositoryTest {
         LocalDate localDate = LocalDate.now();
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
+        Diary diary = new Diary(new Content("행복한 하루 되세요"),localDate,localDateTime,user);
 
         diaryRepository.save(diary);
     }
@@ -63,7 +64,7 @@ public class DiaryRepositoryTest {
         LocalDate localDate = LocalDate.now();
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
+        Diary diary = new Diary(new Content("행복한 하루 되세요"),localDate,localDateTime,user);
 
         diaryRepository.save(diary);
 
@@ -93,10 +94,10 @@ public class DiaryRepositoryTest {
         LocalDate localDate = LocalDate.now();
         LocalDateTime localDateTime1 = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary = new Diary("행복한 하루 되세요",localDate,localDateTime1,user);
+        Diary diary = new Diary(new Content("행복한 하루 되세요"),localDate,localDateTime1,user);
         LocalDateTime localDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
 
-        Diary diary1 = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
+        Diary diary1 = new Diary(new Content("행복한 하루 되세요"),localDate,localDateTime,user);
 
         diaryRepository.save(diary);
         diaryRepository.save(diary1);
@@ -132,7 +133,7 @@ public class DiaryRepositoryTest {
         System.out.println(" ======================================================= ");
 
   //      Diary diary1 = new Diary("행복한 하루 되세요",localDateTime1,user);
-        Diary diary2 = new Diary("행복한 하루 되세요",localDate,localDateTime,user);
+        Diary diary2 = new Diary(new Content("행복한 하루 되세요"),localDate,localDateTime,user);
 
 //        diaryRepository.save(diary1);
         diaryRepository.save(diary2);
@@ -148,12 +149,12 @@ public class DiaryRepositoryTest {
     @Test
     public void findRecentDiaryByUser() {
         User user = userRepository.findById("sleeper").get();
-        LocalDateTime localDateTime = LocalDateTime.of(2022,12,30,10,38);
+        LocalDateTime localDateTime = LocalDateTime.of(2023,01,8,1,38);
         LocalDateTime localDateTime1 = LocalDateTime.of(2022,12,23,01,33);
         LocalDateTime localDateTime2 = LocalDateTime.of(2022,12,30,01,01);
-        Diary diary = new Diary("오늘도 파이팅",LocalDate.of(2022,12,30),localDateTime,user);
-        Diary diary1 = new Diary("내일도 파이팅",LocalDate.of(2022,12,30),localDateTime2,user);
-        Diary diary2 = new Diary("이번주도 파이팅",LocalDate.of(2022,12,22),localDateTime1,user);
+        Diary diary = new Diary(new Content("오늘도 파이팅"),LocalDate.of(2023,01,8),localDateTime,user);
+        Diary diary1 = new Diary(new Content("내일도 파이팅"),LocalDate.of(2022,12,30),localDateTime2,user);
+        Diary diary2 = new Diary(new Content("이번주도 파이팅"),LocalDate.of(2022,12,22),localDateTime1,user);
         diaryRepository.save(diary);
         diaryRepository.save(diary1);
         diaryRepository.save(diary2);
@@ -170,11 +171,11 @@ public class DiaryRepositoryTest {
         LocalDateTime localDateTime2 = LocalDateTime.of(2022,12,30,01,01);
         LocalDateTime localDateTime3 = LocalDateTime.of(2023,01,22,01,01);
         LocalDateTime localDateTime4 = LocalDateTime.of(2022,12,10,03,01);
-        Diary diary = new Diary("오늘도 파이팅",LocalDate.of(2022,11,20),localDateTime,user);
-        Diary diary1 = new Diary("내일도 파이팅",LocalDate.of(2022,12,23),localDateTime2,user);
-        Diary diary2 = new Diary("이번주도 파이팅",LocalDate.of(2022,12,30),localDateTime1,user);
-        Diary diary3 = new Diary("파이팅",LocalDate.of(2023,01,22),localDateTime3,user);
-        Diary diary4 = new Diary("오늘 하루도 파이팅",LocalDate.of(2022,12,10),localDateTime4,user);
+        Diary diary = new Diary(new Content("오늘도 파이팅"),LocalDate.of(2022,11,20),localDateTime,user);
+        Diary diary1 = new Diary(new Content("내일도 파이팅"),LocalDate.of(2022,12,23),localDateTime2,user);
+        Diary diary2 = new Diary(new Content("이번주도 파이팅"),LocalDate.of(2022,12,30),localDateTime1,user);
+        Diary diary3 = new Diary(new Content("파이팅"),LocalDate.of(2023,01,22),localDateTime3,user);
+        Diary diary4 = new Diary(new Content("오늘 하루도 파이팅"),LocalDate.of(2022,12,10),localDateTime4,user);
         diaryRepository.save(diary);
         diaryRepository.save(diary1);
         diaryRepository.save(diary2);

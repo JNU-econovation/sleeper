@@ -12,12 +12,10 @@ public class CharacterDto {
 
     private final String userId;
     private final String content;
-    private final Status status;
 
-    public static CharacterDto of(String userId, String content, Status status){
+    public static CharacterDto of(String userId, String content){
         return CharacterDto.builder()
                 .userId(userId)
-                .status(status)
                 .content(content)
                 .build();
     }
