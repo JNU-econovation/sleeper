@@ -31,8 +31,8 @@ public class SleepController {
     public ResponseEntity<CommonResponse> updateActualTime(@SessionAttribute Object loginUser,@PathVariable("nu") Long sleepPk,
                                                            ActualRequest actualRequest){
         LoginUser loginUser1 = (LoginUser) loginUser;
-        SleepDto sleepDto = SleepDto.of(loginUser1.getUserId(),sleepPk, actualRequest.getActualWakeTime());
-        sleepService.updateActualTime(sleepDto);
+        SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
+        sleepService.updateActualWakeTime(sleepDto);
         SleepCharacterDto sleepCharacterDto = SleepCharacterDto.of(loginUser1.getUserId(), sleepPk);
         characterService.update(sleepCharacterDto);
         CommonResponse commonResponse = CommonResponse.of("실제 수면 시간 저장 완료", loginUser1.getUserId());

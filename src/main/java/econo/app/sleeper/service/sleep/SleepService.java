@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -42,14 +43,19 @@ public class SleepService {
     }
 
     @Transactional
-    public void updateActualTime(SleepDto sleepDto){
-        User user = userRepository.findById(sleepDto.getUserId()).get();
-        ActualTimeDto actualTimeDto = ActualTimeDto.of(diaryRepository.findRecentDiaryByUser(user.getUserPk()).getWritingTime(),
-                sleepDto.getActualWakeTime());
-        ZonedDateTime actualSleepTime = DateTypeConverter.convertToZoneDateTime(actualTimeDto.getActualSleepTime());
-        ZonedDateTime actualWakeTime = DateTypeConverter.convertToZoneDateTime(actualTimeDto.getActualWakeTime());
+    public void updateActualWakeTime(SleepDto sleepDto){
+        ZonedDateTime actualWakeTime = DateTypeConverter.convertToZoneDateTime(sleepDto.getActualWakeTime());
         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk()).get();
-        sleep.updateActualTime(actualSleepTime,actualWakeTime);
+        sleep.updateActualWakeTime(actualWakeTime);
+    }
+
+    @Transactional
+    public void updateActualSleepTime(Long userPk){
+        User user = userRepository.find(userPk).get();
+        LocalDateTime writingTime = diaryRepository.findRecentDiaryByUser(user.getUserPk()).getWritingTime();
+        ZonedDateTime actualSleepTime = DateTypeConverter.convertToZoneDateTime(writingTime);
+        Sleep sleep = sleepRepository.findRecentSleepByUser(userPk);
+        sleep.updateActualSleepTime(actualSleepTime);
         DateTimeManager dateTimeManager = new DateTimeManager();
         sleep.updateSavingDate(dateTimeManager.giveSavingDate());
     }

@@ -8,6 +8,7 @@ import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.*;
 import lombok.RequiredArgsConstructor;
@@ -26,11 +27,14 @@ public class DiaryService {
     private final MoneyService moneyService;
     private final CharacterService characterService;
 
+    private final SleepService sleepService;
+
     @Transactional
     public void save(DiaryRequest diaryRequest){
         User user = userRepository.findById(diaryRequest.getUserId()).get();
         Diary diary = diaryRequest.toEntity(new DateTimeManager().giveSavingDate(), user);
         diaryRepository.save(diary);
+        sleepService.updateActualSleepTime(user.getUserPk());
         moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
         characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
     }

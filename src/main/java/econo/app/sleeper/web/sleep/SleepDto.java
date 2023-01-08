@@ -13,14 +13,12 @@ import java.time.LocalDateTime;
 @Builder
 public class SleepDto {
 
-    private final String userId;
     private final Long sleepPk;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private final LocalDateTime actualWakeTime;
 
-    public static SleepDto of(String userId, Long sleepPk, LocalDateTime actualRequest){
+    public static SleepDto of(Long sleepPk, LocalDateTime actualRequest){
         return SleepDto.builder()
-                .userId(userId)
                 .sleepPk(sleepPk)
                 .actualWakeTime(actualRequest)
                 .build();
