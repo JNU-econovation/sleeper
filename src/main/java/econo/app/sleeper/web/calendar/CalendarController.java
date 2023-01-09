@@ -1,7 +1,8 @@
 package econo.app.sleeper.web.calendar;
 
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.Sleep.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.CommonRequest;
@@ -18,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -50,7 +50,7 @@ public class CalendarController {
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
         for(int i=0;i<diariesByDate.size();i++){
             calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getDiaryPk(), sleepsByDate.get(i).getSetSleepTime()
-                    , sleepsByDate.get(i).getSetWakeTime(), sleepsByDate.get(i).getActualSleepTime(), sleepsByDate.get(i).getActualWakeTime()
+                    , sleepsByDate.get(i).getSetWakeTime(), sleepsByDate.get(i).getSavingDate().getSavingDateTime(), sleepsByDate.get(i).getActualWakeTime()
                     ,Link.of("diary", "/diaries/" + diariesByDate.get(i).getDiaryPk(), "GET", List.of("application/x-www-form-urlenceded"))));
         }
         return new ResponseEntity<>(calendarDateRespons, HttpStatus.OK);
@@ -60,11 +60,11 @@ public class CalendarController {
     public ResponseEntity<CalendarResponse> readCalendar(CommonRequest commonRequest){
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(commonRequest.getUserId(), localDate));
-        List<LocalDate> localDates = new ArrayList<>();
+        List<SavingDate> savingDates = new ArrayList<>();
         for(Diary d : diaries){
-            localDates = List.of(d.getSavingDate());
+            savingDates = List.of(d.getSavingDate());
         }
-        CalendarResponse calendarResponse = CalendarResponse.of(localDates);
+        CalendarResponse calendarResponse = CalendarResponse.of(savingDates);
         return new ResponseEntity<>(calendarResponse,HttpStatus.OK);
     }
 

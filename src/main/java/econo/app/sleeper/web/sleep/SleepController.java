@@ -1,5 +1,5 @@
 package econo.app.sleeper.web.sleep;
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.Sleep.Sleep;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.CommonRequest;

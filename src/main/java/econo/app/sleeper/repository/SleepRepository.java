@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.Sleep.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -32,13 +32,13 @@ public class SleepRepository {
     // 회원의 수면 기록 중 날짜가 ~ 인 것
 
     public List<Sleep> findSleepsByDate(Long userPk, LocalDate localDate){
-        return em.createQuery("select s from Sleep s join s.user u where u.userPk = :userPk and s.savingDate = :localDate", Sleep.class)
+        return em.createQuery("select s from Sleep s join s.user u where u.userPk = :userPk and s.SavingDate.savingDate = :localDate", Sleep.class)
                 .setParameter("userPk",userPk)
                 .setParameter("localDate",localDate)
                 .getResultList();
     }
 
-    // 해당 회원의 가장 최근의 sleep 기록 찾기
+    // 해당 회원의 가장 최근의 sleep 기록 찾기 -- 설정수면시간
     public Sleep findRecentSleepByUser(Long userPk){
         TypedQuery<Sleep> query = em.createQuery("select s from Sleep s join s.user u where u.userPk = :userPk order by s.setSleepTime desc", Sleep.class)
                 .setParameter("userPk",userPk);

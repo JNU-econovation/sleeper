@@ -1,5 +1,7 @@
-package econo.app.sleeper.domain;
+package econo.app.sleeper.domain.Sleep;
 
+
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -28,13 +30,10 @@ public class Sleep {
     private ZonedDateTime setWakeTime;
 
     @Column(columnDefinition = "TIMESTAMP")
-    private ZonedDateTime actualSleepTime;
-
-    @Column(columnDefinition = "TIMESTAMP")
     private ZonedDateTime actualWakeTime;
 
-    @Column(name = "SLEEP_DATE", columnDefinition = "DATE")
-    private LocalDate savingDate;
+    @Embedded
+    private SavingDate savingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
@@ -52,19 +51,14 @@ public class Sleep {
         this.actualWakeTime = actualWakeTime;
     }
 
-    public void updateActualSleepTime(ZonedDateTime actualSleepTime){
-        this.actualSleepTime = actualSleepTime;
+    public void updateActualSleepTime(){
+        this.savingDate = new SavingDate();
     }
 
     public void updateSetTime(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
         this.setSleepTime = setSleepTime;
         this.setWakeTime = setWakeTime;
     }
-
-    public void updateSavingDate(LocalDate savingDate){
-        this.savingDate = savingDate;
-    }
-
 
     public Integer assessExperience(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime) {
         if (setWakeTime.isAfter(actualSleepTime)) {

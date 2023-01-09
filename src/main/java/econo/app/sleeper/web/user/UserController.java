@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.util.TimeManager;
+import econo.app.sleeper.util.DateTimeManager;
 import econo.app.sleeper.web.CommonRequest;
 import econo.app.sleeper.web.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +54,7 @@ public class UserController {
     @GetMapping("/users/time")
     public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
         User user = userService.readGoalTime(commonRequest.getUserId());
-        List<LocalTime> localTimes = TimeManager.suggestWakeTime(user.getGoalSleepTime());
+        List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalSleepTime());
         GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalSleepTime(), user.getGoalWakeTime(), localTimes);
         return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);
     }
