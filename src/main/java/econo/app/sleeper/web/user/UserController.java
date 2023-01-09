@@ -1,10 +1,12 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.service.character.CharacterService;
+import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.TimeManager;
-import econo.app.sleeper.web.login.LoginUser;
-import econo.app.sleeper.web.login.SessionConst;
+import econo.app.sleeper.web.CommonRequest;
+import econo.app.sleeper.web.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +24,9 @@ import java.util.List;
 @Tag(name = "user", description = "사용자 관련 API")
 public class UserController {
     private final UserService userService;
+    private final CharacterService characterService;
+
+    private final MoneyService moneyService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -32,41 +37,26 @@ public class UserController {
     })
 
     @PostMapping("/users")
-    public ResponseEntity<SignupResponse> signupUser(SignUpRequestForm signUpRequestForm) {
-        User user = userService.join(signUpRequestForm);
-        SignupResponse signupResponse = SignupResponse.builder()
-                .userId(user.getUserId())
-                .build();
-        return new ResponseEntity<>(signupResponse,HttpStatus.CREATED);
+    public ResponseEntity<CommonResponse> signupUser(SignUpRequest signUpRequest) {
+        User user = userService.join(signUpRequest);
+        CommonResponse commonResponse = CommonResponse.of("회원가입 완료", user.getUserId());
+        return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/users/time")
-    public ResponseEntity<SignupResponse> updateGoalTime(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser , GoalTimeRequestForm goalTimeRequestForm) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        GoalTimeDto goalTimeDto = GoalTimeDto.builder()
-                .goalWakeTime(goalTimeRequestForm.getGoalWakeTime())
-                .goalSleepTime(goalTimeRequestForm.getGoalSleepTime())
-                .userId(loginUser1.getUserId())
-                .build();
+    public ResponseEntity<CommonResponse> updateGoalTime(GoalTimeRequest goalTimeRequest) {
+        GoalTimeDto goalTimeDto = GoalTimeDto.of(goalTimeRequest.getGoalSleepTime(), goalTimeRequest.getGoalWakeTime(), goalTimeRequest.getUserId());
         userService.updateGoalTime(goalTimeDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        CommonResponse commonResponse = CommonResponse.of("목표수면시간, 목표기상시간 저장", goalTimeDto.getUserId());
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
     @GetMapping("/users/time")
-    public ResponseEntity<GoalTImeResponse> readGoalTime(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        String userId = loginUser1.getUserId();
-        User user = userService.readGoalTime(userId);
-
+    public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
+        User user = userService.readGoalTime(commonRequest.getUserId());
         List<LocalTime> localTimes = TimeManager.suggestWakeTime(user.getGoalSleepTime());
-
-        GoalTImeResponse goalTImeResponse = GoalTImeResponse.builder()
-                .goalSleepTime(user.getGoalSleepTime())
-                .goalWakeTime(user.getGoalWakeTime())
-                .suggestedWakeTimes(localTimes)
-                .build();
-
-        return new ResponseEntity<>(goalTImeResponse,HttpStatus.OK);
+        GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalSleepTime(), user.getGoalWakeTime(), localTimes);
+        return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);
     }
 
 }

@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.login;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.login.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,30 +33,26 @@ public class LoginController {
     })
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDto> login(LoginRequestForm loginRequestForm, HttpServletRequest request ){
-        User unidentifiedUser = loginService.login(loginRequestForm);
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest){
+        User unidentifiedUser = loginService.login(loginRequest);
 
         log.info("login? {}",unidentifiedUser);
 
         //실패
         if(unidentifiedUser == null){
-            LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+            LoginResponse loginResponse = LoginResponse.builder()
                     .message("존재하지 않는 아이디입니다.")
                     .build();
             HttpHeaders headers = new HttpHeaders();
-            return new ResponseEntity<>(loginResponseDto,HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(loginResponse,HttpStatus.BAD_REQUEST);
         }
 
         //성공
-        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
+        LoginResponse loginResponse = LoginResponse.builder()
                 .message("로그인 성공")
                 // JWT TOKEN 추가
                 .build();
-
-        HttpSession session = request.getSession();
-        LoginUser loginUser = new LoginUser(unidentifiedUser.getUserId());
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
-        return new ResponseEntity<>(loginResponseDto,HttpStatus.OK);
+        return new ResponseEntity<>(loginResponse,HttpStatus.OK);
     }
 
 }

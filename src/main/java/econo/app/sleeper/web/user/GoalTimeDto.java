@@ -20,10 +20,11 @@ public class GoalTimeDto {
 
     private final String userId;
 
-    public GoalTimeDto toDto(LocalTime goalSleepTime, LocalTime getWakeTIme, String userId){
+    public static GoalTimeDto of(LocalTime goalSleepTime, LocalTime getWakeTIme, String userId){
         return GoalTimeDto.builder()
                 .goalSleepTime(goalSleepTime)
-                .goalWakeTime(goalWakeTime)
+                .goalWakeTime(getWakeTIme)
+                .userId(userId)
                 .build();
     }
 }

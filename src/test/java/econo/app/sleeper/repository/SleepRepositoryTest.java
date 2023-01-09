@@ -45,7 +45,7 @@ public class SleepRepositoryTest {
     public void findRecentSleepByUser(){
         LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
         LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime(SetTimeDto.of(setSleepTime,setWakeTime,"sleeper"));
+        sleepService.saveSetTime("sleeper");
         Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(1L);
         Assertions.assertThat(recentSleepByUser.getSetSleepTime().toLocalDateTime().toString()).isEqualTo(setSleepTime.toString());
     }

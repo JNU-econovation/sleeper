@@ -9,7 +9,6 @@ import java.util.List;
 public class TimeManager {
 
     public static List<LocalTime> suggestWakeTime(LocalTime localTime){
-        // 일단은 1시간 30분이 수면사이클이라고 가정한다.
         LocalTime localTime1 = localTime.plusHours(6);
         LocalTime localTime2 = localTime1.plusHours(1).plusMinutes(30);
         LocalTime localTime3 = localTime2.plusHours(1).plusMinutes(30);

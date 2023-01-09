@@ -1,9 +1,11 @@
 package econo.app.sleeper.web.diary;
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
-import econo.app.sleeper.web.login.LoginUser;
-import econo.app.sleeper.web.login.SessionConst;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.web.CommonRequest;
+import econo.app.sleeper.web.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,7 +28,6 @@ public class DiaryController {
 
     private final DiaryService diaryService;
 
-
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -36,58 +37,55 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(DiaryRequestForm diaryRequestForm, @SessionAttribute(SessionConst.LOGIN_USER) Object loginUser) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        DiaryTimeDto diaryTimeDto = DiaryTimeDto.of(loginUser1.getUserId(), diaryRequestForm.getContent(), diaryRequestForm.getLocalDateTime());
-        DiaryResponse diaryResponse = diaryService.saveDiary(diaryTimeDto);
+    public ResponseEntity<DiaryResponse> saveDiary(DiaryRequest diaryRequest) {
+        Diary diary = diaryService.save(diaryRequest);
+        DiaryResponse diaryResponse = DiaryResponse.of(diary.getDiaryPk());
         return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<DiaryResponse> updateDiary(@PathVariable("nu") Long diaryPk,DiaryParam diaryParam){
-        diaryService.updateDiary(diaryPk,diaryParam.getContent());
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk,DiaryRequest diaryRequest){
+        diaryService.updateDiary(diaryPk,diaryRequest.getContent());
+        CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
     @DeleteMapping("/diaries/{nu}")
-    public ResponseEntity<DiaryResponse> deleteDiary(@PathVariable("nu") Long diaryPk){
+    public ResponseEntity<CommonResponse> deleteDiary(@PathVariable("nu") Long diaryPk){
         diaryService.deleteDiary(diaryPk);
-        return new ResponseEntity<>(HttpStatus.OK);
+        CommonResponse commonResponse = CommonResponse.of("감사일기 삭제 완료");
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
     @GetMapping("/diaries/{nu}")
     public ResponseEntity<DiaryResponse> findDiary(@PathVariable("nu") Long diaryPk){
-        diaryService.findDiary(diaryPk);
-        return new ResponseEntity<>(HttpStatus.OK);
+        Diary diary = diaryService.findDiary(diaryPk);
+        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent().getContent(), diary.getSavingDate(), diary.getWritingTime());
+        return new ResponseEntity<>(diaryResponse,HttpStatus.OK);
     }
 
     @GetMapping("/diaries")
-    public ResponseEntity<DiaryResponseForm> findDiariesByUser(@SessionAttribute(SessionConst.LOGIN_USER) Object loginUser) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        List<Diary> diariesByUser = diaryService.findDiariesByUser(loginUser1.getUserId());
-
-        DiaryResponseForm diaryResponseFormList = null;
+    public ResponseEntity<DiaryFindResponse> findDiariesByUser(CommonRequest commonRequest) {
+        List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserId());
+        DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
-            diaryResponseFormList = DiaryResponseForm.of(diariesByUser.get(i).getContent(), diariesByUser.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate());
         }
-
-        return new ResponseEntity<>(diaryResponseFormList, HttpStatus.OK);
+        return new ResponseEntity<>(diaryFindResponseList, HttpStatus.OK);
     }
 
     @GetMapping("/diaries/date/{date}")
-    public ResponseEntity<DiaryResponseForm> findDiariesByDate(
+    public ResponseEntity<DiaryFindResponse> findDiariesByDate(
             @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
-            @SessionAttribute(SessionConst.LOGIN_USER) Object loginUser) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        DiaryDateDto diaryDateDto = DiaryDateDto.of(loginUser1.getUserId(), date);
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryDateDto);
+           CommonRequest commonRequest) {
+        DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserId(), date);
+        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
 
-        DiaryResponseForm diaryResponseFormList = null;
+        DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryResponseFormList = DiaryResponseForm.of(diariesByDate.get(i).getContent(), diariesByDate.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate());
         }
-        return new ResponseEntity<>(diaryResponseFormList, HttpStatus.CREATED);
+        return new ResponseEntity<>(diaryFindResponseList, HttpStatus.CREATED);
     }
-
 
 }

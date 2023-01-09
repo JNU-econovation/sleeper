@@ -1,10 +1,10 @@
 package econo.app.sleeper.service.login;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.web.login.LoginRequestForm;
-import econo.app.sleeper.web.user.SignUpRequestForm;
+import econo.app.sleeper.web.login.LoginRequest;
+import econo.app.sleeper.web.user.SignUpRequest;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
@@ -33,19 +33,19 @@ public class LoginServiceTest {
     @Test
     public void login_success() {
         //Given
-        SignUpRequestForm signUpRequestForm = SignUpRequestForm.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("sleeper")
                 .userPassword("sleeper1234@@")
                 .userAge(24L)
                 .userNickName("관리자")
                 .build();
 
-        User user = userService.join(signUpRequestForm);
+        User user = userService.join(signUpRequest);
 
-        LoginRequestForm loginRequestForm = new LoginRequestForm("sleeper","sleeper1234@@");
+        LoginRequest loginRequest = new LoginRequest("sleeper","sleeper1234@@");
 
         //When
-        User loginUser = loginService.login(loginRequestForm);
+        User loginUser = loginService.login(loginRequest);
 
         //Then
         assertEquals(user.getUserPassword(), loginUser.getUserPassword());
@@ -54,21 +54,21 @@ public class LoginServiceTest {
     @Test
     public void login_fail() {
         //Given
-        SignUpRequestForm signUpRequestForm = SignUpRequestForm.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("sleeper")
                 .userPassword("sleeper1234@@")
                 .userAge(24L)
                 .userNickName("관리자")
                 .build();
 
-        User user = userService.join(signUpRequestForm);
+        User user = userService.join(signUpRequest);
 
-        LoginRequestForm loginRequestForm = new LoginRequestForm("wakeup","wakeup112");
+        LoginRequest loginRequest = new LoginRequest("wakeup","wakeup112");
 
         //When
 
         //Then
-        Assertions.assertThrows(NullPointerException.class,()->loginService.login(loginRequestForm).getUserId());
+        Assertions.assertThrows(NullPointerException.class,()->loginService.login(loginRequest).getUserId());
 
     }
 
