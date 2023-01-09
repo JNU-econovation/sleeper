@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class UserRepository {
         log.info("save: member={}", user);
     }
 
-    public Optional<User> findOne(Long pk) {
+    public Optional<User> find(Long pk) {
         User user = em.find(User.class,pk);
         Optional<User> optionalUser = Optional.of(user);
         return optionalUser;
@@ -33,7 +33,6 @@ public class UserRepository {
         return em.createQuery("select u from User u",User.class).getResultList();
     }
 
-    // 로그인시 사용
     public Optional<User> findById(String userId){
        return em.createQuery("select u from User u where u.userId = :userId ",User.class)
                 .setParameter("userId",userId)

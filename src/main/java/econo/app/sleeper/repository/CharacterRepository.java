@@ -1,16 +1,14 @@
 package econo.app.sleeper.repository;
 
 
-import econo.app.sleeper.domain.Character;
-import econo.app.sleeper.domain.Color;
-import econo.app.sleeper.domain.Diary;
-import econo.app.sleeper.domain.Status;
+import econo.app.sleeper.domain.character.Character;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -25,10 +23,14 @@ public class CharacterRepository {
         log.info("save: character={}", character);
     }
 
-    public void delete(Character character){
-        em.remove(character);
-        log.info("delete: character={}", character);
+    public Optional<Character> findById(String userId) {
+        return em.createQuery("select c from Character c join c.user u where u.userId = :userId",Character.class)
+                .setParameter("userId",userId)
+                .getResultList().stream().findFirst();
     }
+
+
+
 
 
 

@@ -1,9 +1,12 @@
 package econo.app.sleeper.service.user;
 
-import econo.app.sleeper.domain.User;
-import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.util.InitCharacter;
-import econo.app.sleeper.web.user.SignUpRequestForm;
+import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.service.character.CharacterService;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.web.character.NewCharacterDto;
+import econo.app.sleeper.web.money.InitialMoneyDto;
+import econo.app.sleeper.web.user.GoalTimeDto;
+import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,18 +18,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final CharacterRepository characterRepository;
+    private final CharacterService characterService;
+    private final MoneyService moneyService;
 
     @Transactional
-    public User join(SignUpRequestForm signUpRequestForm) {
-        User user = signUpRequestForm.toEntity();
-        // ID 중복체크 구현
+    public User join(SignUpRequest signUpRequest) {
+        User user = signUpRequest.toEntity();
         userRepository.save(user);
-        // 케릭터 생성
-        characterRepository.save(InitCharacter.initCharacter(user));
+        characterService.init(NewCharacterDto.of(user));
+        moneyService.init(InitialMoneyDto.of(user));
         return user;
     }
 
+    @Transactional
+    public void updateGoalTime(GoalTimeDto goalTimeDto){
+        User user = userRepository.findById(goalTimeDto.getUserId()).get();
+        user.update(goalTimeDto.getGoalSleepTime(),goalTimeDto.getGoalWakeTime());
+    }
+
+    public User readGoalTime(String userId) {
+        return userRepository.findById(userId).get();
+    }
 
 
 }

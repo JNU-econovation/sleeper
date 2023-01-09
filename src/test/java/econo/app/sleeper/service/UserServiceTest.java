@@ -1,8 +1,8 @@
 package econo.app.sleeper.service;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.web.user.SignUpRequestForm;
+import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class UserServiceTest {
     @Test
     public void join() {
         //Given
-        SignUpRequestForm signUpRequestForm = SignUpRequestForm.builder()
+        SignUpRequest signUpRequest = SignUpRequest.builder()
                 .userId("sleeper")
                 .userPassword("sleeper1234@@")
                 .userAge(24L)
@@ -37,7 +37,7 @@ public class UserServiceTest {
                 .build();
 
         //When
-        User user = userService.join(signUpRequestForm);
+        User user = userService.join(signUpRequest);
 
         //Then
         System.out.println("user = " + user.getUserNickName());

@@ -1,7 +1,6 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.domain.User;
-import lombok.AllArgsConstructor;
+import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,20 +11,12 @@ import lombok.RequiredArgsConstructor;
 public class SignupResponse {
 
     private final String userId;
-    private final String userNickName;
 
     public static SignupResponse toDto(User user){
         return SignupResponse.builder()
                 .userId(user.getUserId())
-                .userNickName(user.getUserNickName())
                 .build();
     }
 
-    public User toEntity(){
-        return User.builder()
-                .userId(userId)
-                .userNickName(userNickName)
-                .build();
-    }
 
 }
