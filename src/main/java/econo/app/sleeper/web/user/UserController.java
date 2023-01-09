@@ -5,8 +5,8 @@ import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.TimeManager;
+import econo.app.sleeper.web.CommonRequest;
 import econo.app.sleeper.web.CommonResponse;
-import econo.app.sleeper.web.login.LoginUser;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -44,18 +44,16 @@ public class UserController {
     }
 
     @PutMapping("/users/time")
-    public ResponseEntity<CommonResponse> updateGoalTime(@SessionAttribute Object loginUser , GoalTimeRequest goalTimeRequest) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        GoalTimeDto goalTimeDto = GoalTimeDto.of(goalTimeRequest.getGoalSleepTime(), goalTimeRequest.getGoalWakeTime(), loginUser1.getUserId());
+    public ResponseEntity<CommonResponse> updateGoalTime(GoalTimeRequest goalTimeRequest) {
+        GoalTimeDto goalTimeDto = GoalTimeDto.of(goalTimeRequest.getGoalSleepTime(), goalTimeRequest.getGoalWakeTime(), goalTimeRequest.getUserId());
         userService.updateGoalTime(goalTimeDto);
-        CommonResponse commonResponse = CommonResponse.of("목표수면시간, 목표기상시간 저장", ((LoginUser) loginUser).getUserId());
+        CommonResponse commonResponse = CommonResponse.of("목표수면시간, 목표기상시간 저장", goalTimeDto.getUserId());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
     @GetMapping("/users/time")
-    public ResponseEntity<GoalTimeResponse> readGoalTime(@SessionAttribute Object loginUser) {
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        User user = userService.readGoalTime(loginUser1.getUserId());
+    public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
+        User user = userService.readGoalTime(commonRequest.getUserId());
         List<LocalTime> localTimes = TimeManager.suggestWakeTime(user.getGoalSleepTime());
         GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalSleepTime(), user.getGoalWakeTime(), localTimes);
         return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);

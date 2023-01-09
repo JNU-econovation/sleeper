@@ -1,5 +1,6 @@
 package econo.app.sleeper.service.diary;
 
+import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.user.User;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -30,13 +32,15 @@ public class DiaryService {
     private final SleepService sleepService;
 
     @Transactional
-    public void save(DiaryRequest diaryRequest){
+    public Diary save(DiaryRequest diaryRequest){
         User user = userRepository.findById(diaryRequest.getUserId()).get();
-        Diary diary = diaryRequest.toEntity(new DateTimeManager().giveSavingDate(), user);
+        LocalDate savingDate = new DateTimeManager().giveSavingDate();
+        Diary diary = diaryRequest.toEntity(savingDate, user);
         diaryRepository.save(diary);
-        sleepService.updateActualSleepTime(user.getUserPk());
+        sleepService.updateActualSleepTime(user.getUserPk(), savingDate);
         moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
         characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
+        return diary;
     }
 
     @Transactional
@@ -68,6 +72,7 @@ public class DiaryService {
     }
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
+        System.out.println("diaryFindDto = " + diaryFindDto.getUserId());
         User user = userRepository.findById(diaryFindDto.getUserId()).get();
         return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
     }

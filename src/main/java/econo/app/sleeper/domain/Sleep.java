@@ -56,9 +56,15 @@ public class Sleep {
         this.actualSleepTime = actualSleepTime;
     }
 
+    public void updateSetTime(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
+        this.setSleepTime = setSleepTime;
+        this.setWakeTime = setWakeTime;
+    }
+
     public void updateSavingDate(LocalDate savingDate){
         this.savingDate = savingDate;
     }
+
 
     public Integer assessExperience(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime) {
         if (setWakeTime.isAfter(actualSleepTime)) {

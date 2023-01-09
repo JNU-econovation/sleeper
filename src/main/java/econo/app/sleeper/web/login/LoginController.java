@@ -33,7 +33,7 @@ public class LoginController {
     })
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest, HttpServletRequest request ){
+    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest){
         User unidentifiedUser = loginService.login(loginRequest);
 
         log.info("login? {}",unidentifiedUser);
@@ -52,10 +52,6 @@ public class LoginController {
                 .message("로그인 성공")
                 // JWT TOKEN 추가
                 .build();
-
-        HttpSession session = request.getSession();
-        LoginUser loginUser = new LoginUser(unidentifiedUser.getUserId());
-        session.setAttribute(SessionConst.LOGIN_USER, loginUser);
         return new ResponseEntity<>(loginResponse,HttpStatus.OK);
     }
 

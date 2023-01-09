@@ -35,14 +35,14 @@ public class SleepServiceTest {
     public void saveSetTime() {
         LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
         LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime(SetTimeDto.of(setSleepTime,setWakeTime,"sleeper"));
+        sleepService.saveSetTime("sleeper");
     }
 
     @Test
     public void checkOverSetSleep(){
         LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
         LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime(SetTimeDto.of(setSleepTime,setWakeTime,"sleeper"));
+        sleepService.saveSetTime("sleeper");
 
         sleepService.checkOverSetSleep("sleeper");
         Character character = characterRepository.findById("sleeper").get();

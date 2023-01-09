@@ -15,12 +15,12 @@ public class DiaryFindResponse {
     private final String content;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
-    private final LocalDate localDate;
+    private final LocalDate savingDate;
 
     public static DiaryFindResponse of(String content, LocalDate localDate){
         return DiaryFindResponse.builder()
                 .content(content)
-                .localDate(localDate)
+                .savingDate(localDate)
                 .build();
     }
 }

@@ -8,19 +8,19 @@ import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
-import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.domain.character.SpeechBubble;
 import econo.app.sleeper.web.calendar.CalendarDto;
-import econo.app.sleeper.web.sleep.ActualTimeDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
 import econo.app.sleeper.web.sleep.SleepDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,30 +34,45 @@ public class SleepService {
     private final CharacterRepository characterRepository;
 
     @Transactional
-    public Sleep saveSetTime(SetTimeDto setTimeDto){
-        User user = userRepository.findById(setTimeDto.getUserId()).get();
-        Sleep sleep = setTimeDto.toEntity(DateTypeConverter.convertToZoneDateTime(setTimeDto.getSleepTime()),
-                DateTypeConverter.convertToZoneDateTime(setTimeDto.getWakeTime()),user);
+    public Sleep saveSetTime(String userId){
+        User user = userRepository.findById(userId).get();
+        List<LocalDateTime> localDateTimes = user.toLocalDateTime();
+        SetTimeDto setTimeDto = SetTimeDto.of(localDateTimes.get(0), localDateTimes.get(1), userId);
+        Sleep sleep = setTimeDto.toEntity(user);
         sleepRepository.save(sleep);
         return sleep;
     }
 
     @Transactional
+    public void updateSetTime(Long sleepPk,SetTimeDto setTimeDto){
+        Sleep sleep = sleepRepository.findByPk(sleepPk).get();
+        sleep.updateSetTime(DateTypeConverter.toZoneDateTime(setTimeDto.getSleepTime()),DateTypeConverter.toZoneDateTime(setTimeDto.getWakeTime()));
+    }
+
+    @Transactional
     public void updateActualWakeTime(SleepDto sleepDto){
-        ZonedDateTime actualWakeTime = DateTypeConverter.convertToZoneDateTime(sleepDto.getActualWakeTime());
+        ZonedDateTime actualWakeTime = DateTypeConverter.toZoneDateTime(sleepDto.getActualWakeTime());
         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk()).get();
         sleep.updateActualWakeTime(actualWakeTime);
     }
 
     @Transactional
-    public void updateActualSleepTime(Long userPk){
+    public Sleep updateActualSleepTime(Long userPk, LocalDate savingDate){
         User user = userRepository.find(userPk).get();
         LocalDateTime writingTime = diaryRepository.findRecentDiaryByUser(user.getUserPk()).getWritingTime();
-        ZonedDateTime actualSleepTime = DateTypeConverter.convertToZoneDateTime(writingTime);
+        ZonedDateTime actualSleepTime = DateTypeConverter.toZoneDateTime(writingTime);
         Sleep sleep = sleepRepository.findRecentSleepByUser(userPk);
         sleep.updateActualSleepTime(actualSleepTime);
-        DateTimeManager dateTimeManager = new DateTimeManager();
-        sleep.updateSavingDate(dateTimeManager.giveSavingDate());
+        sleep.updateSavingDate(savingDate);
+        return sleep;
+
+    }
+
+    private Boolean checkSetTime(Sleep sleep){
+        if(sleep.getActualSleepTime() != null){ // 수면 시간 설정 안 했으면
+            return true;
+        }
+        return false; // 수면 시간 설정 했으면
     }
 
 

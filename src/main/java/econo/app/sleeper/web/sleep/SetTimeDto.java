@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -31,10 +32,10 @@ public class SetTimeDto {
                 .build();
     }
 
-    public static Sleep toEntity(ZonedDateTime sleepTime, ZonedDateTime wakeTime, User user){
+    public Sleep toEntity(User user){
         return Sleep.builder()
-                .setSleepTime(sleepTime)
-                .setWakeTime(wakeTime)
+                .setSleepTime(ZonedDateTime.of(sleepTime, ZoneId.of("Asia/Seoul")))
+                .setWakeTime(ZonedDateTime.of(wakeTime, ZoneId.of("Asia/Seoul")))
                 .user(user)
                 .build();
     }

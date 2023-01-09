@@ -4,19 +4,21 @@ import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
+import econo.app.sleeper.web.CommonRequest;
 import econo.app.sleeper.web.Link;
 import econo.app.sleeper.web.diary.DiaryFindDto;
-import econo.app.sleeper.web.login.LoginUser;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -25,16 +27,24 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "calendar", description = "캘린더 관련 API")
 public class CalendarController {
 
     private final DiaryService diaryService;
     private final SleepService sleepService;
 
+    @Operation(summary = "api simple explain", description = "api specific explain")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
+
     @GetMapping("/calendar/{date}")
-    public ResponseEntity<List<CalendarDateResponse>> readCalendarOfDate(@SessionAttribute("loginUser") Object loginUser,
+    public ResponseEntity<List<CalendarDateResponse>> readCalendarOfDate(CommonRequest commonRequest,
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        String userId = loginUser1.getUserId();
+        String userId = commonRequest.getUserId();
         List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryFindDto.of(userId, localDate));
         List<Sleep> sleepsByDate = sleepService.findSleepsByDate(CalendarDto.of(userId, localDate));
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
@@ -47,10 +57,9 @@ public class CalendarController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<CalendarResponse> readCalendar(@SessionAttribute Object loginUser){
+    public ResponseEntity<CalendarResponse> readCalendar(CommonRequest commonRequest){
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        LoginUser loginUser1 = (LoginUser) loginUser;
-        List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(loginUser1.getUserId(), localDate));
+        List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(commonRequest.getUserId(), localDate));
         List<LocalDate> localDates = new ArrayList<>();
         for(Diary d : diaries){
             localDates = List.of(d.getSavingDate());

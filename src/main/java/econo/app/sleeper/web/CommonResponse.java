@@ -19,4 +19,10 @@ public class CommonResponse {
                 .build();
     }
 
+    public static CommonResponse of(String message){
+        return CommonResponse.builder()
+                .message(message)
+                .build();
+    }
+
 }
