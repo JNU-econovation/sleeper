@@ -1,7 +1,7 @@
 package econo.app.sleeper.service.character;
 
 import econo.app.sleeper.domain.character.Character;
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.Sleep.Sleep;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
 import econo.app.sleeper.domain.diary.Content;
@@ -37,7 +37,7 @@ public class CharacterService {
     public void update(SleepCharacterDto sleepCharacterDto){
         Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();
         Sleep sleep = sleepRepository.findByPk(sleepCharacterDto.getSleepPk()).get();
-        Integer plusExperience = sleep.assessExperience(sleep.getSetSleepTime(), sleep.getSetWakeTime(), sleep.getActualSleepTime(), sleep.getActualWakeTime());
+        Integer plusExperience = sleep.assessExperience(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime(), sleep.getSavingDate().getSavingDateTime(), sleep.getActualWakeTime());
         Growth growth = character.getGrowth().growth(plusExperience);
         character.updateCharacter(growth,Status.NO_SLEEP,growth.judgeSpeechBubble());
     }

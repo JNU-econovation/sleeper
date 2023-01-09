@@ -1,12 +1,10 @@
 package econo.app.sleeper.service.diary;
 
-import econo.app.sleeper.domain.Sleep;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.domain.DateTimeManager;
+import econo.app.sleeper.util.DateTimeManager;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.sleep.SleepService;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,10 +31,9 @@ public class DiaryService {
     @Transactional
     public Diary save(DiaryRequest diaryRequest){
         User user = userRepository.findById(diaryRequest.getUserId()).get();
-        LocalDate savingDate = new DateTimeManager().giveSavingDate();
-        Diary diary = diaryRequest.toEntity(savingDate, user);
+        Diary diary = diaryRequest.toEntity(user);
         diaryRepository.save(diary);
-        sleepService.updateActualSleepTime(user.getUserPk(), savingDate);
+        sleepService.updateActualSleepTime(user.getUserPk());
         moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
         characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
         return diary;
