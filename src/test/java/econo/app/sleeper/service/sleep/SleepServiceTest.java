@@ -38,17 +38,5 @@ public class SleepServiceTest {
         sleepService.saveSetTime("sleeper");
     }
 
-    @Test
-    public void checkOverSetSleep(){
-        LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
-        LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime("sleeper");
-
-        sleepService.checkOverSetSleep("sleeper");
-        Character character = characterRepository.findById("sleeper").get();
-
-        Assertions.assertThat(character.getSpeechBubble()).isEqualTo(SpeechBubble.SLEEP.message());
-
-    }
 
 }

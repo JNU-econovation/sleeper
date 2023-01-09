@@ -60,7 +60,7 @@ public class DiaryController {
     @GetMapping("/diaries/{nu}")
     public ResponseEntity<DiaryResponse> findDiary(@PathVariable("nu") Long diaryPk){
         Diary diary = diaryService.findDiary(diaryPk);
-        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent().getContent(), diary.getSavingDate(), diary.getWritingTime());
+        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent().getContent(), diary.getSavingDate().getSavingDate(), diary.getSavingDate().getSavingDateTime());
         return new ResponseEntity<>(diaryResponse,HttpStatus.OK);
     }
 
@@ -69,7 +69,7 @@ public class DiaryController {
         List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserId());
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate().getSavingDate());
         }
         return new ResponseEntity<>(diaryFindResponseList, HttpStatus.OK);
     }
@@ -83,7 +83,7 @@ public class DiaryController {
 
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate());
+            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate().getSavingDate());
         }
         return new ResponseEntity<>(diaryFindResponseList, HttpStatus.CREATED);
     }

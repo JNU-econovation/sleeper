@@ -1,5 +1,6 @@
 package econo.app.sleeper.domain.diary;
 
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -20,11 +21,8 @@ public class Diary {
     private Long diaryPk;
     @Embedded
     private Content content;
-    @Column(name = "DIARY_DATE", columnDefinition = "DATE")
-    private LocalDate savingDate;
-
-    @Column(name = "DIARY_WRITING_TIME", columnDefinition = "TIMESTAMP")
-    private LocalDateTime writingTime;
+    @Embedded
+    private SavingDate savingDate;
 
     @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
     private LocalDate deleteLocalDate;
@@ -33,10 +31,9 @@ public class Diary {
     private User user; // 연관관계의 주인
 
     @Builder
-    public Diary(Content content, LocalDate savingDate, LocalDateTime writingTime, User user){
+    public Diary(Content content, User user){
         this.content = content;
-        this.writingTime = writingTime;
-        this.savingDate = savingDate;
+        this.savingDate = new SavingDate();
         this.user = user;
     }
 
