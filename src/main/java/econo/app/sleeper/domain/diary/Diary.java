@@ -1,5 +1,6 @@
-package econo.app.sleeper.domain;
+package econo.app.sleeper.domain.diary;
 
+import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,9 +18,8 @@ public class Diary {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long diaryPk;
-
-    @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
-    private String content;
+    @Embedded
+    private Content content;
     @Column(name = "DIARY_DATE", columnDefinition = "DATE")
     private LocalDate savingDate;
 
@@ -33,15 +33,16 @@ public class Diary {
     private User user; // 연관관계의 주인
 
     @Builder
-    public Diary(String content, LocalDate savingDate, LocalDateTime writingTime, User user){
+    public Diary(Content content, LocalDate savingDate, LocalDateTime writingTime, User user){
         this.content = content;
         this.writingTime = writingTime;
         this.savingDate = savingDate;
         this.user = user;
     }
 
-    public void updateContent(String content){
-        this.content = content;
+    public void update(String content) {
+        this.content = new Content(content);
     }
+
 
 }

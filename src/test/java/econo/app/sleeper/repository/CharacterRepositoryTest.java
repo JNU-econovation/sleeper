@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Character;
+import econo.app.sleeper.domain.character.Character;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

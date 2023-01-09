@@ -1,12 +1,12 @@
 package econo.app.sleeper.util;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DateTypeConverter {
 
-    public static ZonedDateTime convertToZoneDateTime(LocalDateTime localDateTime){
+    public static ZonedDateTime toZoneDateTime(LocalDateTime localDateTime){
         ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.of("Asia/Seoul"));
         return zonedDateTime;
     }

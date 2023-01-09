@@ -1,27 +1,23 @@
 package econo.app.sleeper.service.diary;
 
-import econo.app.sleeper.domain.Diary;
-import econo.app.sleeper.domain.Status;
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.diary.Diary;
+import econo.app.sleeper.domain.character.Status;
+import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.DateTimeManager;
 import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.util.DateManager;
-import econo.app.sleeper.util.MoneyManager;
-import econo.app.sleeper.util.SpeechBubbleJudgement;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.character.CharacterDto;
-import econo.app.sleeper.web.diary.DiaryFindDto;
-import econo.app.sleeper.web.diary.DiarySaveDto;
-import econo.app.sleeper.web.diary.DiaryResponse;
-import econo.app.sleeper.web.user.MoneyDto;
+import econo.app.sleeper.web.diary.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,26 +26,27 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
+    private final MoneyService moneyService;
     private final CharacterService characterService;
 
+    private final SleepService sleepService;
+
     @Transactional
-    public DiaryResponse saveDiary(DiarySaveDto diarySaveDto){
-        LocalDate savingDate = DateManager.checkSavingDate(diarySaveDto.getLocalDateTime());
-        User user = userRepository.findById(diarySaveDto.getUserId()).get();
-        Diary diary = diarySaveDto.toEntity(savingDate, diarySaveDto.getLocalDateTime(), user);
+    public Diary save(DiaryRequest diaryRequest){
+        User user = userRepository.findById(diaryRequest.getUserId()).get();
+        LocalDate savingDate = new DateTimeManager().giveSavingDate();
+        Diary diary = diaryRequest.toEntity(savingDate, user);
         diaryRepository.save(diary);
-        MoneyDto moneyDto = MoneyDto.of(diarySaveDto.getContent(), diarySaveDto.getUserId());
-        userService.updateMoney(moneyDto);
-        CharacterDto characterDto = CharacterDto.of(diarySaveDto.getUserId(), SpeechBubbleJudgement.judgeSpeechBubble(diarySaveDto.getContent()), Status.SLEEP);
-        characterService.updateCharacter(characterDto);
-        return DiaryResponse.of(diary.getDiaryPk());
+        sleepService.updateActualSleepTime(user.getUserPk(), savingDate);
+        moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
+        characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
+        return diary;
     }
 
     @Transactional
     public void updateDiary(Long diaryPk,String content) {
         Diary diary = diaryRepository.findByPk(diaryPk).get();
-        diary.updateContent(content);
+        diary.update(content);
     }
 
     @Transactional
@@ -75,8 +72,11 @@ public class DiaryService {
     }
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
+        System.out.println("diaryFindDto = " + diaryFindDto.getUserId());
         User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),DateManager.giveEndDate(diaryFindDto.getLocalDate()));
+        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
     }
+
+
 
 }

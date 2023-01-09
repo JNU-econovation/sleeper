@@ -1,7 +1,7 @@
 package econo.app.sleeper.repository;
 
 
-import econo.app.sleeper.domain.Diary;
+import econo.app.sleeper.domain.diary.Diary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -10,7 +10,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

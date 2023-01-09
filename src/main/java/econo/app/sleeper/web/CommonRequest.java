@@ -1,13 +1,15 @@
-package econo.app.sleeper.web.login;
+package econo.app.sleeper.web;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.io.Serializable;
+import lombok.Setter;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
-public class LoginUser implements Serializable {
+@Builder
+public class CommonRequest {
 
     private final String userId;
 

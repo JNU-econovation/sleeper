@@ -1,6 +1,5 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Diary;
 import econo.app.sleeper.domain.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

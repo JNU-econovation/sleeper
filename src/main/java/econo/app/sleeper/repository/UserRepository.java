@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ public class UserRepository {
         log.info("save: member={}", user);
     }
 
-    public Optional<User> findOne(Long pk) {
+    public Optional<User> find(Long pk) {
         User user = em.find(User.class,pk);
         Optional<User> optionalUser = Optional.of(user);
         return optionalUser;

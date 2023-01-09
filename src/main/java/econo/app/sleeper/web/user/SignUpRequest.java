@@ -1,6 +1,7 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.domain.User;
+import econo.app.sleeper.domain.user.RoleType;
+import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +17,6 @@ public class SignUpRequest {
     private final String userNickName;
     private final Long userAge;
 
-    private final Integer userMoney;
-
-
-    public static SignUpRequest of(User user){
-        return SignUpRequest.builder()
-                .userId(user.getUserId())
-                .userPassword(user.getUserPassword())
-                .userNickName(user.getUserNickName())
-                .userAge(user.getUserAge())
-                .userMoney(0)
-                .build();
-    }
 
     public User toEntity(){
         return User.builder()
@@ -35,6 +24,7 @@ public class SignUpRequest {
                 .userPassword(userPassword)
                 .userNickName(userNickName)
                 .userAge(userAge)
+                .roleType(RoleType.USER)
                 .build();
     }
 

@@ -18,5 +18,6 @@ public class GoalTimeRequest {
     @DateTimeFormat(pattern = "HH:mm")
     private final LocalTime goalWakeTime;
 
+    private final String userId;
 
 }
