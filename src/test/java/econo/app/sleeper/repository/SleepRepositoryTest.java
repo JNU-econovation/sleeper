@@ -36,7 +36,7 @@ public class SleepRepositoryTest {
         List<Sleep> sleepsByDate = sleepRepository.findSleepsByDate(userPk, localDate);
 
         for (Sleep s: sleepsByDate) {
-            System.out.println("s.getActualSleepTime() = " + s.getActualSleepTime());
+            System.out.println("s.getActualSleepTime() = " + s.getSavingDate().getSavingDateTime());
         }
     }
 
@@ -44,9 +44,9 @@ public class SleepRepositoryTest {
     public void findRecentSleepByUser(){
         sleepService.saveSetTime("sleeper");
         Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(1L);
-        recentSleepByUser.getSetSleepTime().toLocalDateTime().toString();
-        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetSleepTime());
-        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetWakeTime());
+        recentSleepByUser.getSetTime().getSetSleepTime().toLocalDateTime().toString();
+        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetTime().getSetSleepTime());
+        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetTime().getSetWakeTime());
     }
 
     

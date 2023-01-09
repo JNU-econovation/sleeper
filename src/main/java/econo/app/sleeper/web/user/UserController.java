@@ -24,9 +24,6 @@ import java.util.List;
 @Tag(name = "user", description = "사용자 관련 API")
 public class UserController {
     private final UserService userService;
-    private final CharacterService characterService;
-
-    private final MoneyService moneyService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -54,8 +51,8 @@ public class UserController {
     @GetMapping("/users/time")
     public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
         User user = userService.readGoalTime(commonRequest.getUserId());
-        List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalSleepTime());
-        GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalSleepTime(), user.getGoalWakeTime(), localTimes);
+        List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalTime().getGoalSleepTime());
+        GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalTime().getGoalSleepTime(), user.getGoalTime().getGoalWakeTime(), localTimes);
         return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);
     }
 

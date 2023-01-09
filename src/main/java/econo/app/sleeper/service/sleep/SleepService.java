@@ -34,7 +34,7 @@ public class SleepService {
     @Transactional
     public Sleep saveSetTime(String userId){
         User user = userRepository.findById(userId).get();
-        List<LocalDateTime> localDateTimes = user.toLocalDateTime();
+        List<LocalDateTime> localDateTimes = user.getGoalTime().toLocalDateTime();
         SetTimeDto setTimeDto = SetTimeDto.of(localDateTimes.get(0), localDateTimes.get(1), userId);
         Sleep sleep = setTimeDto.toEntity(user);
         sleepRepository.save(sleep);

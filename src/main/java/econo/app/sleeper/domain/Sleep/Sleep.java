@@ -7,9 +7,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -23,27 +21,19 @@ public class Sleep {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sleepPk;
 
-    @Column(columnDefinition = "TIMESTAMP")
-    private ZonedDateTime setSleepTime;
-
-    @Column(columnDefinition = "TIMESTAMP")
-    private ZonedDateTime setWakeTime;
-
+    @Embedded
+    private SetTime setTime;
     @Column(columnDefinition = "TIMESTAMP")
     private ZonedDateTime actualWakeTime;
-
     @Embedded
     private SavingDate savingDate;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user;
 
-
     @Builder
     public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
-        this.setSleepTime = setSleepTime;
-        this.setWakeTime = setWakeTime;
+        this.setTime = new SetTime(setSleepTime,setWakeTime);
         this.user = user;
     }
 
@@ -56,15 +46,16 @@ public class Sleep {
     }
 
     public void updateSetTime(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
-        this.setSleepTime = setSleepTime;
-        this.setWakeTime = setWakeTime;
+        this.setTime = new SetTime(setSleepTime,setWakeTime);
     }
-
     public Integer assessExperience(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime) {
         if (setWakeTime.isAfter(actualSleepTime)) {
             long between = ChronoUnit.HOURS.between(actualSleepTime, setWakeTime);
             long total = ChronoUnit.HOURS.between(setSleepTime, actualWakeTime);
             long experience = (between*5) / total;
+            if(experience <0){
+                return 0;
+            }
             return (int)experience;
         }
         return 0;

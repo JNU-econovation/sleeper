@@ -37,7 +37,7 @@ public class CharacterService {
     public void update(SleepCharacterDto sleepCharacterDto){
         Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();
         Sleep sleep = sleepRepository.findByPk(sleepCharacterDto.getSleepPk()).get();
-        Integer plusExperience = sleep.assessExperience(sleep.getSetSleepTime(), sleep.getSetWakeTime(), sleep.getSavingDate().getSavingDateTime(), sleep.getActualWakeTime());
+        Integer plusExperience = sleep.assessExperience(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime(), sleep.getSavingDate().getSavingDateTime(), sleep.getActualWakeTime());
         Growth growth = character.getGrowth().growth(plusExperience);
         character.updateCharacter(growth,Status.NO_SLEEP,growth.judgeSpeechBubble());
     }
