@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class LoginController {
     })
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
         User unidentifiedUser = loginService.login(loginRequest);
 
         log.info("login? {}",unidentifiedUser);

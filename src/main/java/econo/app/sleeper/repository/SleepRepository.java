@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -24,14 +24,14 @@ public class SleepRepository {
         em.persist(sleep);
         log.info("save: sleep={}", sleep);
     }
+
     public Optional<Sleep> findByPk(Long sleepPk){
         Sleep sleep = em.find(Sleep.class, sleepPk);
         return Optional.of(sleep);
     }
 
     // 회원의 수면 기록 중 날짜가 ~ 인 것
-
-    public List<Sleep> findSleepsByDate(Long userPk, LocalDate localDate){
+    public List<Sleep> findSleepsByUserAndDate(Long userPk, LocalDate localDate){
         return em.createQuery("select s from Sleep s join s.user u where u.userPk = :userPk and s.savingDate.savingDate = :localDate", Sleep.class)
                 .setParameter("userPk",userPk)
                 .setParameter("localDate",localDate)
@@ -46,8 +46,5 @@ public class SleepRepository {
         query.setMaxResults(1);
         return query.getSingleResult();
     }
-    
-
-
 
 }

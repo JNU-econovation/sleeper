@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Money;
+import econo.app.sleeper.domain.money.Money;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -29,10 +29,11 @@ public class MoneyRepository {
     }
 
     public Money findRecentMoneyByUser(Long userPk){
-        TypedQuery<Money> query = em.createQuery("select m from Money m join m.user u where u.userPk = :userPk order by m.dateMoney desc", Money.class)
+        TypedQuery<Money> query = em.createQuery("select m from Money m join m.user u where u.userPk = :userPk order by m.deal.dateMoney desc", Money.class)
                 .setParameter("userPk",userPk);
         query.setFirstResult(0);
         query.setMaxResults(1);
         return query.getSingleResult();
     }
+
 }

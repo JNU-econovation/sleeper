@@ -2,7 +2,7 @@ package econo.app.sleeper.web.character;
 
 import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.web.CommonRequest;
+import econo.app.sleeper.web.common.CommonRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
