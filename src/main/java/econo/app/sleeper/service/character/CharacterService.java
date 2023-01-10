@@ -1,7 +1,7 @@
 package econo.app.sleeper.service.character;
 
 import econo.app.sleeper.domain.character.Character;
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
 import econo.app.sleeper.domain.diary.Content;

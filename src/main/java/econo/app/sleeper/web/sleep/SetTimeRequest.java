@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.sleep;
 
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

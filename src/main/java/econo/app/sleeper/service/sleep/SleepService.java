@@ -1,14 +1,12 @@
 package econo.app.sleeper.service.sleep;
 
-import econo.app.sleeper.domain.character.Character;
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
-import econo.app.sleeper.domain.character.SpeechBubble;
 import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
 import econo.app.sleeper.web.sleep.SleepDto;
@@ -63,10 +61,10 @@ public class SleepService {
     }
 
 
-    public List<Sleep> findSleepsByDate(CalendarDto calendarDto){
+    public List<Sleep> findSleepsByUserAndDate(CalendarDto calendarDto){
         String userId = calendarDto.getUserId();
         Long userPk = userRepository.findById(userId).get().getUserPk();
-        return sleepRepository.findSleepsByDate(userPk,calendarDto.getDate());
+        return sleepRepository.findSleepsByUserAndDate(userPk,calendarDto.getDate());
     }
 
 

@@ -1,9 +1,7 @@
-package econo.app.sleeper.domain.Sleep;
+package econo.app.sleeper.domain.sleep;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

@@ -1,4 +1,4 @@
-package econo.app.sleeper.domain.Sleep;
+package econo.app.sleeper.domain.sleep;
 
 
 import econo.app.sleeper.domain.common.SavingDate;

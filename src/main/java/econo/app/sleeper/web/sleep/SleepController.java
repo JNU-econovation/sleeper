@@ -1,9 +1,9 @@
 package econo.app.sleeper.web.sleep;
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.CommonRequest;
-import econo.app.sleeper.web.CommonResponse;
+import econo.app.sleeper.web.common.CommonRequest;
+import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.calendar;
 
-import econo.app.sleeper.web.Link;
+import econo.app.sleeper.web.common.Link;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
