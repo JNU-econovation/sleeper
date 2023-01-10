@@ -1,16 +1,12 @@
 package econo.app.sleeper.web.common;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class CommonRequest {
 
-    private final String userId;
+    private String userId;
 
 }

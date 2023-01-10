@@ -36,8 +36,5 @@ public class Deal {
         Deal deal = new Deal(holdingMoney + changingMoney , changingMoney);
         return deal;
     }
-
-
-
-
+    
 }

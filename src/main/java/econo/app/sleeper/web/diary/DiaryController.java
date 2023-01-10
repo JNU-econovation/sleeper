@@ -35,7 +35,7 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(DiaryRequest diaryRequest) {
+    public ResponseEntity<DiaryResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
         Diary diary = diaryService.save(diaryRequest);
         DiaryResponse diaryResponse = DiaryResponse.of(diary.getDiaryPk());
         return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);

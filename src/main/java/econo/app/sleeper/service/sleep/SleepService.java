@@ -25,9 +25,6 @@ public class SleepService {
 
     private final SleepRepository sleepRepository;
     private final UserRepository userRepository;
-    private final DiaryRepository diaryRepository;
-
-    private final CharacterRepository characterRepository;
 
     @Transactional
     public Sleep saveSetTime(String userId){

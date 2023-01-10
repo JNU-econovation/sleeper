@@ -32,7 +32,7 @@ public class UserController {
     })
 
     @PostMapping("/users")
-    public ResponseEntity<CommonResponse> signupUser(SignUpRequest signUpRequest) {
+    public ResponseEntity<CommonResponse> signupUser(@RequestBody SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료", user.getUserId());
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);

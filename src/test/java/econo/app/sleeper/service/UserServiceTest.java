@@ -25,16 +25,14 @@ public class UserServiceTest {
     @Autowired
     UserRepository userRepository;
 
-
     @Test
     public void join() {
         //Given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .userId("sleeper")
-                .userPassword("sleeper1234@@")
-                .userAge(24L)
-                .userNickName("관리자")
-                .build();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId("sleeper");
+        signUpRequest.setUserPassword("sleeper1234@");
+        signUpRequest.setUserAge(24L);
+        signUpRequest.setUserNickName("관리자");
 
         //When
         User user = userService.join(signUpRequest);
