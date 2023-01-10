@@ -2,11 +2,11 @@ package econo.app.sleeper.web.calendar;
 
 import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.Sleep.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.CommonRequest;
-import econo.app.sleeper.web.Link;
+import econo.app.sleeper.web.common.CommonRequest;
+import econo.app.sleeper.web.common.Link;
 import econo.app.sleeper.web.diary.DiaryFindDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -46,7 +46,7 @@ public class CalendarController {
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
         String userId = commonRequest.getUserId();
         List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryFindDto.of(userId, localDate));
-        List<Sleep> sleepsByDate = sleepService.findSleepsByDate(CalendarDto.of(userId, localDate));
+        List<Sleep> sleepsByDate = sleepService.findSleepsByUserAndDate(CalendarDto.of(userId, localDate));
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
         for(int i=0;i<diariesByDate.size();i++){
             calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getDiaryPk(),sleepsByDate.get(i).getSetTime().getSetSleepTime(),

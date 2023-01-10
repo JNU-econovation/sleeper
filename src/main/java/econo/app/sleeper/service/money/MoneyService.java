@@ -1,6 +1,6 @@
 package econo.app.sleeper.service.money;
 
-import econo.app.sleeper.domain.Money;
+import econo.app.sleeper.domain.money.Money;
 import econo.app.sleeper.domain.diary.Content;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.MoneyRepository;
@@ -29,7 +29,7 @@ public class MoneyService {
 
     @Transactional
     public void init(InitialMoneyDto initialMoneyDto){
-        moneyRepository.save(Money.initMoney(initialMoneyDto.getUser()));
+        moneyRepository.save(Money.init(initialMoneyDto.getUser()));
     }
 
 }

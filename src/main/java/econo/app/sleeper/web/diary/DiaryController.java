@@ -1,11 +1,9 @@
 package econo.app.sleeper.web.diary;
 
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
-import econo.app.sleeper.service.money.MoneyService;
-import econo.app.sleeper.web.CommonRequest;
-import econo.app.sleeper.web.CommonResponse;
+import econo.app.sleeper.web.common.CommonRequest;
+import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -37,7 +35,7 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(DiaryRequest diaryRequest) {
+    public ResponseEntity<DiaryResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
         Diary diary = diaryService.save(diaryRequest);
         DiaryResponse diaryResponse = DiaryResponse.of(diary.getDiaryPk());
         return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);

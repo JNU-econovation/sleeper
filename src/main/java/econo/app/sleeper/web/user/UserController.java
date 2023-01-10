@@ -1,12 +1,10 @@
 package econo.app.sleeper.web.user;
 
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.DateTimeManager;
-import econo.app.sleeper.web.CommonRequest;
-import econo.app.sleeper.web.CommonResponse;
+import econo.app.sleeper.web.common.CommonRequest;
+import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -34,7 +32,7 @@ public class UserController {
     })
 
     @PostMapping("/users")
-    public ResponseEntity<CommonResponse> signupUser(SignUpRequest signUpRequest) {
+    public ResponseEntity<CommonResponse> signupUser(@RequestBody SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료", user.getUserId());
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);

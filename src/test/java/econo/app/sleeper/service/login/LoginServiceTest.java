@@ -33,12 +33,11 @@ public class LoginServiceTest {
     @Test
     public void login_success() {
         //Given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .userId("sleeper")
-                .userPassword("sleeper1234@@")
-                .userAge(24L)
-                .userNickName("관리자")
-                .build();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId("sleeper");
+        signUpRequest.setUserPassword("sleeper1234@");
+        signUpRequest.setUserAge(24L);
+        signUpRequest.setUserNickName("관리자");
 
         User user = userService.join(signUpRequest);
 
@@ -54,12 +53,11 @@ public class LoginServiceTest {
     @Test
     public void login_fail() {
         //Given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .userId("sleeper")
-                .userPassword("sleeper1234@@")
-                .userAge(24L)
-                .userNickName("관리자")
-                .build();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId("sleeper");
+        signUpRequest.setUserPassword("sleeper1234@");
+        signUpRequest.setUserAge(24L);
+        signUpRequest.setUserNickName("관리자");
 
         User user = userService.join(signUpRequest);
 
