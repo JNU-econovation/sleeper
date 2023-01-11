@@ -4,6 +4,9 @@ import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,11 +15,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "user", description = "사용자 관련 API")
+@Tag(name = "sleep", description = "수면 관련 API")
 public class SleepController {
 
     private final SleepService sleepService;
     private final CharacterService characterService;
+
+    @Operation(summary = "api simple explain", description = "api specific explain")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "BAD REQUEST"),
+            @ApiResponse(responseCode = "404", description = "NOT FOUND"),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
+    })
 
     @PostMapping("/sleeps")
     public ResponseEntity<SleepResponse> saveSetTime(@RequestBody CommonRequest commonRequest){
