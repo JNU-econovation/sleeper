@@ -51,9 +51,6 @@ public class Character {
         this.status = status;
     }
 
-    public void updateCharacter(SpeechBubble speechBubble) {
-        this.speechBubble = speechBubble;
-    }
 
     public static Character initCharacter(User user){
         Character character = Character.builder()
