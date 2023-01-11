@@ -1,5 +1,6 @@
 package econo.app.sleeper.service.user;
 
+import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
@@ -23,10 +24,8 @@ public class UserService {
 
     @Transactional
     public User join(SignUpRequest signUpRequest) {
-        User user = signUpRequest.toEntity();
+        User user = User.create(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
         userRepository.save(user);
-        characterService.init(NewCharacterDto.of(user));
-        moneyService.init(InitialMoneyDto.of(user));
         return user;
     }
 

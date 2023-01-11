@@ -31,7 +31,7 @@ public class DiaryService {
     @Transactional
     public Diary save(DiaryRequest diaryRequest){
         User user = userRepository.findById(diaryRequest.getUserId()).get();
-        Diary diary = diaryRequest.toEntity(user);
+        Diary diary = Diary.create(user, diaryRequest.getContent());
         diaryRepository.save(diary);
         sleepService.updateActualSleepTime(user.getUserPk());
         moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));

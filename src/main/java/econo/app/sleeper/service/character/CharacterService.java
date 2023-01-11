@@ -24,7 +24,7 @@ public class CharacterService {
 
     @Transactional
     public void init(NewCharacterDto newCharacterDto){
-        characterRepository.save(Character.initCharacter(newCharacterDto.getUser()));
+        characterRepository.save(Character.init(newCharacterDto.getUser()));
     }
 
     @Transactional

@@ -13,10 +13,10 @@ import java.time.ZonedDateTime;
 public class SavingDate {
 
     @Column(name = "SAVING_DATE", columnDefinition = "DATE")
-    private LocalDate savingDate;
+    private LocalDate savingDate; // 수면 날짜
 
     @Column(name = "SAVING_DATE_TIME", columnDefinition = "timeStamp")
-    private ZonedDateTime savingDateTime;
+    private ZonedDateTime savingDateTime; // 실제 수면 시작 시간
 
     public SavingDate(){
         this.savingDate = getClassOfSavingDate();

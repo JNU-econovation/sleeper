@@ -51,8 +51,12 @@ public class Character {
         this.status = status;
     }
 
+    public void associate(User user){
+        this.user = user;
+    }
 
-    public static Character initCharacter(User user){
+
+    public static Character init(User user){
         Character character = Character.builder()
                 .color(Color.GRAY)
                 .status(Status.NO_SLEEP)

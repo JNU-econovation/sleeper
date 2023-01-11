@@ -30,22 +30,19 @@ public class User {
    @Enumerated(EnumType.STRING)
    @Column(name = "USER_ROLE_TYPE")
    private RoleType roleType;
-
    @Embedded
    private GoalTime goalTime;
 
    @OneToMany(mappedBy = "user")
    private List<Diary> diaries = new ArrayList<>();
-
    @OneToMany(mappedBy = "user")
    private List<Sleep> sleeps = new ArrayList<>();
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "MONEY_FK")
    private Money money;
-   @OneToOne
+   @OneToOne(cascade = CascadeType.ALL)
    @JoinColumn(name = "CHARACTER_FK")
    private Character character;
-
 
    @Builder
    public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
@@ -56,16 +53,31 @@ public class User {
       this.roleType = roleType;
    }
 
+   public void associate(Sleep sleep){
+      sleeps.add(sleep);
+   }
+
    public void associate(Character character){
+      character.associate(this);
       this.character = character;
    }
 
    public void associate(Money money){
+      money.associate(this);
       this.money = money;
    }
 
    public void update(LocalTime goalSleepTime, LocalTime goalWakeTime) {
       this.goalTime = new GoalTime(goalSleepTime,goalWakeTime);
+   }
+
+   public static User create(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
+      User user = new User(userId,userPassword,userNickName,userAge,roleType);
+      Money money = Money.init(user);
+      Character character = Character.init(user);
+      user.associate(money);
+      user.associate(character);
+      return user;
    }
 
 

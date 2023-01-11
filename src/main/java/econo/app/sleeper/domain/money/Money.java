@@ -36,6 +36,10 @@ public class Money {
         this.deal = deal;
     }
 
+    public void associate(User user){
+        this.user = user;
+    }
+
     public Money use(Integer changingMoney) {
         Deal deal = this.deal.use(changingMoney);
         Money money = new Money(user,deal);

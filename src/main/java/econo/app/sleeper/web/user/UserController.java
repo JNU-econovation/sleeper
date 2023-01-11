@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("/users/time")
-    public ResponseEntity<CommonResponse> updateGoalTime(GoalTimeRequest goalTimeRequest) {
+    public ResponseEntity<CommonResponse> updateGoalTime(@RequestBody GoalTimeRequest goalTimeRequest) {
         GoalTimeDto goalTimeDto = GoalTimeDto.of(goalTimeRequest.getGoalSleepTime(), goalTimeRequest.getGoalWakeTime(), goalTimeRequest.getUserId());
         userService.updateGoalTime(goalTimeDto);
         CommonResponse commonResponse = CommonResponse.of("목표수면시간, 목표기상시간 저장", goalTimeDto.getUserId());

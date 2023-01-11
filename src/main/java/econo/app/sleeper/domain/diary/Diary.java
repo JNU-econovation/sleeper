@@ -41,5 +41,17 @@ public class Diary {
         this.content = new Content(content);
     }
 
+    public void associate(User user){
+        this.user = user;
+    }
+
+    public static Diary create(User user,String content){
+        Diary diary = new Diary();
+        diary.associate(user);
+        diary.content = new Content(content);
+        diary.savingDate = new SavingDate();
+        return diary;
+    }
+
 
 }

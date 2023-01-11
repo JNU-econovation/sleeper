@@ -13,8 +13,6 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiaryRequest {
-
-
     private String content;
 
     private String userId;

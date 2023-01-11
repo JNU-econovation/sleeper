@@ -20,7 +20,6 @@ public class Sleep {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sleepPk;
-
     @Embedded
     private SetTime setTime;
     @Column(columnDefinition = "TIMESTAMP")
@@ -30,11 +29,22 @@ public class Sleep {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user;
-
     @Builder
     public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
         this.setTime = new SetTime(setSleepTime,setWakeTime);
         this.user = user;
+    }
+
+    public void associate(User user){
+        this.user = user;
+        user.associate(this);
+    }
+
+    public static Sleep createSetSleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
+        Sleep sleep = new Sleep();
+        sleep.setTime = new SetTime(setSleepTime,setWakeTime);
+        sleep.associate(user);
+        return sleep;
     }
 
     public void updateActualWakeTime(ZonedDateTime actualWakeTime){

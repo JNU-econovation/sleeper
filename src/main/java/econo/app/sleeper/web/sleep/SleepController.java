@@ -37,7 +37,7 @@ public class SleepController {
     }
 
     @PutMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, SetTimeDto setTimeDto){
+    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody SetTimeDto setTimeDto){
         sleepService.updateSetTime(sleepPk,setTimeDto);
         CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeDto.getUserId());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
@@ -46,7 +46,7 @@ public class SleepController {
 
     @PutMapping("/sleeps/{nu}/actualTime")
     public ResponseEntity<CommonResponse> updateActualTime(@PathVariable("nu") Long sleepPk,
-                                                           ActualRequest actualRequest){
+                                                           @RequestBody ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
         sleepService.updateActualWakeTime(sleepDto);
         SleepCharacterDto sleepCharacterDto = SleepCharacterDto.of(actualRequest.getUserId(), sleepPk);

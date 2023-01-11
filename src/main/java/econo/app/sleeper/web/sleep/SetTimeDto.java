@@ -4,6 +4,7 @@ import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -12,25 +13,15 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class SetTimeDto {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime sleepTime;
-
+    private LocalDateTime sleepTime;
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime wakeTime;
+    private LocalDateTime wakeTime;
 
-    private final String userId;
-
-    public static SetTimeDto of(LocalDateTime sleepTime, LocalDateTime wakeTime, String userId){
-        return SetTimeDto.builder()
-                .sleepTime(sleepTime)
-                .wakeTime(wakeTime)
-                .userId(userId)
-                .build();
-    }
+    private String userId;
 
     public Sleep toEntity(User user){
         return Sleep.builder()
@@ -39,4 +30,6 @@ public class SetTimeDto {
                 .user(user)
                 .build();
     }
+
+
 }
