@@ -20,10 +20,14 @@ public class User {
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long userPk;
+
+   @Column(nullable = false)
    private String userId;
+   @Column(nullable = false)
    private String userPassword;
-   @Column(length = 20)
+   @Column(length = 20, nullable = false)
    private String userNickName;
+   @Column(nullable = false)
    private Long userAge;
 
    private String userMessage;

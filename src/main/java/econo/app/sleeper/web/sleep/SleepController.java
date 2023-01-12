@@ -2,8 +2,10 @@ package econo.app.sleeper.web.sleep;
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
+import econo.app.sleeper.util.DateTimeManager;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
+import econo.app.sleeper.web.user.GoalTimeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -12,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalTime;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,6 +39,15 @@ public class SleepController {
         Sleep sleep = sleepService.saveSetTime(commonRequest.getUserId());
         SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getSleepPk());
         return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/sleeps/{nu}")// 추후 수면시간 추천에대한 로직이 바뀔 수도 있기 때문에 sleepPk를 넣어줌
+    public ResponseEntity<RecommendedTimes> recommendWakeTimes(@PathVariable("nu") Long sleepPk, SetSleepTimeDto setSleepTimeDto){
+        LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
+        System.out.println("setSleepTime = " + setSleepTime);
+        List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);
+        RecommendedTimes recommendedTimes = RecommendedTimes.of(localTimess);
+        return new ResponseEntity<>(recommendedTimes,HttpStatus.OK);
     }
 
     @PutMapping("/sleeps/{nu}/setTime")
