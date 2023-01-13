@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 public class DiaryRequest {
     private String content;
 
-    private String userId;
+    private Long userPk;
 
     public Diary toEntity(User user){
         return Diary.builder()

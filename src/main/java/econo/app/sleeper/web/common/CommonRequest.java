@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 public class CommonRequest {
 
-    private String userId;
+    private Long userPk;
 
 }

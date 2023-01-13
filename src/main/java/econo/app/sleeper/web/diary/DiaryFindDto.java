@@ -16,11 +16,11 @@ public class DiaryFindDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private final LocalDate localDate;
 
-    private final String userId;
+    private final Long userPk;
 
-    public static DiaryFindDto of(String userId, LocalDate localDate){
+    public static DiaryFindDto of(Long userPk, LocalDate localDate){
         return DiaryFindDto.builder()
-                .userId(userId)
+                .userPk(userPk)
                 .localDate(localDate)
                 .build();
     }

@@ -64,7 +64,7 @@ public class DiaryController {
 
     @GetMapping("/diaries")
     public ResponseEntity<DiaryFindResponse> findDiariesByUser(CommonRequest commonRequest) {
-        List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserId());
+        List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserPk());
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
             diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate().getSavingDate());
@@ -76,7 +76,7 @@ public class DiaryController {
     public ResponseEntity<DiaryFindResponse> findDiariesByDate(
             @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
            CommonRequest commonRequest) {
-        DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserId(), date);
+        DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
 
         DiaryFindResponse diaryFindResponseList = null;

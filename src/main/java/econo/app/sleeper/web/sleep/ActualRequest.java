@@ -15,6 +15,6 @@ public class ActualRequest {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime actualWakeTime;
 
-    private String userId;
+    private Long userPk;
 
 }

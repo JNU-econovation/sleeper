@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,12 +32,12 @@ public class DiaryService {
 
     @Transactional
     public Diary save(DiaryRequest diaryRequest){
-        User user = userRepository.findById(diaryRequest.getUserId()).get();
+        User user = userRepository.find(diaryRequest.getUserPk()).get();
         Diary diary = Diary.create(user, diaryRequest.getContent());
         diaryRepository.save(diary);
         sleepService.updateActualSleepTime(user.getUserPk());
         moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
-        characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
+        characterService.update(CharacterDto.of(user.getUserPk(), diaryRequest.getContent()));
         return diary;
     }
 
@@ -56,21 +58,23 @@ public class DiaryService {
         return diaryRepository.findByPk(diaryPk).orElseThrow(NullPointerException::new);
     }
 
-    public List<Diary> findDiariesByUser(String userId){
-        User user = userRepository.findById(userId).get();
+    public List<Diary> findDiariesByUser(Long userPk){
+        User user = userRepository.find(userPk).get();
         return diaryRepository.findAllByPk(user.getUserPk());
     }
 
     public List<Diary> findDiariesByDate(DiaryFindDto diaryFindDto){
-        User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        Long userPk = user.getUserPk();
-        return diaryRepository.findByDate(userPk, diaryFindDto.getLocalDate());
+        User user = userRepository.find(diaryFindDto.getUserPk()).get();
+        Stream<Diary> diaryStream = user.getDiaries().stream()
+                .filter(d -> d.getSavingDate().getSavingDate().isEqual(diaryFindDto.getLocalDate()));
+        return diaryStream.collect(Collectors.toList());
     }
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
-        System.out.println("diaryFindDto = " + diaryFindDto.getUserId());
-        User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
+        User user = userRepository.find(diaryFindDto.getUserPk()).get();
+        Stream<Diary> diaryStream = user.getDiaries().stream()
+                .filter(d -> d.getSavingDate().getSavingDate().getMonth().equals(diaryFindDto.getLocalDate().getMonth()));
+        return diaryStream.collect(Collectors.toList());
     }
 
 

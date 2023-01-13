@@ -49,12 +49,13 @@ public class User {
    private Character character;
 
    @Builder
-   public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
+   public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType, LocalTime goalSleepTime, LocalTime goalWakeTime){
       this.userId = userId;
       this.userPassword = userPassword;
       this.userNickName = userNickName;
       this.userAge = userAge;
       this.roleType = roleType;
+      this.goalTime = new GoalTime(goalSleepTime,goalWakeTime);
    }
 
    public void associate(Sleep sleep){
@@ -71,12 +72,8 @@ public class User {
       this.money = money;
    }
 
-   public void update(LocalTime goalSleepTime, LocalTime goalWakeTime) {
-      this.goalTime = new GoalTime(goalSleepTime,goalWakeTime);
-   }
-
-   public static User create(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
-      User user = new User(userId,userPassword,userNickName,userAge,roleType);
+   public static User create(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType, LocalTime goalSleepTime, LocalTime goalWakeTime){
+      User user = new User(userId,userPassword,userNickName,userAge,roleType, goalSleepTime, goalWakeTime);
       Money money = Money.init(user);
       Character character = Character.init(user);
       user.associate(money);

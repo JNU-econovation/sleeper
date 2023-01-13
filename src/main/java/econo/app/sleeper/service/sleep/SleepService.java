@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -27,8 +29,8 @@ public class SleepService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Sleep saveSetTime(String userId){
-        User user = userRepository.findById(userId).get();
+    public Sleep saveSetTime(Long userPk){
+        User user = userRepository.find(userPk).get();
         List<ZonedDateTime> zonedDateTimes = user.getGoalTime().toLocalDateTime();
         Sleep sleep = Sleep.createSetSleep(zonedDateTimes.get(0), zonedDateTimes.get(1), user);
         sleepRepository.save(sleep);
@@ -58,9 +60,10 @@ public class SleepService {
 
 
     public List<Sleep> findSleepsByUserAndDate(CalendarDto calendarDto){
-        String userId = calendarDto.getUserId();
-        Long userPk = userRepository.findById(userId).get().getUserPk();
-        return sleepRepository.findSleepsByUserAndDate(userPk,calendarDto.getDate());
+        User user = userRepository.find(calendarDto.getUserPk()).get();
+        Stream<Sleep> sleepStream = user.getSleeps().stream()
+                .filter(s -> s.getSavingDate().getSavingDate().isEqual(calendarDto.getDate()));
+        return sleepStream.collect(Collectors.toList());
     }
 
 }

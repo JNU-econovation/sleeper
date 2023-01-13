@@ -40,7 +40,6 @@ public class SleepRepositoryTest {
 
     @Test
     public void findRecentSleepByUser(){
-        sleepService.saveSetTime("sleeper");
         Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(1L);
         recentSleepByUser.getSetTime().getSetSleepTime().toLocalDateTime().toString();
         System.out.println("recentSleepByUser = " + recentSleepByUser.getSetTime().getSetSleepTime());

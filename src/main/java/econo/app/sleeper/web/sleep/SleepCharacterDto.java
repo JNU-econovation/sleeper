@@ -9,12 +9,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SleepCharacterDto {
 
-    private final String userId;
+    private final Long userPk;
     private final Long sleepPk;
 
-    public static SleepCharacterDto of(String userId, Long sleepPk){
+    public static SleepCharacterDto of(Long userPk, Long sleepPk){
         return SleepCharacterDto.builder()
-                .userId(userId)
+                .userPk(userPk)
                 .sleepPk(sleepPk)
                 .build();
     }

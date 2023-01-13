@@ -19,24 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final CharacterService characterService;
-    private final MoneyService moneyService;
 
     @Transactional
     public User join(SignUpRequest signUpRequest) {
-        User user = User.create(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
+        User user = User.create(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER, signUpRequest.getGoalSleepTime(), signUpRequest.getGoalWakeTime());
         userRepository.save(user);
         return user;
     }
 
-    @Transactional
-    public void updateGoalTime(GoalTimeDto goalTimeDto){
-        User user = userRepository.findById(goalTimeDto.getUserId()).get();
-        user.update(goalTimeDto.getGoalSleepTime(),goalTimeDto.getGoalWakeTime());
-    }
-
-    public User readGoalTime(String userId) {
-        return userRepository.findById(userId).get();
+    public User readGoalTime(Long userPk) {
+        return userRepository.find(userPk).get();
     }
 
 

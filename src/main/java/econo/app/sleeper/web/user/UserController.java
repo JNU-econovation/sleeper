@@ -34,21 +34,13 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<CommonResponse> signupUser(@RequestBody SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
-        CommonResponse commonResponse = CommonResponse.of("회원가입 완료", user.getUserId());
+        CommonResponse commonResponse = CommonResponse.of("회원가입 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
-    }
-
-    @PutMapping("/users/time")
-    public ResponseEntity<CommonResponse> updateGoalTime(@RequestBody GoalTimeRequest goalTimeRequest) {
-        GoalTimeDto goalTimeDto = GoalTimeDto.of(goalTimeRequest.getGoalSleepTime(), goalTimeRequest.getGoalWakeTime(), goalTimeRequest.getUserId());
-        userService.updateGoalTime(goalTimeDto);
-        CommonResponse commonResponse = CommonResponse.of("목표수면시간, 목표기상시간 저장", goalTimeDto.getUserId());
-        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
     @GetMapping("/users/time")
     public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
-        User user = userService.readGoalTime(commonRequest.getUserId());
+        User user = userService.readGoalTime(commonRequest.getUserPk());
         List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalTime().getGoalSleepTime());
         GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalTime().getGoalSleepTime(), user.getGoalTime().getGoalWakeTime(), localTimes);
         return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);

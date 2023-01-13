@@ -51,7 +51,7 @@ public class LoginController {
         //성공
         LoginResponse loginResponse = LoginResponse.builder()
                 .message("로그인 성공")
-                // JWT TOKEN 추가
+                .userPk(unidentifiedUser.getUserPk())
                 .build();
         return new ResponseEntity<>(loginResponse,HttpStatus.OK);
     }

@@ -21,7 +21,7 @@ public class SetTimeDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime wakeTime;
 
-    private String userId;
+    private Long userPk;
 
     public Sleep toEntity(User user){
         return Sleep.builder()

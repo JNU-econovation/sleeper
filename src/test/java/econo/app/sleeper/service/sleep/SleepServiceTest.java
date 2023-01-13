@@ -34,7 +34,7 @@ public class SleepServiceTest {
 
     @Test
     public void saveSetTime() {
-        Sleep sleep = sleepService.saveSetTime("sleeper");
+        Sleep sleep = sleepService.saveSetTime(1L);
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.of(23, 30));
         ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Seoul"));
