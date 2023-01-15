@@ -1,10 +1,14 @@
 package econo.app.sleeper.web.user;
 
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.service.character.CharacterService;
+import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.util.DateTimeManager;
+import econo.app.sleeper.web.character.NewCharacterDto;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
+import econo.app.sleeper.web.money.InitialMoneyDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +26,8 @@ import java.util.List;
 @Tag(name = "user", description = "사용자 관련 API")
 public class UserController {
     private final UserService userService;
+    private final CharacterService characterService;
+    private final MoneyService moneyService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -32,8 +38,10 @@ public class UserController {
     })
 
     @PostMapping("/users")
-    public ResponseEntity<CommonResponse> signupUser(@RequestBody SignUpRequest signUpRequest) {
+    public ResponseEntity<CommonResponse> signup(@RequestBody SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
+        characterService.createCharacter(NewCharacterDto.of(user));
+        moneyService.createMoney(InitialMoneyDto.of(user));
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }

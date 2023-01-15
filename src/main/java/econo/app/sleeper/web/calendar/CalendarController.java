@@ -1,6 +1,5 @@
 package econo.app.sleeper.web.calendar;
 
-import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.diary.DiaryService;
@@ -14,7 +13,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +48,9 @@ public class CalendarController {
         List<Sleep> sleepsByDate = sleepService.findSleepsByUserAndDate(CalendarDto.of(userPk, localDate));
         List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
         for(int i=0;i<diariesByDate.size();i++){
-            calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getDiaryPk(),sleepsByDate.get(i).getSetTime().getSetSleepTime(),
+            calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getId(),sleepsByDate.get(i).getSetTime().getSetSleepTime(),
                     sleepsByDate.get(i).getSetTime().getSetWakeTime(), sleepsByDate.get(i).getSavingDate().getSavingDateTime(), sleepsByDate.get(i).getActualWakeTime()
-                    ,Link.of("diary", "/diaries/" + diariesByDate.get(i).getDiaryPk(), "GET", List.of("application/json"))));
+                    ,Link.of("diary", "/diaries/" + diariesByDate.get(i).getId(), "GET", List.of("application/json"))));
         }
         return new ResponseEntity<>(calendarDateRespons, HttpStatus.OK);
     }

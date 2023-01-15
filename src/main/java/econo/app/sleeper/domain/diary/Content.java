@@ -1,6 +1,5 @@
 package econo.app.sleeper.domain.diary;
 
-import econo.app.sleeper.domain.character.SpeechBubble;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +20,10 @@ public class Content {
         this.content = content;
     }
 
+
+    public void update(String content) {
+        this.content = content;
+    }
     public Integer reward(){
 
         Integer contentLength = content.length();
@@ -44,13 +47,4 @@ public class Content {
         private final Integer reward;
     }
 
-    public SpeechBubble judgeSpeechBubble(){
-
-        if(content.length() == 0){
-            return SpeechBubble.NO_CONTENT;
-
-        }
-            return SpeechBubble.BEFORE_SLEEP;
-
-    }
 }

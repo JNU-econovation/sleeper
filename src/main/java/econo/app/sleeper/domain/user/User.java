@@ -1,7 +1,7 @@
 package econo.app.sleeper.domain.user;
 
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.money.Money;
+import econo.app.sleeper.domain.money.Deal;
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.character.Character;
 import lombok.*;
@@ -19,8 +19,7 @@ public class User {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
-   private Long userPk;
-
+   private Long id;
    @Column(nullable = false)
    private String userId;
    @Column(nullable = false)
@@ -29,8 +28,6 @@ public class User {
    private String userNickName;
    @Column(nullable = false)
    private Long userAge;
-
-   private String userMessage;
    @Enumerated(EnumType.STRING)
    @Column(name = "USER_ROLE_TYPE")
    private RoleType roleType;
@@ -41,10 +38,10 @@ public class User {
    private List<Diary> diaries = new ArrayList<>();
    @OneToMany(mappedBy = "user")
    private List<Sleep> sleeps = new ArrayList<>();
-   @OneToOne(cascade = CascadeType.ALL)
-   @JoinColumn(name = "MONEY_FK")
-   private Money money;
-   @OneToOne(cascade = CascadeType.ALL)
+   @OneToOne()
+   @JoinColumn(name = "DEAL_FK")
+   private Deal deal;
+   @OneToOne()
    @JoinColumn(name = "CHARACTER_FK")
    private Character character;
 
@@ -58,26 +55,20 @@ public class User {
       this.goalTime = new GoalTime(goalSleepTime,goalWakeTime);
    }
 
-   public void associate(Sleep sleep){
+   public void mappingSleep(Sleep sleep){
       sleeps.add(sleep);
    }
 
-   public void associate(Character character){
-      character.associate(this);
+   public void mappingCharacter(Character character){
       this.character = character;
    }
 
-   public void associate(Money money){
-      money.associate(this);
-      this.money = money;
+   public void mappingMoney(Deal moneyDeal){
+      this.deal = moneyDeal;
    }
 
-   public static User create(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType, LocalTime goalSleepTime, LocalTime goalWakeTime){
+   public static User createUser(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType, LocalTime goalSleepTime, LocalTime goalWakeTime){
       User user = new User(userId,userPassword,userNickName,userAge,roleType, goalSleepTime, goalWakeTime);
-      Money money = Money.init(user);
-      Character character = Character.init(user);
-      user.associate(money);
-      user.associate(character);
       return user;
    }
 

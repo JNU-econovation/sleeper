@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -51,7 +48,7 @@ public class LoginController {
         //성공
         LoginResponse loginResponse = LoginResponse.builder()
                 .message("로그인 성공")
-                .userPk(unidentifiedUser.getUserPk())
+                .userPk(unidentifiedUser.getId())
                 .build();
         return new ResponseEntity<>(loginResponse,HttpStatus.OK);
     }

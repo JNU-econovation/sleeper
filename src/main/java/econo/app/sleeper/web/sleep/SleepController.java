@@ -1,11 +1,12 @@
 package econo.app.sleeper.web.sleep;
 import econo.app.sleeper.domain.sleep.Sleep;
+import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.util.DateTimeManager;
+import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
-import econo.app.sleeper.web.user.GoalTimeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -26,6 +27,8 @@ public class SleepController {
     private final SleepService sleepService;
     private final CharacterService characterService;
 
+    private final SpeechBubbleService speechBubbleService;
+
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -37,11 +40,11 @@ public class SleepController {
     @PostMapping("/sleeps")
     public ResponseEntity<SleepResponse> saveSetTime(@RequestBody CommonRequest commonRequest){
         Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
-        SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getSleepPk());
+        SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
         return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
     }
 
-    @GetMapping("/sleeps/{nu}")// 추후 수면시간 추천에대한 로직이 바뀔 수도 있기 때문에 sleepPk를 넣어줌
+    @GetMapping("/sleeps/{nu}")
     public ResponseEntity<RecommendedTimes> recommendWakeTimes(@PathVariable("nu") Long sleepPk, SetSleepTimeDto setSleepTimeDto){
         LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
         System.out.println("setSleepTime = " + setSleepTime);
@@ -53,6 +56,7 @@ public class SleepController {
     @PutMapping("/sleeps/{nu}/setTime")
     public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody SetTimeDto setTimeDto){
         sleepService.updateSetTime(sleepPk,setTimeDto);
+        speechBubbleService.afterSettingSetTime();
         CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeDto.getUserPk());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
@@ -63,8 +67,11 @@ public class SleepController {
                                                            @RequestBody ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
         sleepService.updateActualWakeTime(sleepDto);
-        SleepCharacterDto sleepCharacterDto = SleepCharacterDto.of(actualRequest.getUserPk(), sleepPk);
-        characterService.update(sleepCharacterDto);
+        Integer plusExperience = sleepService.assessExperience(sleepPk);
+        CharacterDto characterDto = CharacterDto.of(actualRequest.getUserPk(), plusExperience);
+        Long characterPk = characterService.updateGrowthAndStatus(characterDto);
+        Boolean approachLevel = characterService.approachLevel(characterPk);
+        speechBubbleService.judgeSpeechBubbleAfterWakeUp(approachLevel);
         CommonResponse commonResponse = CommonResponse.of("실제 수면 시간 저장 완료", actualRequest.getUserPk());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }

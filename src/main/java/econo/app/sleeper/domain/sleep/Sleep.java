@@ -19,7 +19,7 @@ public class Sleep {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sleepPk;
+    private Long id;
     @Embedded
     private SetTime setTime;
     @Column(columnDefinition = "TIMESTAMP")
@@ -34,16 +34,23 @@ public class Sleep {
         this.setTime = new SetTime(setSleepTime,setWakeTime);
         this.user = user;
     }
+    @Builder
+    public Sleep(Long id, SetTime setTime, ZonedDateTime actualWakeTime, SavingDate savingDate) {
+        this.id = id;
+        this.setTime = setTime;
+        this.actualWakeTime = actualWakeTime;
+        this.savingDate = savingDate;
+    }
 
-    public void associate(User user){
+    public void mappingUser(User user){
         this.user = user;
-        user.associate(this);
+        user.mappingSleep(this);
     }
 
     public static Sleep createSetSleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
         Sleep sleep = new Sleep();
         sleep.setTime = new SetTime(setSleepTime,setWakeTime);
-        sleep.associate(user);
+        sleep.mappingUser(user);
         return sleep;
     }
 
@@ -52,14 +59,19 @@ public class Sleep {
     }
 
     public void updateActualSleepTime(){
-        this.savingDate = new SavingDate();
+        SavingDate savingDate = new SavingDate();
+        this.savingDate = savingDate;
     }
 
     public void updateSetTime(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
-        this.setTime = new SetTime(setSleepTime,setWakeTime);
+        SetTime setTime = new SetTime(setSleepTime,setWakeTime);
+        this.setTime = setTime;
     }
-    public Integer assessExperience(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, ZonedDateTime actualWakeTime) {
-        if (setWakeTime.isAfter(actualSleepTime)) {
+    public Integer assessExperience() {
+        ZonedDateTime setWakeTime = setTime.getSetWakeTime();
+        ZonedDateTime setSleepTime = setTime.getSetSleepTime();
+        ZonedDateTime actualSleepTime = savingDate.getSavingDateTime();
+        if (setWakeTime.isAfter(actualWakeTime)) {
             long between = ChronoUnit.HOURS.between(actualSleepTime, setWakeTime);
             long total = ChronoUnit.HOURS.between(setSleepTime, actualWakeTime);
             long experience = (between*5) / total;

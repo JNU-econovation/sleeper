@@ -2,11 +2,6 @@ package econo.app.sleeper.service.user;
 
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.service.money.MoneyService;
-import econo.app.sleeper.web.character.NewCharacterDto;
-import econo.app.sleeper.web.money.InitialMoneyDto;
-import econo.app.sleeper.web.user.GoalTimeDto;
 import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +17,7 @@ public class UserService {
 
     @Transactional
     public User join(SignUpRequest signUpRequest) {
-        User user = User.create(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER, signUpRequest.getGoalSleepTime(), signUpRequest.getGoalWakeTime());
+        User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER, signUpRequest.getGoalSleepTime(), signUpRequest.getGoalWakeTime());
         userRepository.save(user);
         return user;
     }

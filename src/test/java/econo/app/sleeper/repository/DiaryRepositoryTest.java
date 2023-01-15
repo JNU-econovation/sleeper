@@ -93,7 +93,7 @@ public class DiaryRepositoryTest {
         diaryRepository.save(diary);
         diaryRepository.save(diary1);
 
-        Long userPk = user.getUserPk();
+        Long userPk = user.getId();
 
         List<Diary> diaries = diaryRepository.findAllByPk(userPk);
 

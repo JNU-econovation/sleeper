@@ -1,11 +1,8 @@
 package econo.app.sleeper.service.sleep;
 
-import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.domain.character.SpeechBubble;
-import econo.app.sleeper.web.sleep.SetTimeDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

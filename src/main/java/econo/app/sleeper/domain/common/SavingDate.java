@@ -22,6 +22,7 @@ public class SavingDate {
         this.savingDate = getClassOfSavingDate();
         this.savingDateTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     }
+
     private LocalDate getClassOfSavingDate() {
         LocalDateTime nowDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));;
         int dayOfMonth = nowDateTime.getDayOfMonth();

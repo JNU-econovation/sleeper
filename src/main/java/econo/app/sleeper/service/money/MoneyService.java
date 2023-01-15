@@ -1,8 +1,7 @@
 package econo.app.sleeper.service.money;
 
-import econo.app.sleeper.domain.money.Money;
+import econo.app.sleeper.domain.money.Deal;
 import econo.app.sleeper.domain.diary.Content;
-import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.MoneyRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.diary.DiaryRewardDto;
@@ -20,16 +19,16 @@ public class MoneyService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void obtain(DiaryRewardDto diaryRewardDto){
-        User user = userRepository.find(diaryRewardDto.getUserPk()).get();
+    public Integer obtainMoney(DiaryRewardDto diaryRewardDto){
         Integer reward = new Content(diaryRewardDto.getContent()).reward();
-        Money money = moneyRepository.findRecentMoneyByUser(diaryRewardDto.getUserPk());
-        moneyRepository.save(money.use(reward));
+        Deal moneyDeal = moneyRepository.findRecentMoneyByUser(diaryRewardDto.getUserPk());
+        moneyRepository.save(moneyDeal.plusMoney(reward));
+        return reward;
     }
 
     @Transactional
-    public void init(InitialMoneyDto initialMoneyDto){
-        moneyRepository.save(Money.init(initialMoneyDto.getUser()));
+    public void createMoney(InitialMoneyDto initialMoneyDto){
+        moneyRepository.save(Deal.createMoney(initialMoneyDto.getUser()));
     }
 
 }

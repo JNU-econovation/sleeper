@@ -2,8 +2,6 @@ package econo.app.sleeper.service.sleep;
 
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,11 +48,9 @@ public class SleepService {
     }
 
     @Transactional
-    public Sleep updateActualSleepTime(Long userPk){
-        User user = userRepository.find(userPk).get();
+    public void updateActualSleepTime(Long userPk){
         Sleep sleep = sleepRepository.findRecentSleepByUser(userPk);
         sleep.updateActualSleepTime();
-        return sleep;
     }
 
 
@@ -65,5 +60,13 @@ public class SleepService {
                 .filter(s -> s.getSavingDate().getSavingDate().isEqual(calendarDto.getDate()));
         return sleepStream.collect(Collectors.toList());
     }
+
+    public Integer assessExperience(Long sleepPk){
+        Sleep sleep = sleepRepository.findByPk(sleepPk).get();
+        Integer plusExperience = sleep.assessExperience();
+        return plusExperience;
+    }
+
+
 
 }

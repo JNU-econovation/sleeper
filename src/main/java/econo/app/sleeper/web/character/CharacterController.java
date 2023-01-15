@@ -1,6 +1,7 @@
 package econo.app.sleeper.web.character;
 
 import econo.app.sleeper.domain.character.Character;
+import econo.app.sleeper.domain.common.SpeechBubble;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.UserRepository;
@@ -24,6 +25,7 @@ import java.util.Optional;
 public class CharacterController{
 
     private final UserRepository userRepository;
+    private final SpeechBubble speechBubble;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -41,7 +43,7 @@ public class CharacterController{
                 .color(character.getColor())
                 .status(character.getStatus())
                 .growth(character.getGrowth())
-                .speechBubble(character.getSpeechBubble().message())
+                .speechBubble(speechBubble.getSpeechBubble())
                 .build();
         return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }

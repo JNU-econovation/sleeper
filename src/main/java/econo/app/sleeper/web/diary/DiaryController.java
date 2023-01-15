@@ -1,7 +1,11 @@
 package econo.app.sleeper.web.diary;
 
 import econo.app.sleeper.domain.diary.Diary;
+import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,6 +29,11 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final SleepService sleepService;
+    private final MoneyService moneyService;
+    private final CharacterService characterService;
+
+    private final SpeechBubbleService speechBubbleService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -35,10 +44,14 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
-        Diary diary = diaryService.save(diaryRequest);
-        DiaryResponse diaryResponse = DiaryResponse.of(diary.getDiaryPk());
-        return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);
+    public ResponseEntity<DiarySaveResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
+        Long diaryPk = diaryService.save(diaryRequest);
+        sleepService.updateActualSleepTime(diaryRequest.getUserPk());
+        Integer reward = moneyService.obtainMoney(DiaryRewardDto.of(diaryRequest.getContent(), diaryRequest.getUserPk()));
+        characterService.updateStatusToSleep(diaryRequest.getUserPk());
+        speechBubbleService.judgeSpeechBubbleAfterSaveDiary(diaryRequest.getContent().length());
+        DiarySaveResponse diarySaveResponse = DiarySaveResponse.of(diaryPk,reward);
+        return new ResponseEntity<>(diarySaveResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/diaries/{nu}")
