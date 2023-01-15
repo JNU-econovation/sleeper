@@ -25,11 +25,12 @@ public class DiaryServiceTest {
     @Test
     public void saveDiary() {
 
-        DiaryRequest diaryRequest = new DiaryRequest("안녕하세요","sleeper");
-        Diary diary = diaryService.save(diaryRequest);
+        DiaryRequest diaryRequest = new DiaryRequest("안녕하세요",1L);
+        Long diaryPk = diaryService.save(diaryRequest);
 
-        Assertions.assertThat(diary.getContent().getContent()).isEqualTo(diaryRequest.getContent());
+        Diary diary = diaryService.findDiary(diaryPk);
+        Assertions.assertThat(diaryPk).isEqualTo(diary.getId());
 
     }
-
+    
 }

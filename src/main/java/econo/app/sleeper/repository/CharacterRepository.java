@@ -26,7 +26,7 @@ public class CharacterRepository {
 
     public Optional<Character> findByPk(Long characterPk){
         Character character = em.find(Character.class, characterPk);
-        return Optional.of(character);
+        return Optional.ofNullable(character);
     }
 
     public Optional<Character> findById(String userId) {

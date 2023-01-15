@@ -26,15 +26,16 @@ public class MoneyRepository {
 
     public Optional<Deal> findByPk(Long moneyPk){
         Deal moneyDeal = em.find(Deal.class, moneyPk);
-        return Optional.of(moneyDeal);
+        return Optional.ofNullable(moneyDeal);
     }
 
-    public Deal findRecentMoneyByUser(Long userPk){
+    public Optional<Deal> findRecentMoneyByUser(Long userPk){
         TypedQuery<Deal> query = em.createQuery("select d from Deal d join d.user u where u.id = :userPk order by d.money.date desc", Deal.class)
                 .setParameter("userPk",userPk);
         query.setFirstResult(0);
         query.setMaxResults(1);
-        return query.getSingleResult();
+        Optional<Deal> optionalDeal = Optional.ofNullable(query.getSingleResult());
+        return optionalDeal;
     }
 
 }

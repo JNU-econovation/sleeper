@@ -4,6 +4,8 @@ import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.exception.RestApiException;
+import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.character.CharacterDto;
@@ -26,8 +28,9 @@ public class CharacterService {
     }
 
     @Transactional
-    public Long updateGrowthAndStatus(CharacterDto characterDto) {// dto로 plusExperience의 정보가 들어가 있어야한다.
-        User user = userRepository.find(characterDto.getUserPk()).get();
+    public Long updateGrowthAndStatus(CharacterDto characterDto) {
+        User user = userRepository.find(characterDto.getUserPk())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Character character = user.getCharacter();
         Growth growth = character.getGrowth().growUp(characterDto.getPlusExperience());
         character.updateGrowthAndStatus(growth,Status.SLEEP);
@@ -36,13 +39,15 @@ public class CharacterService {
 
     @Transactional
     public void updateStatusToSleep(Long userPk){
-        User user = userRepository.find(userPk).get();
+        User user = userRepository.find(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Character character = user.getCharacter();
         character.updateStatusToSleep();
     }
 
     public Boolean approachLevel(Long characterPk){
-        Character character = characterRepository.findByPk(characterPk).get();
+        Character character = characterRepository.findByPk(characterPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return character.getGrowth().approachLevel();
     }
 

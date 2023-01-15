@@ -2,6 +2,8 @@ package econo.app.sleeper.service.sleep;
 
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.exception.RestApiException;
+import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
@@ -36,33 +38,38 @@ public class SleepService {
 
     @Transactional
     public void updateSetTime(Long sleepPk,SetTimeDto setTimeDto){
-        Sleep sleep = sleepRepository.findByPk(sleepPk).get();
+        Sleep sleep = sleepRepository.findByPk(sleepPk)
+                .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateSetTime(DateTypeConverter.toZoneDateTime(setTimeDto.getSleepTime()),DateTypeConverter.toZoneDateTime(setTimeDto.getWakeTime()));
     }
 
     @Transactional
     public void updateActualWakeTime(SleepDto sleepDto){
         ZonedDateTime actualWakeTime = DateTypeConverter.toZoneDateTime(sleepDto.getActualWakeTime());
-        Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk()).get();
+        Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateActualWakeTime(actualWakeTime);
     }
 
     @Transactional
     public void updateActualSleepTime(Long userPk){
-        Sleep sleep = sleepRepository.findRecentSleepByUser(userPk);
+        Sleep sleep = sleepRepository.findRecentSleepByUser(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateActualSleepTime();
     }
 
 
     public List<Sleep> findSleepsByUserAndDate(CalendarDto calendarDto){
-        User user = userRepository.find(calendarDto.getUserPk()).get();
+        User user = userRepository.find(calendarDto.getUserPk())
+                .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Stream<Sleep> sleepStream = user.getSleeps().stream()
                 .filter(s -> s.getSavingDate().getSavingDate().isEqual(calendarDto.getDate()));
         return sleepStream.collect(Collectors.toList());
     }
 
     public Integer assessExperience(Long sleepPk){
-        Sleep sleep = sleepRepository.findByPk(sleepPk).get();
+        Sleep sleep = sleepRepository.findByPk(sleepPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Integer plusExperience = sleep.assessExperience();
         return plusExperience;
     }

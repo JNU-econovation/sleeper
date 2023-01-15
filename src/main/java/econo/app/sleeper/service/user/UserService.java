@@ -2,6 +2,8 @@ package econo.app.sleeper.service.user;
 
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.exception.RestApiException;
+import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +25,8 @@ public class UserService {
     }
 
     public User readGoalTime(Long userPk) {
-        return userRepository.find(userPk).get();
+        return userRepository.find(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
 

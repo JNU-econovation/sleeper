@@ -1,4 +1,4 @@
-package econo.app.sleeper.util.error;
+package econo.app.sleeper.exception.error;
 
 import org.springframework.http.HttpStatus;
 

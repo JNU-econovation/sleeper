@@ -5,6 +5,7 @@ import econo.app.sleeper.domain.diary.Diary;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,10 +32,10 @@ public class DiaryRepository {
         log.info("delete: diary={}", diary);
     }
 
-    // 감사일기들 찾기
+
     public Optional<Diary> findByPk(Long diaryPk){
         Diary diary = em.find(Diary.class, diaryPk);
-        return Optional.of(diary);
+        return Optional.ofNullable(diary);
     }
 
     // 회원의 감사일기들 찾기

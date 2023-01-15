@@ -25,7 +25,7 @@ public class UserRepository {
 
     public Optional<User> find(Long pk) {
         User user = em.find(User.class,pk);
-        Optional<User> optionalUser = Optional.of(user);
+        Optional<User> optionalUser = Optional.ofNullable(user);
         return optionalUser;
     }
 
