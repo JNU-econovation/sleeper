@@ -94,5 +94,6 @@ public class User {
       // 목표 수면 시간이 0시~5시이면 savingDate + 1 해야함, 목표 기상시간은 savingDate +1 해야함
 
    }
+   //todo 내부 패스워드랑 외부 패스워드를 배교하는 메서드 만들기
 
 }

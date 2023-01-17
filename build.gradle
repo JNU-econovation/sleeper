@@ -26,6 +26,7 @@ dependencies {
     implementation 'org.springframework.session:spring-session-jdbc'
 	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
 
 	compileOnly 'org.projectlombok:lombok:1.18.24'
