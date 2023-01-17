@@ -48,7 +48,7 @@ public class Character {
         this.status = status;
     }
 
-    public void updateStatusToSleep(){
+    public void updateStatusToSleep() {
         this.status = Status.SLEEP;
     }
 
@@ -72,5 +72,6 @@ public class Character {
         character.mappingUser(user);
         return character;
     }
+
 
 }

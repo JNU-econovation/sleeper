@@ -38,10 +38,10 @@ public class User {
    private List<Diary> diaries = new ArrayList<>();
    @OneToMany(mappedBy = "user")
    private List<Sleep> sleeps = new ArrayList<>();
-   @OneToOne()
+   @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "DEAL_FK")
    private Deal deal;
-   @OneToOne()
+   @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "CHARACTER_FK")
    private Character character;
 
