@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 public enum CommonErrorCode implements ErrorCode{
 
     RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "Resource not exists"),
+    INVALID_PARAMETER(HttpStatus.BAD_REQUEST, "Parameter is invalid")
     ;
 
     private final HttpStatus httpStatus;

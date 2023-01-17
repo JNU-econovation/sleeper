@@ -32,5 +32,5 @@ public class DiaryServiceTest {
         Assertions.assertThat(diaryPk).isEqualTo(diary.getId());
 
     }
-    
+
 }

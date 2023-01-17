@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -38,23 +39,22 @@ public class SleepController {
     })
 
     @PostMapping("/sleeps")
-    public ResponseEntity<SleepResponse> saveSetTime(@RequestBody CommonRequest commonRequest){
+    public ResponseEntity<SleepResponse> saveSetTime(@RequestBody @Valid CommonRequest commonRequest){
         Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
         SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
         return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
     }
 
-    @GetMapping("/sleeps/{nu}")
-    public ResponseEntity<RecommendedTimes> recommendWakeTimes(@PathVariable("nu") Long sleepPk, SetSleepTimeDto setSleepTimeDto){
+    @GetMapping("/sleeps")
+    public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
         LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
-        System.out.println("setSleepTime = " + setSleepTime);
         List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);
         RecommendedTimes recommendedTimes = RecommendedTimes.of(localTimess);
         return new ResponseEntity<>(recommendedTimes,HttpStatus.OK);
     }
 
     @PutMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody SetTimeDto setTimeDto){
+    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeDto setTimeDto){
         sleepService.updateSetTime(sleepPk,setTimeDto);
         speechBubbleService.afterSettingSetTime();
         CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeDto.getUserPk());
@@ -64,7 +64,7 @@ public class SleepController {
 
     @PutMapping("/sleeps/{nu}/actualTime")
     public ResponseEntity<CommonResponse> updateActualTime(@PathVariable("nu") Long sleepPk,
-                                                           @RequestBody ActualRequest actualRequest){
+                                                           @RequestBody @Valid ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
         sleepService.updateActualWakeTime(sleepDto);
         Integer plusExperience = sleepService.assessExperience(sleepPk);

@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class CalendarController {
     })
 
     @GetMapping("/calendar/{date}")
-    public ResponseEntity<List<CalendarDateResponse>> readCalendarOfDate(CommonRequest commonRequest,
+    public ResponseEntity<List<CalendarDateResponse>> readCalendarOfDate(@Valid CommonRequest commonRequest,
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
         Long userPk = commonRequest.getUserPk();
         List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryFindDto.of(userPk, localDate));
@@ -56,7 +57,7 @@ public class CalendarController {
     }
 
     @GetMapping("/calendar")
-    public ResponseEntity<CalendarResponse> readCalendar(CommonRequest commonRequest){
+    public ResponseEntity<CalendarResponse> readCalendar(@ Valid CommonRequest commonRequest){
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(commonRequest.getUserPk(), localDate));
         List<LocalDate> savingDates = new ArrayList<>();

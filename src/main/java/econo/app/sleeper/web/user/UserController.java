@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @GetMapping("/users/time")
-    public ResponseEntity<GoalTimeResponse> readGoalTime(CommonRequest commonRequest) {
+    public ResponseEntity<GoalTimeResponse> readGoalTime(@Valid CommonRequest commonRequest) {
         User user = userService.readGoalTime(commonRequest.getUserPk());
         List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalTime().getGoalSleepTime());
         GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalTime().getGoalSleepTime(), user.getGoalTime().getGoalWakeTime(), localTimes);

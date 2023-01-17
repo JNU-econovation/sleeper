@@ -47,8 +47,10 @@ public class Deal {
     }
 
 
-    public Deal plusMoney(Integer changingMoney) {
-        // changingMoney < 0 일때 예외처리하기
+    public Deal plusMoney(Integer changingMoney) throws IllegalStateException {
+        if(changingMoney < 0){
+            throw new IllegalStateException("음수가 될 수 없습니다");
+        }
         Money money = this.money.use(changingMoney);
         Deal moneyDeal = new Deal(user, money);
         return moneyDeal;

@@ -5,6 +5,8 @@ import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
@@ -13,8 +15,11 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DiaryRequest {
+
+
     private String content;
 
+    @NotNull
     private Long userPk;
 
     public Diary toEntity(User user){

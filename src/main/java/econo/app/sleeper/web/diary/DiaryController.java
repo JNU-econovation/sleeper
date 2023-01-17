@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiarySaveResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
+    public ResponseEntity<DiarySaveResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest) {
         Long diaryPk = diaryService.save(diaryRequest);
         sleepService.updateActualSleepTime(diaryRequest.getUserPk());
         Integer reward = moneyService.obtainMoney(DiaryRewardDto.of(diaryRequest.getContent(), diaryRequest.getUserPk()));
@@ -55,7 +56,7 @@ public class DiaryController {
     }
 
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryRequest diaryRequest){
+    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody @Valid DiaryRequest diaryRequest){
         diaryService.updateDiary(diaryPk,diaryRequest.getContent());
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
@@ -76,7 +77,7 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries")
-    public ResponseEntity<DiaryFindResponse> findDiariesByUser(CommonRequest commonRequest) {
+    public ResponseEntity<DiaryFindResponse> findDiariesByUser(@Valid CommonRequest commonRequest) {
         List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserPk());
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
@@ -88,7 +89,7 @@ public class DiaryController {
     @GetMapping("/diaries/date/{date}")
     public ResponseEntity<DiaryFindResponse> findDiariesByDate(
             @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
-           CommonRequest commonRequest) {
+           @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
 
