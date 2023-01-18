@@ -19,6 +19,7 @@ public class User {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   //todo 나머지 부분도 Pk를 id로 고치기
    private Long id;
    @Column(nullable = false)
    private String userId;

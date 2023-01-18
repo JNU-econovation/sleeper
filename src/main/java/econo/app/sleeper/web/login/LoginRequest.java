@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
 @Setter
+@NoArgsConstructor
 public class LoginRequest {
 
     // validation 해야됨
     private String userId;
 
     private String userPassword;
+
 
 }
