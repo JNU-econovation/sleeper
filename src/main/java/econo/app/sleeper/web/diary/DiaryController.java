@@ -1,5 +1,6 @@
 package econo.app.sleeper.web.diary;
 
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Slf4j
@@ -62,6 +64,13 @@ public class DiaryController {
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
+    @GetMapping("/diaries/check")
+    public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){
+        DiaryCheckDto diaryCheckDto = diaryService.giveIfDiaryExists(commonRequest.getUserPk());
+        return new ResponseEntity<>(diaryCheckDto,HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/diaries/{nu}")
     public ResponseEntity<CommonResponse> deleteDiary(@PathVariable("nu") Long diaryPk){
         diaryService.deleteDiary(diaryPk);
@@ -87,17 +96,13 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries/date/{date}")
-    public ResponseEntity<DiaryFindResponse> findDiariesByDate(
+    public ResponseEntity<DiaryFindResponse> findDiaryByDate(
             @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
            @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
-
-        DiaryFindResponse diaryFindResponseList = null;
-        for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate().getSavingDate());
-        }
-        return new ResponseEntity<>(diaryFindResponseList, HttpStatus.CREATED);
+        Diary diaryByDate = diaryService.findDiaryByDate(diaryFindDto);
+        DiaryFindResponse diaryFindResponse = DiaryFindResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getSavingDate().getSavingDate());
+        return new ResponseEntity<>(diaryFindResponse, HttpStatus.CREATED);
     }
 
 }

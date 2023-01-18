@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +43,17 @@ public class CalendarController {
     })
 
     @GetMapping("/calendar/{date}")
-    public ResponseEntity<List<CalendarDateResponse>> readCalendarOfDate(@Valid CommonRequest commonRequest,
+    public ResponseEntity<CalendarDateResponse> readCalendarOfDate(@Valid CommonRequest commonRequest,
                                                                          @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
         Long userPk = commonRequest.getUserPk();
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(DiaryFindDto.of(userPk, localDate));
+        Diary diaryByDate = diaryService.findDiaryByDate(DiaryFindDto.of(userPk, localDate));
         List<Sleep> sleepsByDate = sleepService.findSleepsByUserAndDate(CalendarDto.of(userPk, localDate));
-        List<CalendarDateResponse> calendarDateRespons = new ArrayList<>();
-        for(int i=0;i<diariesByDate.size();i++){
-            calendarDateRespons.add(CalendarDateResponse.of(diariesByDate.get(i).getContent().getContent(),diariesByDate.get(i).getId(),sleepsByDate.get(i).getSetTime().getSetSleepTime(),
-                    sleepsByDate.get(i).getSetTime().getSetWakeTime(), sleepsByDate.get(i).getSavingDate().getSavingDateTime(), sleepsByDate.get(i).getActualWakeTime()
-                    ,Link.of("diary", "/diaries/" + diariesByDate.get(i).getId(), "GET", List.of("application/json"))));
+        CalendarDateResponse calendarDateResponse = null;
+        for(int i=0; i< sleepsByDate.size(); i++){
+            calendarDateResponse = CalendarDateResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getId(), List.of(sleepsByDate.get(i).getSetTime().getSetSleepTime()),
+                    List.of(sleepsByDate.get(i).getSetTime().getSetWakeTime()), List.of(sleepsByDate.get(i).getSavingDate().getSavingDateTime()), List.of(sleepsByDate.get(i).getActualWakeTime()));
         }
-        return new ResponseEntity<>(calendarDateRespons, HttpStatus.OK);
+        return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
     }
 
     @GetMapping("/calendar")
