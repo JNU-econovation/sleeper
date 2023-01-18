@@ -9,6 +9,7 @@ import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.util.DateTypeConverter;
 import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.SetTimeDto;
+import econo.app.sleeper.web.sleep.SetTimeResponse;
 import econo.app.sleeper.web.sleep.SleepDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,13 @@ public class SleepService {
         Sleep sleep = Sleep.createSetSleep(zonedDateTimes.get(0), zonedDateTimes.get(1), user);
         sleepRepository.save(sleep);
         return sleep;
+    }
+
+    public SetTimeResponse readSetTime(Long sleepPk){
+        Sleep sleep = sleepRepository.findByPk(sleepPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime());
+        return setTimeResponse;
     }
 
     @Transactional

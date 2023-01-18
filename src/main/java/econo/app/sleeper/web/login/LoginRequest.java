@@ -16,3 +16,4 @@ public class LoginRequest {
     private String userPassword;
 
 }
+

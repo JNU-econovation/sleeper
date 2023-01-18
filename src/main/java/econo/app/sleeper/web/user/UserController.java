@@ -47,12 +47,5 @@ public class UserController {
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
 
-    @GetMapping("/users/time")
-    public ResponseEntity<GoalTimeResponse> readGoalTime(@Valid CommonRequest commonRequest) {
-        User user = userService.readGoalTime(commonRequest.getUserPk());
-        List<LocalTime> localTimes = DateTimeManager.suggestWakeTime(user.getGoalTime().getGoalSleepTime());
-        GoalTimeResponse goalTimeResponse = GoalTimeResponse.of(user.getGoalTime().getGoalSleepTime(), user.getGoalTime().getGoalWakeTime(), localTimes);
-        return new ResponseEntity<>(goalTimeResponse,HttpStatus.OK);
-    }
 
 }

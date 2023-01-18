@@ -45,7 +45,15 @@ public class SleepController {
         return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
     }
 
-    @GetMapping("/sleeps")
+    @GetMapping("/sleeps/{nu}/setTime")
+    public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
+        SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
+        return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
+    }
+
+
+
+    @GetMapping("/sleeps/recommend")
     public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
         LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
         List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);
