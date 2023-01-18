@@ -24,15 +24,12 @@ public class Character {
     private Status status;
     @Embedded
     private Growth growth;
-    @OneToOne(mappedBy = "character", fetch = FetchType.LAZY)
-    private User user;
 
     @Builder
-    public Character(Color color, Status status, Growth growth, User user){
+    public Character(Color color, Status status, Growth growth){
         this.color = color;
         this.status = status;
         this.growth = growth;
-        this.user = user;
     }
 
 
@@ -57,19 +54,13 @@ public class Character {
     }
 
 
-    public void mappingUser(User user){
-        this.user = user;
-        user.mappingCharacter(this);
-    }
-
     public static Character createCharacter(User user){
         Character character = Character.builder()
                 .color(Color.GRAY)
                 .status(Status.NO_SLEEP)
                 .growth(new Growth(0,0L))
-                .user(user)
                 .build();
-        character.mappingUser(user);
+        user.mappingCharacter(character);
         return character;
     }
 

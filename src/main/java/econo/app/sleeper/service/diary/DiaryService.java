@@ -28,7 +28,7 @@ public class DiaryService {
         User user = userRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Diary diary = Diary.create(user, diaryRequest.getContent());
-        // 감사일기 하루에 2번 작성하는 경우 처리하기!
+        // todo 감사일기 하루에 2번 작성하는 경우 처리하기!
         diaryRepository.save(diary);
         return diary.getId();
     }
@@ -59,19 +59,14 @@ public class DiaryService {
     }
 
     public List<Diary> findDiariesByDate(DiaryFindDto diaryFindDto){
-        User user = userRepository.find(diaryFindDto.getUserPk())
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Stream<Diary> diaryStream = user.getDiaries().stream()
-                .filter(d -> d.getSavingDate().getSavingDate().isEqual(diaryFindDto.getLocalDate()));
-        return diaryStream.collect(Collectors.toList());
+        List<Diary> diaryByDate = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate());
+        return diaryByDate;
     }
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
-        User user = userRepository.find(diaryFindDto.getUserPk())
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Stream<Diary> diaryStream = user.getDiaries().stream()
-                .filter(d -> d.getSavingDate().getSavingDate().getMonth().equals(diaryFindDto.getLocalDate().getMonth()));
-        return diaryStream.collect(Collectors.toList());
+        List<Diary> diaryBetweenDates = diaryRepository.findDiaryBetweenDates(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),
+                diaryFindDto.getLocalDate().withDayOfMonth(diaryFindDto.getLocalDate().lengthOfMonth()));
+        return diaryBetweenDates;
     }
 
 

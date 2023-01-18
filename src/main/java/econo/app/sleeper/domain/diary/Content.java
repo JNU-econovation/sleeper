@@ -20,10 +20,10 @@ public class Content {
         this.content = content;
     }
 
-
     public void update(String content) {
         this.content = content;
     }
+
     public Integer reward(){
 
         Integer contentLength = content.length();

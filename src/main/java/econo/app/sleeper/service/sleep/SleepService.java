@@ -60,11 +60,8 @@ public class SleepService {
 
 
     public List<Sleep> findSleepsByUserAndDate(CalendarDto calendarDto){
-        User user = userRepository.find(calendarDto.getUserPk())
-                .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Stream<Sleep> sleepStream = user.getSleeps().stream()
-                .filter(s -> s.getSavingDate().getSavingDate().isEqual(calendarDto.getDate()));
-        return sleepStream.collect(Collectors.toList());
+        List<Sleep> sleepsByUserAndDate = sleepRepository.findSleepsByUserAndDate(calendarDto.getUserPk(), calendarDto.getDate());
+        return sleepsByUserAndDate;
     }
 
     public Integer assessExperience(Long sleepPk){

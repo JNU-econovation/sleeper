@@ -15,7 +15,6 @@ create table user (
     user_goal_sleep_time time,
     user_goal_wake_time time,
     character_fk bigint,
-    deal_fk bigint,
     primary key (id)
 );
 
@@ -24,6 +23,7 @@ create table deal (
    money_change integer,
    money_date timestamp,
    money_now integer,
+   user_fk bigint,
    primary key (id)
 );
 
@@ -58,8 +58,8 @@ create table sleep (
    primary key (id)
 );
 
-INSERT INTO USER (USER_ROLE_TYPE, USER_AGE, USER_ID, USER_MESSAGE, USER_NICK_NAME, USER_PASSWORD, user_goal_wake_time, user_goal_sleep_time, deal_fk, character_fk) VALUES ('ADMIN',24,'sleeper','관리자다','관리자','sleeper123@','07:30','23:30',1,1);
-INSERT INTO deal(MONEY_CHANGE, MONEY_DATE, MONEY_NOW) VALUES (10,'2023-01-02T01:36',10);
+INSERT INTO USER (USER_ROLE_TYPE, USER_AGE, USER_ID, USER_MESSAGE, USER_NICK_NAME, USER_PASSWORD, user_goal_wake_time, user_goal_sleep_time, character_fk) VALUES ('ADMIN',24,'sleeper','관리자다','관리자','sleeper123@','07:30','23:30',1);
+INSERT INTO deal(MONEY_CHANGE, MONEY_DATE, MONEY_NOW, user_fk) VALUES (10,'2023-01-02T01:36',10, 1);
 INSERT INTO character (character_color, character_experience, character_level, character_speech_bubble, character_status) VALUES ('GRAY',0,0,'HELLO','NO_SLEEP');
 INSERT INTO DIARY (diary_content, saving_date, SAVING_DATE_TIME, user_fk) VALUES ('오늘도 너무나 행복한 하루였습니다!!','2023-01-01','2023-01-02T01:36',1);
 INSERT INTO SLEEP (SAVING_DATE_TIME, actual_wake_time, set_sleep_time, set_wake_time,saving_date,user_fk) VALUES ('2023-01-02T01:36','2023-01-02T08:10','2023-01-02T00:10','2023-01-02T07:00','2023-01-01',1);

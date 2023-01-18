@@ -20,7 +20,8 @@ public class Deal {
     @Embedded
     private Money money;
 
-    @OneToOne(mappedBy = "deal")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_FK")
     private User user;
 
     @Builder
@@ -36,7 +37,6 @@ public class Deal {
 
     public void mappingUser(User user){
         this.user = user;
-        user.mappingMoney(this);
     }
 
     public static Deal createMoney(User user){
@@ -55,5 +55,6 @@ public class Deal {
         Deal moneyDeal = new Deal(user, money);
         return moneyDeal;
     }
+
 
 }

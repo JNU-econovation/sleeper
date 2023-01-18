@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class MoneyService {
 
     private final MoneyRepository moneyRepository;
-    private final UserRepository userRepository;
 
     @Transactional
     public Integer obtainMoney(DiaryRewardDto diaryRewardDto){

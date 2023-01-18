@@ -34,13 +34,6 @@ public class User {
    @Embedded
    private GoalTime goalTime;
 
-   @OneToMany(mappedBy = "user")
-   private List<Diary> diaries = new ArrayList<>();
-   @OneToMany(mappedBy = "user")
-   private List<Sleep> sleeps = new ArrayList<>();
-   @OneToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "DEAL_FK")
-   private Deal deal;
    @OneToOne(fetch = FetchType.LAZY)
    @JoinColumn(name = "CHARACTER_FK")
    private Character character;
@@ -55,16 +48,8 @@ public class User {
       this.goalTime = new GoalTime(goalSleepTime,goalWakeTime);
    }
 
-   public void mappingSleep(Sleep sleep){
-      sleeps.add(sleep);
-   }
-
    public void mappingCharacter(Character character){
       this.character = character;
-   }
-
-   public void mappingMoney(Deal moneyDeal){
-      this.deal = moneyDeal;
    }
 
    public static User createUser(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType, LocalTime goalSleepTime, LocalTime goalWakeTime){

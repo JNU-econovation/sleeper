@@ -56,7 +56,7 @@ public class DiaryRepository {
 
 
     // 회원의 감사일기들 중 날짜가 ~인 것들 찾기
-    public List<Diary> findByDate(Long userPk, LocalDate localDate){
+    public List<Diary> findDiaryByDate(Long userPk, LocalDate localDate){
     return em.createQuery("select d from Diary d join d.user u where u.id = :userPk and d.savingDate.savingDate = :localDate",Diary.class)
             .setParameter("userPk",userPk)
             .setParameter("localDate",localDate)
@@ -64,7 +64,7 @@ public class DiaryRepository {
     }
     
     // 회원의 감사일기들 중 날짜가 x년 x월 인 것 찾기
-    public List<Diary> findBetweenDate(Long userPk, LocalDate startDate, LocalDate endDate){
+    public List<Diary> findDiaryBetweenDates(Long userPk, LocalDate startDate, LocalDate endDate){
         return em.createQuery("select d from Diary d join d.user u where u.id = :userPk and d.savingDate.savingDate between :startDate and :endDate order by d.savingDate.savingDate")
                 .setParameter("userPk",userPk)
                 .setParameter("startDate",startDate)

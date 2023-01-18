@@ -44,7 +44,6 @@ public class Sleep {
 
     public void mappingUser(User user){
         this.user = user;
-        user.mappingSleep(this);
     }
 
     public static Sleep createSetSleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, User user){
