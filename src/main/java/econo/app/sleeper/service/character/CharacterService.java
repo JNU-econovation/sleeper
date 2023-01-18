@@ -1,15 +1,18 @@
 package econo.app.sleeper.service.character;
 
 import econo.app.sleeper.domain.character.Character;
-import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
-import econo.app.sleeper.domain.diary.Content;
+import econo.app.sleeper.domain.common.SpeechBubble;
+import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.exception.RestApiException;
+import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.repository.SleepRepository;
+import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.character.CharacterDto;
+import econo.app.sleeper.web.character.CharacterResponse;
 import econo.app.sleeper.web.character.NewCharacterDto;
-import econo.app.sleeper.web.sleep.SleepCharacterDto;
+import econo.app.sleeper.web.common.CommonRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,26 +23,50 @@ import org.springframework.transaction.annotation.Transactional;
 public class CharacterService {
 
     private final CharacterRepository characterRepository;
-    private final SleepRepository sleepRepository;
+    private final UserRepository userRepository;
+
+    private final SpeechBubble speechBubble;
 
     @Transactional
-    public void init(NewCharacterDto newCharacterDto){
-        characterRepository.save(Character.initCharacter(newCharacterDto.getUser()));
+    public void createCharacter(NewCharacterDto newCharacterDto){
+        characterRepository.save(Character.createCharacter(newCharacterDto.getUser()));
+    }
+
+    public CharacterResponse readCharacter(Long userPk){
+        User user = userRepository.find(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        Character character = user.getCharacter();
+        CharacterResponse characterResponse = CharacterResponse.builder()
+                .color(character.getColor())
+                .status(character.getStatus())
+                .growth(character.getGrowth())
+                .speechBubble(speechBubble.getSpeechBubble())
+                .build();
+        return characterResponse;
     }
 
     @Transactional
-    public void update(CharacterDto characterDto) {
-        Character character = characterRepository.findById(characterDto.getUserId()).get();
-        character.updateCharacter(new Content(characterDto.getContent()).judgeSpeechBubble(),Status.SLEEP);
+    public Long updateGrowthAndStatus(CharacterDto characterDto) {
+        User user = userRepository.find(characterDto.getUserPk())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        Character character = user.getCharacter();
+        Growth growth = character.getGrowth().growUp(characterDto.getPlusExperience());
+        character.updateGrowthAndStatus(growth,Status.SLEEP);
+        return character.getId();
     }
 
     @Transactional
-    public void update(SleepCharacterDto sleepCharacterDto){
-        Character character = characterRepository.findById(sleepCharacterDto.getUserId()).get();
-        Sleep sleep = sleepRepository.findByPk(sleepCharacterDto.getSleepPk()).get();
-        Integer plusExperience = sleep.assessExperience(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime(), sleep.getSavingDate().getSavingDateTime(), sleep.getActualWakeTime());
-        Growth growth = character.getGrowth().growth(plusExperience);
-        character.updateCharacter(growth,Status.NO_SLEEP,growth.judgeSpeechBubble());
+    public void updateStatusToSleep(Long userPk){
+        User user = userRepository.find(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        Character character = user.getCharacter();
+        character.updateStatusToSleep();
+    }
+
+    public Boolean approachLevel(Long characterPk){
+        Character character = characterRepository.findByPk(characterPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        return character.getGrowth().approachLevel();
     }
 
 }

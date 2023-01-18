@@ -41,7 +41,9 @@ public class LoginServiceTest {
 
         User user = userService.join(signUpRequest);
 
-        LoginRequest loginRequest = new LoginRequest("sleeper","sleeper1234@@");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUserId("sleeper");
+        loginRequest.setUserPassword("sleeper1234@");
 
         //When
         User loginUser = loginService.login(loginRequest);
@@ -61,9 +63,12 @@ public class LoginServiceTest {
 
         User user = userService.join(signUpRequest);
 
-        LoginRequest loginRequest = new LoginRequest("wakeup","wakeup112");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUserId("sleeper");
+        loginRequest.setUserPassword("sleeper1234@");
 
         //When
+        User loginUser = loginService.login(loginRequest);
 
         //Then
         Assertions.assertThrows(NullPointerException.class,()->loginService.login(loginRequest).getUserId());

@@ -22,6 +22,8 @@ spring:
 
   jpa:
     hibernate:
+      id:
+        new:_generator_mappings: true
       ddl-auto: create
     properties:
       hibernate:

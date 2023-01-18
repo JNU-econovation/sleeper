@@ -1,7 +1,11 @@
 package econo.app.sleeper.web.diary;
 
 import econo.app.sleeper.domain.diary.Diary;
+import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
+import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.diary.DiaryService;
+import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -25,6 +30,11 @@ import java.util.List;
 public class DiaryController {
 
     private final DiaryService diaryService;
+    private final SleepService sleepService;
+    private final MoneyService moneyService;
+    private final CharacterService characterService;
+
+    private final SpeechBubbleService speechBubbleService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -35,14 +45,18 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiaryResponse> saveDiary(@RequestBody DiaryRequest diaryRequest) {
-        Diary diary = diaryService.save(diaryRequest);
-        DiaryResponse diaryResponse = DiaryResponse.of(diary.getDiaryPk());
-        return new ResponseEntity<>(diaryResponse,HttpStatus.CREATED);
+    public ResponseEntity<DiarySaveResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest) {
+        Long diaryPk = diaryService.save(diaryRequest);
+        sleepService.updateActualSleepTime(diaryRequest.getUserPk());
+        Integer reward = moneyService.obtainMoney(DiaryRewardDto.of(diaryRequest.getContent(), diaryRequest.getUserPk()));
+        characterService.updateStatusToSleep(diaryRequest.getUserPk());
+        speechBubbleService.judgeSpeechBubbleAfterSaveDiary(diaryRequest.getContent().length());
+        DiarySaveResponse diarySaveResponse = DiarySaveResponse.of(diaryPk,reward);
+        return new ResponseEntity<>(diarySaveResponse,HttpStatus.CREATED);
     }
 
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk,DiaryRequest diaryRequest){
+    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody @Valid DiaryRequest diaryRequest){
         diaryService.updateDiary(diaryPk,diaryRequest.getContent());
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
@@ -63,8 +77,8 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries")
-    public ResponseEntity<DiaryFindResponse> findDiariesByUser(CommonRequest commonRequest) {
-        List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserId());
+    public ResponseEntity<DiaryFindResponse> findDiariesByUser(@Valid CommonRequest commonRequest) {
+        List<Diary> diariesByUser = diaryService.findDiariesByUser(commonRequest.getUserPk());
         DiaryFindResponse diaryFindResponseList = null;
         for (int i = 0; i < diariesByUser.size(); i++) {
             diaryFindResponseList = DiaryFindResponse.of(diariesByUser.get(i).getContent().getContent(), diariesByUser.get(i).getSavingDate().getSavingDate());
@@ -75,8 +89,8 @@ public class DiaryController {
     @GetMapping("/diaries/date/{date}")
     public ResponseEntity<DiaryFindResponse> findDiariesByDate(
             @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
-           CommonRequest commonRequest) {
-        DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserId(), date);
+           @Valid CommonRequest commonRequest) {
+        DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
 
         DiaryFindResponse diaryFindResponseList = null;

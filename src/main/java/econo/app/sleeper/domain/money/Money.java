@@ -1,52 +1,38 @@
 package econo.app.sleeper.domain.money;
 
-import econo.app.sleeper.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-@Entity
+
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "MONEY")
+@Embeddable
+@NoArgsConstructor
 public class Money {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long moneyPk;
-    @Embedded
-    private Deal deal;
+    @Column(name = "MONEY_NOW")
+    private Integer nowMoney;
 
-    @OneToOne(mappedBy = "money")
-    private User user;
+    @Column(name = "MONEY_CHANGE")
+    private Integer usingMoney;
 
-    @Builder
-    public Money(User user,Integer holdingMoney, Integer changingMoney){
-        this.deal = new Deal(holdingMoney,changingMoney);
-        this.user = user;
+    @Column(name = "MONEY_DATE")
+    private ZonedDateTime date;
+
+
+    protected Money(Integer nowMoney, Integer usingMoney){
+        this.nowMoney = nowMoney;
+        this.usingMoney = usingMoney;
+        this.date = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
     }
 
-    public Money(User user, Deal deal){
-        this.user = user;
-        this.deal = deal;
-    }
-
-    public Money use(Integer changingMoney) {
-        Deal deal = this.deal.use(changingMoney);
-        Money money = new Money(user,deal);
+    protected Money use(Integer changingMoney) {
+        Money money = new Money(nowMoney + changingMoney , changingMoney);
         return money;
     }
-
-    public static Money init(User user){
-        Deal deal = new Deal(0,0);
-        Money money = new Money(user, deal);
-        user.associate(money);
-        return money;
-    }
-
+    
 }

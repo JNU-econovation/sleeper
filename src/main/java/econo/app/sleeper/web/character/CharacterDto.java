@@ -10,13 +10,13 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class CharacterDto {
 
-    private final String userId;
-    private final String content;
+    private final Long userPk;
+    private final Integer plusExperience;
 
-    public static CharacterDto of(String userId, String content){
+    public static CharacterDto of(Long userPk, Integer plusExperience){
         return CharacterDto.builder()
-                .userId(userId)
-                .content(content)
+                .userPk(userPk)
+                .plusExperience(plusExperience)
                 .build();
     }
 }

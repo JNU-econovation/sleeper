@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -18,7 +17,7 @@ import java.time.ZonedDateTime;
 public class Diary {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long diaryPk;
+    private Long id;
     @Embedded
     private Content content;
     @Embedded
@@ -37,8 +36,16 @@ public class Diary {
         this.user = user;
     }
 
-    public void update(String content) {
-        this.content = new Content(content);
+    public void associate(User user){
+        this.user = user;
+    }
+
+    public static Diary create(User user,String content){
+        Diary diary = new Diary();
+        diary.associate(user);
+        diary.content = new Content(content);
+        diary.savingDate = new SavingDate();
+        return diary;
     }
 
 
