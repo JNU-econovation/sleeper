@@ -4,9 +4,7 @@ import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.util.DateTimeManager;
 import econo.app.sleeper.web.character.NewCharacterDto;
-import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
 import econo.app.sleeper.web.money.InitialMoneyDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,10 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.time.LocalTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor

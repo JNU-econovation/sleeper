@@ -1,6 +1,4 @@
 package econo.app.sleeper.web.diary;
-
-import io.swagger.models.auth.In;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

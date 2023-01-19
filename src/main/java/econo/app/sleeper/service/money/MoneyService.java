@@ -5,7 +5,6 @@ import econo.app.sleeper.domain.diary.Content;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.MoneyRepository;
-import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.diary.DiaryRewardDto;
 import econo.app.sleeper.web.money.InitialMoneyDto;
 import lombok.RequiredArgsConstructor;
