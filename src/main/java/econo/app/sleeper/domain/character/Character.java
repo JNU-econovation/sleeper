@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Character {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long characterPk;
+    private Long id;
     @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_COLOR")
     private Color color;
@@ -25,46 +25,44 @@ public class Character {
     @Embedded
     private Growth growth;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "CHARACTER_SPEECH_BUBBLE")
-    private SpeechBubble speechBubble;
-    @OneToOne(mappedBy = "character", fetch = FetchType.LAZY)
-    private User user;
-
     @Builder
-    public Character(Color color, Status status, Growth growth, SpeechBubble speechBubble, User user){
+    public Character(Color color, Status status, Growth growth){
         this.color = color;
         this.status = status;
         this.growth = growth;
-        this.speechBubble = speechBubble;
-        this.user = user;
     }
 
-    public void updateCharacter(Growth growth, Status status, SpeechBubble speechBubble) {
+
+    public Character(Long id, Color color, Status status, Growth growth) {
+        this.id = id;
+        this.color = color;
+        this.status = status;
+        this.growth = growth;
+    }
+
+    public void updateGrowthAndStatus(Growth growth, Status status){
         this.growth = growth;
         this.status = status;
-        this.speechBubble = speechBubble;
     }
 
-    public void updateCharacter(SpeechBubble speechBubble, Status status) {
-        this.speechBubble = speechBubble;
-        this.status = status;
+    public void updateStatusToSleep() {
+        this.status = Status.SLEEP;
     }
 
-    public void updateCharacter(SpeechBubble speechBubble) {
-        this.speechBubble = speechBubble;
+    public void updateColor(Color color){
+        this.color = color;
     }
 
-    public static Character initCharacter(User user){
+
+    public static Character createCharacter(User user){
         Character character = Character.builder()
                 .color(Color.GRAY)
                 .status(Status.NO_SLEEP)
                 .growth(new Growth(0,0L))
-                .speechBubble(SpeechBubble.NO_SLEEP)
-                .user(user)
                 .build();
-        user.associate(character);
+        user.mappingCharacter(character);
         return character;
     }
+
 
 }

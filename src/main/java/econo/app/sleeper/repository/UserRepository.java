@@ -4,7 +4,6 @@ import econo.app.sleeper.domain.user.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
@@ -25,7 +24,7 @@ public class UserRepository {
 
     public Optional<User> find(Long pk) {
         User user = em.find(User.class,pk);
-        Optional<User> optionalUser = Optional.of(user);
+        Optional<User> optionalUser = Optional.ofNullable(user);
         return optionalUser;
     }
 

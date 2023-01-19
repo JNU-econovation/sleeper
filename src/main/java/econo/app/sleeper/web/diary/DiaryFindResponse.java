@@ -17,10 +17,10 @@ public class DiaryFindResponse {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "Asia/Seoul")
     private final LocalDate savingDate;
 
-    public static DiaryFindResponse of(String content, LocalDate localDate){
+    public static DiaryFindResponse of(String content, LocalDate savingDate){
         return DiaryFindResponse.builder()
                 .content(content)
-                .savingDate(localDate)
+                .savingDate(savingDate)
                 .build();
     }
 }

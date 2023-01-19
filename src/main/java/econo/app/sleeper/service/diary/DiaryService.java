@@ -1,16 +1,12 @@
 package econo.app.sleeper.service.diary;
 
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.exception.RestApiException;
+import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.domain.DateTimeManager;
-import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.service.money.MoneyService;
-import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.diary.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -26,55 +23,60 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
-    private final MoneyService moneyService;
-    private final CharacterService characterService;
-
-    private final SleepService sleepService;
 
     @Transactional
-    public Diary save(DiaryRequest diaryRequest){
-        User user = userRepository.findById(diaryRequest.getUserId()).get();
-        LocalDate savingDate = new DateTimeManager().giveSavingDate();
-        Diary diary = diaryRequest.toEntity(savingDate, user);
+    public Long save(DiaryRequest diaryRequest){
+        User user = userRepository.find(diaryRequest.getUserPk())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        Diary diary = Diary.create(user, diaryRequest.getContent());
         diaryRepository.save(diary);
-        sleepService.updateActualSleepTime(user.getUserPk(), savingDate);
-        moneyService.obtain(DiaryRewardDto.of(diary.getContent().getContent(), user.getUserPk()));
-        characterService.update(CharacterDto.of(user.getUserId(), diaryRequest.getContent()));
-        return diary;
+        return diary.getId();
     }
 
     @Transactional
     public void updateDiary(Long diaryPk,String content) {
-        Diary diary = diaryRepository.findByPk(diaryPk).get();
-        diary.update(content);
+        Diary diary = diaryRepository.findByPk(diaryPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        diary.getContent().update(content);
     }
 
     @Transactional
     public void deleteDiary(Long diaryPk){
-        Diary diary = diaryRepository.findByPk(diaryPk).get();
+        Diary diary = diaryRepository.findByPk(diaryPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         diaryRepository.delete(diary);
     }
 
-    // 관리자에서 이용
-    public Diary findDiary(Long diaryPk) {
-        return diaryRepository.findByPk(diaryPk).orElseThrow(NullPointerException::new);
+    public Diary findDiary(Long diaryPk) throws RestApiException{
+        return diaryRepository.findByPk(diaryPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
-    public List<Diary> findDiariesByUser(String userId){
-        User user = userRepository.findById(userId).get();
-        return diaryRepository.findAllByPk(user.getUserPk());
+    public List<Diary> findDiariesByUser(Long userPk){
+        User user = userRepository.find(userPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        return diaryRepository.findAllByPk(user.getId());
+    }
+    public DiaryCheckDto giveIfDiaryExists(Long userPk){
+        SavingDate savingDate = new SavingDate();
+        LocalDate dateSavingDate = savingDate.getSavingDate();
+        Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(userPk, dateSavingDate);
+        if (diaryByDate.isPresent()){
+            return DiaryCheckDto.of(diaryByDate.get().getId(),diaryByDate.get().getContent().getContent(),true);
+        }
+        return DiaryCheckDto.of(null,null,false);
     }
 
-    public List<Diary> findDiariesByDate(DiaryFindDto diaryFindDto){
-        User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        Long userPk = user.getUserPk();
-        return diaryRepository.findByDate(userPk, diaryFindDto.getLocalDate());
-    }
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
-        System.out.println("diaryFindDto = " + diaryFindDto.getUserId());
-        User user = userRepository.findById(diaryFindDto.getUserId()).get();
-        return diaryRepository.findBetweenDate(user.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1), DateTimeManager.giveEndDate(diaryFindDto.getLocalDate()));
+        List<Diary> diaryBetweenDates = diaryRepository.findDiaryBetweenDates(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),
+                diaryFindDto.getLocalDate().withDayOfMonth(diaryFindDto.getLocalDate().lengthOfMonth()));
+        return diaryBetweenDates;
+    }
+    public Diary findDiaryByDate(DiaryFindDto diaryFindDto){
+        Diary diary = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        return diary;
     }
 
 

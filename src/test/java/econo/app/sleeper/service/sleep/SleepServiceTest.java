@@ -1,10 +1,8 @@
 package econo.app.sleeper.service.sleep;
 
-import econo.app.sleeper.domain.character.Character;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.repository.CharacterRepository;
 import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.domain.character.SpeechBubble;
-import econo.app.sleeper.web.sleep.SetTimeDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +12,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -33,22 +31,12 @@ public class SleepServiceTest {
 
     @Test
     public void saveSetTime() {
-        LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
-        LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime("sleeper");
+        Sleep sleep = sleepService.saveSetTime(1L);
+        LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
+        LocalDateTime localDateTime = LocalDateTime.of(localDate, LocalTime.of(23, 30));
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(localDateTime, ZoneId.of("Asia/Seoul"));
+        Assertions.assertThat(sleep.getSetTime().getSetSleepTime()).isEqualTo(zonedDateTime);
     }
 
-    @Test
-    public void checkOverSetSleep(){
-        LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
-        LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime("sleeper");
-
-        sleepService.checkOverSetSleep("sleeper");
-        Character character = characterRepository.findById("sleeper").get();
-
-        Assertions.assertThat(character.getSpeechBubble()).isEqualTo(SpeechBubble.SLEEP.message());
-
-    }
 
 }

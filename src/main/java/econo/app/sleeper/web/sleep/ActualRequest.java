@@ -1,20 +1,20 @@
 package econo.app.sleeper.web.sleep;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
+import lombok.NoArgsConstructor;
+import javax.validation.constraints.NotNull;
+import java.time.ZonedDateTime;
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class ActualRequest {
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime actualWakeTime;
+    @NotNull
+    @JsonProperty("actualWakeTime")
+    private ZonedDateTime actualWakeTime;
 
-    private final String userId;
+    @NotNull
+    private Long userPk;
 
 }

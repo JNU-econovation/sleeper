@@ -17,11 +17,13 @@ spring:
   datasource:
     url: jdbc:h2:tcp://localhost/~/sleeper
     username : sa
-    password :
+    password : sa
     driver-class-name : org.h2.Driver
 
   jpa:
     hibernate:
+      id:
+        new:_generator_mappings: true
       ddl-auto: create
     properties:
       hibernate:

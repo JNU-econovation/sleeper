@@ -33,16 +33,17 @@ public class LoginServiceTest {
     @Test
     public void login_success() {
         //Given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .userId("sleeper")
-                .userPassword("sleeper1234@@")
-                .userAge(24L)
-                .userNickName("관리자")
-                .build();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId("sleeper");
+        signUpRequest.setUserPassword("sleeper1234@");
+        signUpRequest.setUserAge(24L);
+        signUpRequest.setUserNickName("관리자");
 
         User user = userService.join(signUpRequest);
 
-        LoginRequest loginRequest = new LoginRequest("sleeper","sleeper1234@@");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUserId("sleeper");
+        loginRequest.setUserPassword("sleeper1234@");
 
         //When
         User loginUser = loginService.login(loginRequest);
@@ -54,18 +55,20 @@ public class LoginServiceTest {
     @Test
     public void login_fail() {
         //Given
-        SignUpRequest signUpRequest = SignUpRequest.builder()
-                .userId("sleeper")
-                .userPassword("sleeper1234@@")
-                .userAge(24L)
-                .userNickName("관리자")
-                .build();
+        SignUpRequest signUpRequest = new SignUpRequest();
+        signUpRequest.setUserId("sleeper");
+        signUpRequest.setUserPassword("sleeper1234@");
+        signUpRequest.setUserAge(24L);
+        signUpRequest.setUserNickName("관리자");
 
         User user = userService.join(signUpRequest);
 
-        LoginRequest loginRequest = new LoginRequest("wakeup","wakeup112");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUserId("sleeper");
+        loginRequest.setUserPassword("sleeper1234@");
 
         //When
+        User loginUser = loginService.login(loginRequest);
 
         //Then
         Assertions.assertThrows(NullPointerException.class,()->loginService.login(loginRequest).getUserId());

@@ -18,13 +18,13 @@ public class GoalTimeDto {
     @DateTimeFormat(pattern = "HH:mm")
     private final LocalTime goalWakeTime;
 
-    private final String userId;
+    private final Long userPk;
 
-    public static GoalTimeDto of(LocalTime goalSleepTime, LocalTime getWakeTIme, String userId){
+    public static GoalTimeDto of(LocalTime goalSleepTime, LocalTime getWakeTIme, Long userPk){
         return GoalTimeDto.builder()
                 .goalSleepTime(goalSleepTime)
                 .goalWakeTime(getWakeTIme)
-                .userId(userId)
+                .userPk(userPk)
                 .build();
     }
 }

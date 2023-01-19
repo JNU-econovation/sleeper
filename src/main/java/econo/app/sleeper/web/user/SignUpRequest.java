@@ -2,21 +2,23 @@ package econo.app.sleeper.web.user;
 
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalTime;
 
-@Getter
-//Setter()를 사용하지 않는 이유 : 계층간 이동시 데이터 변조 위험 x
-@RequiredArgsConstructor
-@Builder
+@Data
 public class SignUpRequest {
 
-    private final String userId;
-    private final String userPassword;
-    private final String userNickName;
-    private final Long userAge;
+    private String userId;
+    private String userPassword;
+    private String userNickName;
+    private Long userAge;
 
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime goalSleepTime;
+
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime goalWakeTime;
 
     public User toEntity(){
         return User.builder()

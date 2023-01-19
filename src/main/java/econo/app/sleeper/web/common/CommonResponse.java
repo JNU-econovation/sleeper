@@ -1,4 +1,4 @@
-package econo.app.sleeper.web;
+package econo.app.sleeper.web.common;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 public class CommonResponse {
 
     private final String message;
-    private final String userId;
+    private final Long userPk;
 
-    public static CommonResponse of(String message, String userId){
+    public static CommonResponse of(String message, Long userPk){
         return CommonResponse.builder()
                 .message(message)
-                .userId(userId)
+                .userPk(userPk)
                 .build();
     }
 

@@ -1,5 +1,4 @@
 package econo.app.sleeper.domain.character;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,12 @@ public class Growth {
     @Column(name = "CHARACTER_LEVEL")
     private Long level;
 
-    public Growth(Integer experience, Long level){
+    protected Growth(Integer experience, Long level){
         this.experience = experience;
         this.level = level;
     }
 
-    public Growth growth(Integer plusExperience){
+    public Growth growUp(Integer plusExperience){
         Integer nextExperience = experience + plusExperience;
         Long nextLevel = convertExToLevel(nextExperience);
         return new Growth(nextExperience,nextLevel);
@@ -50,15 +49,8 @@ public class Growth {
         }
 
     }
-    public SpeechBubble judgeSpeechBubble(){
-        String speechBubble = "";
-        if(approachLevel()){
-            return SpeechBubble.SOON_LEVEL_UP;
-        }
-        return SpeechBubble.CAN_DO_IT;
-    }
 
-    private Boolean approachLevel(){
+    public Boolean approachLevel(){
 
         if (Lx.ONE.getExperienceOfLevel()*0.9 < experience & Lx.ONE.getExperienceOfLevel() > experience) {
             return true;

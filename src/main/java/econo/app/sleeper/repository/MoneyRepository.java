@@ -1,6 +1,6 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Money;
+import econo.app.sleeper.domain.money.Deal;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -18,21 +18,23 @@ public class MoneyRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public void save(Money money){
-        em.persist(money);
-        log.info("save: money={}", money);
+    public void save(Deal moneyDeal){
+        em.persist(moneyDeal);
+        log.info("save: money={}", moneyDeal);
     }
 
-    public Optional<Money> findByPk(Long moneyPk){
-        Money money = em.find(Money.class, moneyPk);
-        return Optional.of(money);
+    public Optional<Deal> findByPk(Long moneyPk){
+        Deal moneyDeal = em.find(Deal.class, moneyPk);
+        return Optional.ofNullable(moneyDeal);
     }
 
-    public Money findRecentMoneyByUser(Long userPk){
-        TypedQuery<Money> query = em.createQuery("select m from Money m join m.user u where u.userPk = :userPk order by m.dateMoney desc", Money.class)
+    public Optional<Deal> findRecentMoneyByUser(Long userPk){
+        TypedQuery<Deal> query = em.createQuery("select d from Deal d join d.user u where u.id = :userPk order by d.money.date desc", Deal.class)
                 .setParameter("userPk",userPk);
         query.setFirstResult(0);
         query.setMaxResults(1);
-        return query.getSingleResult();
+        Optional<Deal> optionalDeal = Optional.ofNullable(query.getSingleResult());
+        return optionalDeal;
     }
+
 }

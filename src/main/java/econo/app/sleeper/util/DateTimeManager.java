@@ -1,12 +1,18 @@
 package econo.app.sleeper.util;
 
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
+import lombok.Getter;
+
+import java.time.*;
 import java.util.Arrays;
 import java.util.List;
 
-public class TimeManager {
+@Getter
+public class DateTimeManager {
+
+    public static LocalDate giveEndDate(LocalDate localDate){
+        YearMonth month = YearMonth.from(localDate);
+        return month.atEndOfMonth();
+    }
 
     public static List<LocalTime> suggestWakeTime(LocalTime localTime){
         LocalTime localTime1 = localTime.plusHours(6);
@@ -16,5 +22,6 @@ public class TimeManager {
         List<LocalTime> suggestedWakeTimes = Arrays.asList(localTime1,localTime2,localTime3,localTime4);
         return suggestedWakeTimes;
     }
+
 
 }

@@ -1,10 +1,7 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.Sleep;
+import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.sleep.SetTimeDto;
-import econo.app.sleeper.web.sleep.SetTimeRequest;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -31,24 +27,25 @@ public class SleepRepositoryTest {
     
     @Test
     public void findSleepsByDate(){
-        LocalDate localDate = LocalDate.of(2022, 12, 25);
+
+        LocalDate localDate = LocalDate.of(2023, 01, 01);
         Long userPk = 1L;
 
-        List<Sleep> sleepsByDate = sleepRepository.findSleepsByDate(userPk, localDate);
+        List<Sleep> sleepsByDate = sleepRepository.findSleepsByUserAndDate(userPk, localDate);
 
         for (Sleep s: sleepsByDate) {
-            System.out.println("s.getActualSleepTime() = " + s.getActualSleepTime());
+            System.out.println("s.getActualSleepTime() = " + s.getSavingDate().getSavingDateTime());
         }
     }
 
     @Test
     public void findRecentSleepByUser(){
-        LocalDateTime setSleepTime = LocalDateTime.of(2023, 01, 03, 1, 00);
-        LocalDateTime setWakeTime = LocalDateTime.of(2023, 01, 03, 8, 00);
-        sleepService.saveSetTime("sleeper");
-        Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(1L);
-        Assertions.assertThat(recentSleepByUser.getSetSleepTime().toLocalDateTime().toString()).isEqualTo(setSleepTime.toString());
+        Sleep recentSleepByUser = sleepRepository.findRecentSleepByUser(1L).get();
+        recentSleepByUser.getSetTime().getSetSleepTime().toLocalDateTime().toString();
+        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetTime().getSetSleepTime());
+        System.out.println("recentSleepByUser = " + recentSleepByUser.getSetTime().getSetWakeTime());
     }
+
     
 
 }

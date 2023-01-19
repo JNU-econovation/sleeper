@@ -11,12 +11,12 @@ import java.time.LocalDate;
 @Builder
 public class CalendarDto {
 
-    private final String userId;
+    private final Long userPk;
     private final LocalDate date;
 
-    public static CalendarDto of(String userId,LocalDate date){
+    public static CalendarDto of(Long userPk,LocalDate date){
         return CalendarDto.builder()
-                .userId(userId)
+                .userPk(userPk)
                 .date(date)
                 .build();
     }
