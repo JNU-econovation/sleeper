@@ -64,6 +64,8 @@ public class DiaryController {
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
+    // todo save
+
     @GetMapping("/diaries/check")
     public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){
         DiaryCheckDto diaryCheckDto = diaryService.giveIfDiaryExists(commonRequest.getUserPk());

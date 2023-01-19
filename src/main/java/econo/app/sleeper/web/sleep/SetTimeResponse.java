@@ -3,7 +3,9 @@ package econo.app.sleeper.web.sleep;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.asm.Advice;
 
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 
 @Getter
@@ -11,13 +13,13 @@ import java.time.ZonedDateTime;
 @Builder
 public class SetTimeResponse {
 
-    private final ZonedDateTime setSleepTime;
-    private final ZonedDateTime setWakeTime;
+    private final LocalTime setSleepTime;
+    private final LocalTime setWakeTime;
 
     public static SetTimeResponse of(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
         return SetTimeResponse.builder()
-                .setSleepTime(setSleepTime)
-                .setWakeTime(setWakeTime)
+                .setSleepTime(setSleepTime.toLocalTime())
+                .setWakeTime(setWakeTime.toLocalTime())
                 .build();
     }
 }

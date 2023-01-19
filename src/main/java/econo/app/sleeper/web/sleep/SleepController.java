@@ -51,8 +51,6 @@ public class SleepController {
         return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
     }
 
-
-
     @GetMapping("/sleeps/recommend")
     public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
         LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
