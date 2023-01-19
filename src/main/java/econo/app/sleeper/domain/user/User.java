@@ -1,15 +1,11 @@
 package econo.app.sleeper.domain.user;
 
-import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.money.Deal;
-import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.character.Character;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Entity
 @Getter

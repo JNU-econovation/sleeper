@@ -1,6 +1,5 @@
 package econo.app.sleeper.web.character;
 
-import econo.app.sleeper.domain.character.Status;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

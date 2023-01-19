@@ -2,7 +2,6 @@ package econo.app.sleeper.web.login;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

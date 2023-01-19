@@ -6,9 +6,9 @@ import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.util.DateTypeConverter;
 import econo.app.sleeper.web.calendar.CalendarDto;
-import econo.app.sleeper.web.sleep.SetTimeDto;
+import econo.app.sleeper.web.sleep.SetTimeRequest;
+import econo.app.sleeper.web.sleep.SetTimeResponse;
 import econo.app.sleeper.web.sleep.SleepDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Transactional(readOnly = true)
@@ -36,19 +34,26 @@ public class SleepService {
         return sleep;
     }
 
-    @Transactional
-    public void updateSetTime(Long sleepPk,SetTimeDto setTimeDto){
+    // todo saveActualSleepTime 구현
+
+    public SetTimeResponse readSetTime(Long sleepPk){
         Sleep sleep = sleepRepository.findByPk(sleepPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime());
+        return setTimeResponse;
+    }
+
+    @Transactional
+    public void updateSetTime(Long sleepPk, SetTimeRequest setTimeRequest){       Sleep sleep = sleepRepository.findByPk(sleepPk)
                 .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        sleep.updateSetTime(DateTypeConverter.toZoneDateTime(setTimeDto.getSleepTime()),DateTypeConverter.toZoneDateTime(setTimeDto.getWakeTime()));
+        sleep.updateSetTime(setTimeRequest.getSetSleepTime(), setTimeRequest.getSetWakeTime());
     }
 
     @Transactional
     public void updateActualWakeTime(SleepDto sleepDto){
-        ZonedDateTime actualWakeTime = DateTypeConverter.toZoneDateTime(sleepDto.getActualWakeTime());
-        Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
+         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        sleep.updateActualWakeTime(actualWakeTime);
+        sleep.updateActualWakeTime(sleepDto.getActualWakeTime());
     }
 
     @Transactional

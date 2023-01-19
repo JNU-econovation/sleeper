@@ -21,4 +21,5 @@ public class RecommendedTimes {
                 .recommendedTimes(recommendedTimes)
                 .build();
     }
+
 }

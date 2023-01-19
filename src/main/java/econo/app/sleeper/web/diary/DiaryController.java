@@ -18,7 +18,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -62,6 +61,15 @@ public class DiaryController {
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
+    // todo update
+
+    @GetMapping("/diaries/check")
+    public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){
+        DiaryCheckDto diaryCheckDto = diaryService.giveIfDiaryExists(commonRequest.getUserPk());
+        return new ResponseEntity<>(diaryCheckDto,HttpStatus.OK);
+    }
+
+
     @DeleteMapping("/diaries/{nu}")
     public ResponseEntity<CommonResponse> deleteDiary(@PathVariable("nu") Long diaryPk){
         diaryService.deleteDiary(diaryPk);
@@ -87,17 +95,12 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries/date/{date}")
-    public ResponseEntity<DiaryFindResponse> findDiariesByDate(
-            @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
+    public ResponseEntity<DiaryFindResponse> findDiaryByDate(           @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
            @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
-        List<Diary> diariesByDate = diaryService.findDiariesByDate(diaryFindDto);
-
-        DiaryFindResponse diaryFindResponseList = null;
-        for (int i = 0; i < diariesByDate.size(); i++) {
-            diaryFindResponseList = DiaryFindResponse.of(diariesByDate.get(i).getContent().getContent(), diariesByDate.get(i).getSavingDate().getSavingDate());
-        }
-        return new ResponseEntity<>(diaryFindResponseList, HttpStatus.CREATED);
+        Diary diaryByDate = diaryService.findDiaryByDate(diaryFindDto);
+        DiaryFindResponse diaryFindResponse = DiaryFindResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getSavingDate().getSavingDate());
+        return new ResponseEntity<>(diaryFindResponse, HttpStatus.CREATED);
     }
 
 }

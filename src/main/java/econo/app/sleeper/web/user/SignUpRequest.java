@@ -4,8 +4,6 @@ import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import javax.persistence.Access;
 import java.time.LocalTime;
 
 @Data

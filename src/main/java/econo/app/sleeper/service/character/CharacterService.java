@@ -12,7 +12,6 @@ import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.character.CharacterResponse;
 import econo.app.sleeper.web.character.NewCharacterDto;
-import econo.app.sleeper.web.common.CommonRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

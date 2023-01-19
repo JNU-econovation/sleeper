@@ -1,5 +1,6 @@
 package econo.app.sleeper.service.diary;
 
+import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
@@ -11,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,7 +29,6 @@ public class DiaryService {
         User user = userRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Diary diary = Diary.create(user, diaryRequest.getContent());
-        // todo 감사일기 하루에 2번 작성하는 경우 처리하기!
         diaryRepository.save(diary);
         return diary.getId();
     }
@@ -57,16 +57,26 @@ public class DiaryService {
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return diaryRepository.findAllByPk(user.getId());
     }
-
-    public List<Diary> findDiariesByDate(DiaryFindDto diaryFindDto){
-        List<Diary> diaryByDate = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate());
-        return diaryByDate;
+    public DiaryCheckDto giveIfDiaryExists(Long userPk){
+        SavingDate savingDate = new SavingDate();
+        LocalDate dateSavingDate = savingDate.getSavingDate();
+        Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(userPk, dateSavingDate);
+        if (diaryByDate.isPresent()){
+            return DiaryCheckDto.of(diaryByDate.get().getId(),diaryByDate.get().getContent().getContent(),true);
+        }
+        return DiaryCheckDto.of(null,null,false);
     }
+
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
         List<Diary> diaryBetweenDates = diaryRepository.findDiaryBetweenDates(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),
                 diaryFindDto.getLocalDate().withDayOfMonth(diaryFindDto.getLocalDate().lengthOfMonth()));
         return diaryBetweenDates;
+    }
+    public Diary findDiaryByDate(DiaryFindDto diaryFindDto){
+        Diary diary = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        return diary;
     }
 
 

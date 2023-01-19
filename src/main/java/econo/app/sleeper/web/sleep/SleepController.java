@@ -38,7 +38,13 @@ public class SleepController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @PostMapping("/sleeps")
+    @GetMapping("/sleeps/{nu}/setTime")
+    public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
+        SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
+        return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
+    }
+
+    @GetMapping("/sleeps/recommend")
     public ResponseEntity<SleepResponse> saveSetTime(@RequestBody @Valid CommonRequest commonRequest){
         Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
         SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
@@ -54,10 +60,10 @@ public class SleepController {
     }
 
     @PutMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeDto setTimeDto){
-        sleepService.updateSetTime(sleepPk,setTimeDto);
+    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeRequest setTimeRequest){
+        sleepService.updateSetTime(sleepPk, setTimeRequest);
         speechBubbleService.afterSettingSetTime();
-        CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeDto.getUserPk());
+        CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeRequest.getUserPk());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
