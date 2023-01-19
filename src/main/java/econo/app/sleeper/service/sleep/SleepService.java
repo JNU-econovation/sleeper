@@ -51,7 +51,7 @@ public class SleepService {
 
     @Transactional
     public void updateActualWakeTime(SleepDto sleepDto){
-         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
+        Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateActualWakeTime(sleepDto.getActualWakeTime());
     }

@@ -1,5 +1,6 @@
 package econo.app.sleeper.exception;
 
+
 import econo.app.sleeper.exception.error.ErrorCode;
 import econo.app.sleeper.exception.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;

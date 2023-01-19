@@ -55,8 +55,8 @@ public class DiaryRepository {
 
 
     // 회원의 감사일기들 중 날짜가 ~인 것들 찾기
-    public Optional<Diary> findDiaryByDate(Long userPk, LocalDate localDate) {
 
+    public Optional<Diary> findDiaryByDate(Long userPk, LocalDate localDate){
         List<Diary> diaries = em.createQuery("select d from Diary d join d.user u where u.id = :userPk and d.savingDate.savingDate = :localDate", Diary.class)
                 .setParameter("userPk", userPk)
                 .setParameter("localDate", localDate)

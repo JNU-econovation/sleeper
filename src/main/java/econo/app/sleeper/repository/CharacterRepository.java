@@ -29,11 +29,7 @@ public class CharacterRepository {
         return Optional.ofNullable(character);
     }
 
-    public Optional<Character> findById(String userId) {
-        return em.createQuery("select c from Character c join c.user u where u.userId = :userId",Character.class)
-                .setParameter("userId",userId)
-                .getResultList().stream().findFirst();
-    }
+
 
 
 

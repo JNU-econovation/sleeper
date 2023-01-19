@@ -2,7 +2,6 @@ package econo.app.sleeper.domain.user;
 
 import econo.app.sleeper.domain.character.Character;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalTime;
 

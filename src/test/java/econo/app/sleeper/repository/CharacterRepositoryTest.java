@@ -38,16 +38,4 @@ public class CharacterRepositoryTest {
 
     }
 
-    @Test
-    public void 일대일양방향관계에서_주테이블에_FK를_둘_경우_대상테이블에서_join으로_찾는_경우(){
-
-        String userId = "sleeper";
-        long startTime = System.nanoTime(); // 코드 시작 시간
-
-        Character character2 = characterRepository.findById(userId).get();
-        long endTime = System.nanoTime(); // 코드 끝난 시간
-
-        long durationTimeSec = endTime - startTime;
-        System.out.println(durationTimeSec + "n/s"); // 나노세컨드 출력
-    }
 }

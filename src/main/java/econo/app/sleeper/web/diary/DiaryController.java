@@ -1,5 +1,4 @@
 package econo.app.sleeper.web.diary;
-
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
@@ -55,8 +54,8 @@ public class DiaryController {
     }
 
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody @Valid DiaryRequest diaryRequest){
-        diaryService.updateDiary(diaryPk,diaryRequest.getContent());
+    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryUpdateRequest diaryUpdateRequest){
+        diaryService.updateDiary(diaryPk,diaryUpdateRequest.getContent());
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
@@ -95,8 +94,8 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries/date/{date}")
-    public ResponseEntity<DiaryFindResponse> findDiaryByDate(           @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
-           @Valid CommonRequest commonRequest) {
+    public ResponseEntity<DiaryFindResponse> findDiaryByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
+                                                             @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         Diary diaryByDate = diaryService.findDiaryByDate(diaryFindDto);
         DiaryFindResponse diaryFindResponse = DiaryFindResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getSavingDate().getSavingDate());

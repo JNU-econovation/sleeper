@@ -38,6 +38,14 @@ public class SleepController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
+
+    @PostMapping("/sleeps")
+    public ResponseEntity<SleepResponse> saveSetTime(@RequestBody @Valid CommonRequest commonRequest){
+        Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
+        SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
+        return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
+    }
+
     @GetMapping("/sleeps/{nu}/setTime")
     public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
         SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
@@ -45,13 +53,6 @@ public class SleepController {
     }
 
     @GetMapping("/sleeps/recommend")
-    public ResponseEntity<SleepResponse> saveSetTime(@RequestBody @Valid CommonRequest commonRequest){
-        Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
-        SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
-        return new ResponseEntity<>(sleepResponse,HttpStatus.CREATED);
-    }
-
-    @GetMapping("/sleeps")
     public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
         LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
         List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);

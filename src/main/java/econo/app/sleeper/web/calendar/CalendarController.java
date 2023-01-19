@@ -51,7 +51,9 @@ public class CalendarController {
             calendarDateResponse = CalendarDateResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getId(), List.of(sleepsByDate.get(i).getSetTime().getSetSleepTime()),
                     List.of(sleepsByDate.get(i).getSetTime().getSetWakeTime()), List.of(sleepsByDate.get(i).getSavingDate().getSavingDateTime()), List.of(sleepsByDate.get(i).getActualWakeTime()));
         }
-        return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);    }
+        return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
+    }
+
 
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponse> readCalendar(@ Valid CommonRequest commonRequest){

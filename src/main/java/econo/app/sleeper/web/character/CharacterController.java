@@ -1,6 +1,4 @@
 package econo.app.sleeper.web.character;
-
-
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.web.common.CommonRequest;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,8 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
+
+
 
 @Slf4j
 @RestController

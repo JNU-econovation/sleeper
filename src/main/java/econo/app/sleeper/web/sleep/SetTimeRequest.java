@@ -27,7 +27,7 @@ public class SetTimeRequest {
     @NotNull
     private Long userPk;
 
-    public Sleep toEntity(User user){
+    public Sleep toEntity(User user) {
         return Sleep.builder()
                 .setSleepTime(setSleepTime)
                 .setWakeTime(setWakeTime)
@@ -35,4 +35,3 @@ public class SetTimeRequest {
                 .build();
     }
 }
-

@@ -14,7 +14,7 @@ public class DiaryCheckDto {
     private final String content;
     private final Boolean existence;
 
-    public static DiaryCheckDto of(Long diaryPk,String content,Boolean existence){
+    public static DiaryCheckDto of(Long diaryPk, String content, Boolean existence) {
         return DiaryCheckDto.builder()
                 .diaryPk(diaryPk)
                 .content(content)
