@@ -64,7 +64,7 @@ public class DiaryController {
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
-    // todo save
+    // todo update
 
     @GetMapping("/diaries/check")
     public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){

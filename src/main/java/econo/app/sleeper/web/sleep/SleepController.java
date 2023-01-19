@@ -60,10 +60,10 @@ public class SleepController {
     }
 
     @PutMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeDto setTimeDto){
-        sleepService.updateSetTime(sleepPk,setTimeDto);
+    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeRequest setTimeRequest){
+        sleepService.updateSetTime(sleepPk, setTimeRequest);
         speechBubbleService.afterSettingSetTime();
-        CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeDto.getUserPk());
+        CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeRequest.getUserPk());
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 

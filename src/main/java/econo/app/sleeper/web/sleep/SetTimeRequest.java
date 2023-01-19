@@ -1,38 +1,35 @@
 package econo.app.sleeper.web.sleep;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import econo.app.sleeper.domain.sleep.Sleep;
-import lombok.Builder;
+import econo.app.sleeper.domain.user.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Getter
-@RequiredArgsConstructor
-@Builder
+@NoArgsConstructor
 public class SetTimeRequest {
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime setSleepTime;
+    @NotNull
+    @JsonProperty("setSleepTime")
+    private ZonedDateTime setSleepTime;
+    @NotNull
+    @JsonProperty("setWakeTime")
+    private ZonedDateTime setWakeTime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private final LocalDateTime setWakeTime;
+    @NotNull
+    private Long userPk;
 
-
-    public static Sleep toEntity(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime){
+    public Sleep toEntity(User user){
         return Sleep.builder()
                 .setSleepTime(setSleepTime)
                 .setWakeTime(setWakeTime)
+                .user(user)
                 .build();
     }
 
-    public static SetTimeRequest of(LocalDateTime setSleepTime, LocalDateTime setWakeTime){
-        return SetTimeRequest.builder()
-                .setSleepTime(setSleepTime)
-                .setWakeTime(setWakeTime)
-                .build();
-    }
+
 }
-

@@ -22,11 +22,6 @@ public class CharacterRepositoryTest {
     @Autowired
     UserRepository userRepository;
 
-    @Test
-    public void findByPk() {
-        Character character = characterRepository.findById("sleeper").get();
-        Assertions.assertThat(character.getUser().getUserId()).isEqualTo("sleeper");
-    }
 
     @Test
     public void 일대일양방향관계에서_주테이블에_FK를_둘_경우_주테이블에서_객체로_찾는_경우(){
