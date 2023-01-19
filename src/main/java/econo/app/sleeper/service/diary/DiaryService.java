@@ -52,6 +52,7 @@ public class DiaryService {
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
+
     public DiaryCheckDto giveIfDiaryExists(Long userPk){
         SavingDate savingDate = new SavingDate();
         LocalDate dateSavingDate = savingDate.getSavingDate();
@@ -61,43 +62,23 @@ public class DiaryService {
         }
         return DiaryCheckDto.of(null,null,false);
     }
-
 
     public List<Diary> findDiariesByUser(Long userPk){
         User user = userRepository.find(userPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return diaryRepository.findAllByPk(user.getId());
     }
-<<<<<<< HEAD
-
-    public Diary findDiaryByDate(DiaryFindDto diaryFindDto){
-        Diary diary = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate())
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        return diary;
-=======
-    public DiaryCheckDto giveIfDiaryExists(Long userPk){
-        SavingDate savingDate = new SavingDate();
-        LocalDate dateSavingDate = savingDate.getSavingDate();
-        Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(userPk, dateSavingDate);
-        if (diaryByDate.isPresent()){
-            return DiaryCheckDto.of(diaryByDate.get().getId(),diaryByDate.get().getContent().getContent(),true);
-        }
-        return DiaryCheckDto.of(null,null,false);
->>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9
-    }
-
 
     public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
         List<Diary> diaryBetweenDates = diaryRepository.findDiaryBetweenDates(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),
                 diaryFindDto.getLocalDate().withDayOfMonth(diaryFindDto.getLocalDate().lengthOfMonth()));
         return diaryBetweenDates;
     }
+
     public Diary findDiaryByDate(DiaryFindDto diaryFindDto){
         Diary diary = diaryRepository.findDiaryByDate(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return diary;
     }
-
-
 
 }

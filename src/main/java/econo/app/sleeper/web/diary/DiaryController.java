@@ -54,8 +54,8 @@ public class DiaryController {
     }
 
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody @Valid DiaryRequest diaryRequest){
-        diaryService.updateDiary(diaryPk,diaryRequest.getContent());
+    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryUpdateRequest diaryUpdateRequest){
+        diaryService.updateDiary(diaryPk,diaryUpdateRequest.getContent());
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }

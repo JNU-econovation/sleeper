@@ -38,13 +38,8 @@ public class SleepController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @GetMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
-        SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
-        return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
-    }
 
-    @GetMapping("/sleeps/recommend")
+    @PostMapping("/sleeps")
     public ResponseEntity<SleepResponse> saveSetTime(@RequestBody @Valid CommonRequest commonRequest){
         Sleep sleep = sleepService.saveSetTime(commonRequest.getUserPk());
         SleepResponse sleepResponse = SleepResponse.of("설정 수면 시간 저장 완료", sleep.getId());
