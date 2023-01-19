@@ -21,4 +21,8 @@ public class DiaryCheckDto {
                 .existence(existence)
                 .build();
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9

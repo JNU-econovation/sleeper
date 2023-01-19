@@ -1,4 +1,5 @@
 package econo.app.sleeper.web.diary;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

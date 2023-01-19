@@ -5,13 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@NoArgsConstructor
 @Setter
+@NoArgsConstructor
 public class LoginRequest {
 
     private String userId;
 
     private String userPassword;
+
 
 }
 

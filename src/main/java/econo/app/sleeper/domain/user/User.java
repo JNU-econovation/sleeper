@@ -1,4 +1,8 @@
 package econo.app.sleeper.domain.user;
+<<<<<<< HEAD
+=======
+
+>>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9
 import econo.app.sleeper.domain.character.Character;
 import lombok.*;
 import javax.persistence.*;
@@ -13,6 +17,7 @@ public class User {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   //todo 나머지 부분도 Pk를 id로 고치기
    private Long id;
    @Column(nullable = false)
    private String userId;

@@ -37,6 +37,7 @@ public class SleepService {
     // todo saveActualSleepTime 구현
 
     public SetTimeResponse readSetTime(Long sleepPk){
+<<<<<<< HEAD
         Sleep sleep = sleepRepository.findByPk(sleepPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime());
@@ -45,14 +46,27 @@ public class SleepService {
 
     @Transactional
     public void updateSetTime(Long sleepPk, SetTimeRequest setTimeRequest){
+=======
+>>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9
         Sleep sleep = sleepRepository.findByPk(sleepPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime());
+        return setTimeResponse;
+    }
+
+    @Transactional
+    public void updateSetTime(Long sleepPk, SetTimeRequest setTimeRequest){       Sleep sleep = sleepRepository.findByPk(sleepPk)
                 .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateSetTime(setTimeRequest.getSetSleepTime(), setTimeRequest.getSetWakeTime());
     }
 
     @Transactional
     public void updateActualWakeTime(SleepDto sleepDto){
+<<<<<<< HEAD
         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
+=======
+         Sleep sleep = sleepRepository.findByPk(sleepDto.getSleepPk())
+>>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateActualWakeTime(sleepDto.getActualWakeTime());
     }

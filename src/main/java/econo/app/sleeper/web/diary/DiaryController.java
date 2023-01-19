@@ -17,7 +17,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -95,9 +94,8 @@ public class DiaryController {
     }
 
     @GetMapping("/diaries/date/{date}")
-    public ResponseEntity<DiaryFindResponse> findDiaryByDate(
-            @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
-           @Valid CommonRequest commonRequest) {
+    public ResponseEntity<DiaryFindResponse> findDiaryByDate(@DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date") LocalDate date,
+                                                             @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         Diary diaryByDate = diaryService.findDiaryByDate(diaryFindDto);
         DiaryFindResponse diaryFindResponse = DiaryFindResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getSavingDate().getSavingDate());

@@ -1,6 +1,9 @@
 package econo.app.sleeper.exception;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13fb79243c65d393812d75d293722ba4e115f0b9
 import econo.app.sleeper.exception.error.ErrorCode;
 import econo.app.sleeper.exception.error.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
