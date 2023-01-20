@@ -1,5 +1,9 @@
 package econo.app.sleeper.web.login;
 
+import econo.app.sleeper.domain.sleep.Sleep;
+import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.repository.SleepRepository;
+import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.service.login.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.Cookie;
@@ -27,6 +30,10 @@ public class LoginController {
     private final LoginService loginService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final UserRepository userRepository;
+
+    private final SleepRepository sleepRepository;
+
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -37,16 +44,21 @@ public class LoginController {
     // 로그아웃은 refresh토큰을 넣은 쿠키를 없애줘야한다.
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<LoginUserResponse> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
 
         LoginResponse loginResponse = loginService.login(loginRequest, request);
         String userId=loginRequest.getUserId();
+        User user=userRepository.findById(userId).get();
+        Long userPk= user.getId();
+        Sleep sleep=sleepRepository.findRecentSleepByUser(userPk).get();
+        Long sleepPk=sleep.getId();
+        LoginUserResponse loginUserResponse = new LoginUserResponse(loginResponse.getMessage(), sleepPk, userPk);
 
         if (loginResponse.getAccessToken().isBlank()) {
-            return new ResponseEntity<>(loginResponse, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         if (loginResponse.getRefreshToken().isBlank()) {
-            return new ResponseEntity<>(loginResponse, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
         String accessToken = jwtTokenProvider.createAccessToken(userId);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId);
@@ -54,7 +66,8 @@ public class LoginController {
         response.addHeader("authorization", accessToken);
         response.addCookie(cookie);
 
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+
+        return new ResponseEntity<>(loginUserResponse, HttpStatus.OK);
     }
 
     //Body에는 쿠키가 없다.
