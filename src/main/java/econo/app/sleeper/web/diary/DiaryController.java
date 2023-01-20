@@ -53,9 +53,21 @@ public class DiaryController {
         return new ResponseEntity<>(diarySaveResponse,HttpStatus.CREATED);
     }
 
+
+    @PutMapping("/diaries/{nu}/continue")
+    public ResponseEntity<DiarySaveResponse> continueDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryContinueRequest diaryContinueRequest) {
+        diaryService.updateDiary(diaryPk, diaryContinueRequest.getContent());
+        sleepService.updateActualSleepTime(diaryContinueRequest.getUserPk());
+        Integer reward = moneyService.obtainMoney(DiaryRewardDto.of(diaryContinueRequest.getContent(), diaryContinueRequest.getUserPk()));
+        characterService.updateStatusToSleep(diaryContinueRequest.getUserPk());
+        speechBubbleService.judgeSpeechBubbleAfterSaveDiary(diaryContinueRequest.getContent().length());
+        DiarySaveResponse diarySaveResponse = DiarySaveResponse.of(diaryPk,reward);
+        return new ResponseEntity<>(diarySaveResponse,HttpStatus.CREATED);
+    }
+
     @PutMapping("/diaries/{nu}")
-    public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryUpdateRequest diaryUpdateRequest){
-        diaryService.updateDiary(diaryPk,diaryUpdateRequest.getContent());
+    public ResponseEntity<CommonResponse> editDiary(@PathVariable("nu") Long diaryPk, @RequestBody DiaryEditRequest diaryEditRequest){
+        diaryService.updateDiary(diaryPk, diaryEditRequest.getContent());
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
