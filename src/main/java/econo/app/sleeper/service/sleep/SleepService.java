@@ -92,9 +92,5 @@ public class SleepService {
             }
         }
         return score;
-
     }
-
-
-
 }
