@@ -3,6 +3,7 @@ package econo.app.sleeper.web.user;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
+import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.web.character.NewCharacterDto;
 import econo.app.sleeper.web.common.CommonResponse;
@@ -24,6 +25,8 @@ public class UserController {
     private final CharacterService characterService;
     private final MoneyService moneyService;
 
+    private final SleepService sleepService;
+
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -37,6 +40,7 @@ public class UserController {
         User user = userService.join(signUpRequest);
         characterService.createCharacter(NewCharacterDto.of(user));
         moneyService.createMoney(InitialMoneyDto.of(user));
+        sleepService.saveSetTime(user.getId());
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }

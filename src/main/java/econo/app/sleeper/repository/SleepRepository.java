@@ -39,7 +39,7 @@ public class SleepRepository {
 
     // 해당 회원의 가장 최근의 sleep 기록 찾기 -- 설정수면시간
     public Optional<Sleep> findRecentSleepByUser(Long userPk){
-        TypedQuery<Sleep> query = em.createQuery("select s from Sleep s join s.user u where u.id = :userPk order by s.setTime.setSleepTime desc", Sleep.class)
+        TypedQuery<Sleep> query = em.createQuery("select s from Sleep s join s.user u where u.id = :userPk order by s.id desc", Sleep.class)
                 .setParameter("userPk",userPk);
         query.setFirstResult(0);
         query.setMaxResults(1);
