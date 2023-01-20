@@ -10,6 +10,7 @@ import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.SetTimeRequest;
 import econo.app.sleeper.web.sleep.SetTimeResponse;
 import econo.app.sleeper.web.sleep.SleepDto;
+import econo.app.sleeper.web.sleep.SleepScoreDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,6 +75,24 @@ public class SleepService {
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Integer plusExperience = sleep.assessExperience();
         return plusExperience;
+    }
+
+    public Integer assessScore(SleepScoreDto sleepScoreDto){
+        List<Long> sleepPks = sleepScoreDto.getSleepPks();
+        Integer score = 0;
+        List<Sleep> sleeps = null;
+        for(int i=0; i<sleepPks.size(); i++){
+            sleeps = List.of(sleepRepository.findByPk(sleepPks.get(i))
+                    .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)));
+        }
+        for(Sleep sleep : sleeps){
+            System.out.println("sleep = " + sleep.getSetTime().getSetWakeTime());
+            if(sleep.getSetTime().getSetWakeTime() != null){
+                score += sleep.assessScore();
+            }
+        }
+        return score;
+
     }
 
 

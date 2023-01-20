@@ -19,9 +19,10 @@ public class CalendarDateResponse {
     private final List<ZonedDateTime> setWakeTime;
     private final List<ZonedDateTime> actualSleepTime;
     private final List<ZonedDateTime> actualWakeTime;
+    private final Integer score;
 
 
-    public static CalendarDateResponse of(String content, Long diaryPk, List<ZonedDateTime> setSleepTime, List<ZonedDateTime> setWakeTime, List<ZonedDateTime> actualSleepTime, List<ZonedDateTime> actualWakeTime){
+    public static CalendarDateResponse of(String content, Long diaryPk, List<ZonedDateTime> setSleepTime, List<ZonedDateTime> setWakeTime, List<ZonedDateTime> actualSleepTime, List<ZonedDateTime> actualWakeTime,Integer score){
         return CalendarDateResponse.builder()
                 .content(content)
                 .diaryPk(diaryPk)
@@ -29,6 +30,7 @@ public class CalendarDateResponse {
                 .setWakeTime(setWakeTime)
                 .actualSleepTime(actualSleepTime)
                 .actualWakeTime(actualWakeTime)
+                .score(score)
                 .build();
     }
 

@@ -6,6 +6,7 @@ import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.diary.DiaryFindDto;
+import econo.app.sleeper.web.sleep.SleepScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -46,10 +47,18 @@ public class CalendarController {
         Long userPk = commonRequest.getUserPk();
         Diary diaryByDate = diaryService.findDiaryByDate(DiaryFindDto.of(userPk, localDate));
         List<Sleep> sleepsByDate = sleepService.findSleepsByUserAndDate(CalendarDto.of(userPk, localDate));
+        List<Long> sleepPks = new ArrayList<>();
+        for(Sleep s : sleepsByDate){
+            sleepPks.add(s.getId());
+        }
+        SleepScoreDto sleepScoreDto = SleepScoreDto.of(sleepPks);
+        Integer score = sleepService.assessScore(sleepScoreDto);
         CalendarDateResponse calendarDateResponse = null;
         for(int i=0; i< sleepsByDate.size(); i++){
             calendarDateResponse = CalendarDateResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getId(), List.of(sleepsByDate.get(i).getSetTime().getSetSleepTime()),
-                    List.of(sleepsByDate.get(i).getSetTime().getSetWakeTime()), List.of(sleepsByDate.get(i).getSavingDate().getSavingDateTime()), List.of(sleepsByDate.get(i).getActualWakeTime()));
+                    List.of(sleepsByDate.get(i).getSetTime().getSetWakeTime()), List.of(sleepsByDate.get(i).getSavingDate().getSavingDateTime()), List.of(sleepsByDate.get(i).getActualWakeTime()),
+                    score
+                    );
         }
         return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
     }
