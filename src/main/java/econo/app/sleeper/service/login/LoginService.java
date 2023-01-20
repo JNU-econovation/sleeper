@@ -26,18 +26,19 @@ public class LoginService {
         Optional<User> user = userRepository.findById(loginId);
 
         if (user.isEmpty()) {
-            return new LoginResponse("존재하지않는 회원입니다", null, null, null);
+            return new LoginResponse("존재하지않는 회원입니다", null, null);
         }
 
         if (!user.get().getUserPassword().equals(loginRequest.getUserPassword())) {
-            return new LoginResponse("비밀번호가 일치하지 않습니다.", null, null, null);
+            return new LoginResponse("비밀번호가 일치하지 않습니다.", null, null);
         }
         String userId = user.get().getUserId();
         Long userPk = user.get().getId();
 
         String newAccessToken = jwtTokenProvider.createAccessToken(userId);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
-        return new LoginResponse("access와 refresh토큰이 생성되었습니다", newAccessToken, newRefreshToken, userPk);
+
+        return new LoginResponse("로그인 되었습니다.",newAccessToken, newRefreshToken);
     }
     public Cookie logout(Cookie cookie) {
         cookie.setValue(null);
