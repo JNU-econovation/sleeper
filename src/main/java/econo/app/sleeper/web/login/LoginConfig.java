@@ -17,7 +17,7 @@ public class LoginConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new JwtInterceptor(jwtTokenProvider))
-                .excludePathPatterns("/login","/users");
+                .excludePathPatterns("/login","/users","/users/idCheck");
     }
 
 }

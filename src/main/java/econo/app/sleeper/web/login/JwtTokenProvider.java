@@ -16,15 +16,15 @@ import java.util.Date;
 public class JwtTokenProvider {
     private static String secret;
     private static long tokenValidityInMilliseconds;
-    private final String refreshsecret;
-    private final long refrshtokenValidityInMilliseconds;
+    private final String refreshSecret;
+    private final long refreshTokenValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("bimiliya") String secret, @Value("5000000") long tokenValidityInMilliseconds,
-                            @Value("bimil") String refreshsecret, @Value("9000000") long refreshtokenValidityInMilliseconds) {
+    public JwtTokenProvider(@Value("bimiliya") String secret, @Value("3600000") long tokenValidityInMilliseconds,
+                            @Value("bimil") String refreshSecret, @Value("604800000") long refreshTokenValidityInMilliseconds) {
         this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
         this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
-        this.refreshsecret = Base64.getEncoder().encodeToString(refreshsecret.getBytes());
-        this.refrshtokenValidityInMilliseconds = refreshtokenValidityInMilliseconds;
+        this.refreshSecret = Base64.getEncoder().encodeToString(refreshSecret.getBytes());
+        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
     }
 
     //    todo userId userPk로 바꾸기
@@ -45,12 +45,12 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims().setId(userId);
         Date now = new Date();
         Date validity = new Date(System.currentTimeMillis()
-                + refrshtokenValidityInMilliseconds);
+                + refreshTokenValidityInMilliseconds);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, refreshsecret)
+                .signWith(SignatureAlgorithm.HS256, refreshSecret)
                 .compact();
     }
 
@@ -75,7 +75,7 @@ public class JwtTokenProvider {
 
     public Claims getClaimsRefreshToken(String token) {
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(refreshsecret))
+                .setSigningKey(DatatypeConverter.parseBase64Binary(refreshSecret))
                 .parseClaimsJws(token)
                 .getBody();
     }
