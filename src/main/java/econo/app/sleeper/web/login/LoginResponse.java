@@ -12,14 +12,13 @@ import java.io.Serializable;
 public class LoginResponse implements Serializable{
 
     private String message;
-    private String accessToken;
-    private String refreshToken;
-
-    public static LoginResponse of (String message, String accessToken, String refreshToken){
+    private Long sleepPk;
+    private Long userPk;
+    public static LoginResponse of (String message, Long sleepPk, Long userPk){
         return LoginResponse.builder()
+                .sleepPk(sleepPk)
                 .message(message)
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .userPk(userPk)
                 .build();
     }
 
