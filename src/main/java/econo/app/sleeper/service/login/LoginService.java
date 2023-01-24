@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.UserRepository;
 import econo.app.sleeper.web.login.JwtTokenProvider;
 import econo.app.sleeper.web.login.LoginRequest;
-import econo.app.sleeper.web.login.LoginResponse;
+import econo.app.sleeper.web.login.LoginTokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,16 +21,16 @@ public class LoginService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public LoginResponse login(LoginRequest loginRequest, HttpServletRequest request) {
+    public LoginTokenDto login(LoginRequest loginRequest, HttpServletRequest request) {
         String loginId = loginRequest.getUserId();
         Optional<User> user = userRepository.findById(loginId);
 
         if (user.isEmpty()) {
-            return new LoginResponse("존재하지않는 회원입니다", null, null);
+            return new LoginTokenDto("존재하지않는 회원입니다", null, null);
         }
 
         if (!user.get().getUserPassword().equals(loginRequest.getUserPassword())) {
-            return new LoginResponse("비밀번호가 일치하지 않습니다.", null, null);
+            return new LoginTokenDto("비밀번호가 일치하지 않습니다.", null, null);
         }
         String userId = user.get().getUserId();
         Long userPk = user.get().getId();
@@ -38,7 +38,7 @@ public class LoginService {
         String newAccessToken = jwtTokenProvider.createAccessToken(userId);
         String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
 
-        return new LoginResponse("로그인 되었습니다.",newAccessToken, newRefreshToken);
+        return new LoginTokenDto("로그인 되었습니다.",newAccessToken, newRefreshToken);
     }
     public Cookie logout(Cookie cookie) {
         cookie.setValue(null);

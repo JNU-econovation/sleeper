@@ -17,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "user", description = "사용자 관련 API")
@@ -34,6 +36,15 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
+
+
+@PostMapping("/users/idCheck")
+    public ResponseEntity<Boolean> idCheck(@RequestBody IdRequest idRequest){
+        String check= userService.idCheck(idRequest.getRequestId());
+       if(check.equals("중복"))
+       { return new ResponseEntity<>(false,HttpStatus.OK);}
+       return new ResponseEntity<>(true,HttpStatus.FORBIDDEN);
+    }
 
     @PostMapping("/users")
     public ResponseEntity<CommonResponse> signup(@RequestBody SignUpRequest signUpRequest) {

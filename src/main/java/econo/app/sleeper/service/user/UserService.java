@@ -4,11 +4,14 @@ import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
+import econo.app.sleeper.web.user.IdRequest;
 import econo.app.sleeper.web.user.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,11 @@ public class UserService {
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
-
+    public String idCheck(String userId) {
+        Optional<User> duplicateId = userRepository.findById(userId);
+        if(duplicateId.isPresent()) {return "중복";}
+        else return "유효";
+    }
 }
+
 
