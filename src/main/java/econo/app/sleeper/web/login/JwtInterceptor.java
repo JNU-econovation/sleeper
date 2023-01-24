@@ -22,6 +22,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (accessToken.isEmpty()) {
 //            String newAccessToken = jwtTokenProvider.createAccessToken(userId);
 //            String newRefreshToken = jwtTokenProvider.createRefreshToken(userId);
+            response.sendRedirect(request.getContextPath() + "/login");
             return false;
         }
         if (jwtTokenProvider.isValidAccessToken(accessToken))
@@ -35,9 +36,10 @@ public class JwtInterceptor implements HandlerInterceptor {
 //                String newAccessToken = jwtTokenProvider.createAccessToken(userId);
                     return true;
                 }
-                else return false;
+                else{response.sendRedirect(request.getContextPath() + "/"); return false;}
             }}
         if (!jwtTokenProvider.isValidAccessToken(accessToken)){
+            response.sendRedirect(request.getContextPath() + "/");
             return false;
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
