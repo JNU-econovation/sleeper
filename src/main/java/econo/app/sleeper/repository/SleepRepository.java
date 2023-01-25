@@ -1,5 +1,6 @@
 package econo.app.sleeper.repository;
 
+import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.sleep.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,14 @@ public class SleepRepository {
         query.setMaxResults(1);
         Optional<Sleep> optionalSleep = Optional.ofNullable(query.getSingleResult());
         return  optionalSleep;
+    }
+
+    public List<Sleep> findSleepsBetweenDates(Long userPk, LocalDate startDate, LocalDate endDate){
+        return em.createQuery("select s from Sleep s join s.user u where u.id = :userPk and s.savingDate.savingDate between :startDate and :endDate order by s.savingDate.savingDate")
+                .setParameter("userPk",userPk)
+                .setParameter("startDate",startDate)
+                .setParameter("endDate",endDate)
+                .getResultList();
     }
 
 }

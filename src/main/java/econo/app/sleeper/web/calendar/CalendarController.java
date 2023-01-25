@@ -2,6 +2,8 @@ package econo.app.sleeper.web.calendar;
 
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.sleep.Sleep;
+import econo.app.sleeper.repository.DiaryRepository;
+import econo.app.sleeper.service.calendar.CalendarService;
 import econo.app.sleeper.service.diary.DiaryService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
@@ -21,8 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -31,7 +35,7 @@ import java.util.List;
 public class CalendarController {
 
     private final DiaryService diaryService;
-    private final SleepService sleepService;
+    private final CalendarService calendarService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -42,37 +46,34 @@ public class CalendarController {
     })
 
     @GetMapping("/calendar/{date}")
-    public ResponseEntity<CalendarDateResponse> readCalendarOfDate(@Valid CommonRequest commonRequest,
-                                                                         @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
-        Long userPk = commonRequest.getUserPk();
-        Diary diaryByDate = diaryService.findDiaryByDate(DiaryFindDto.of(userPk, localDate));
-        List<Sleep> sleepsByDate = sleepService.findSleepsByUserAndDate(CalendarDto.of(userPk, localDate));
-        List<Long> sleepPks = new ArrayList<>();
-        for(Sleep s : sleepsByDate){
-            sleepPks.add(s.getId());
-        }
-        SleepScoreDto sleepScoreDto = SleepScoreDto.of(sleepPks);
-        Integer score = sleepService.assessScore(sleepScoreDto);
+    public ResponseEntity<CalendarDateResponse> readCalendarByDate(@Valid CommonRequest commonRequest,
+                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
+        CalendarDateDto calendarDateDto = calendarService.readCalendarByDate(CalendarDto.of(commonRequest.getUserPk(), localDate));
         CalendarDateResponse calendarDateResponse = null;
-        for(int i=0; i< sleepsByDate.size(); i++){
-            calendarDateResponse = CalendarDateResponse.of(diaryByDate.getContent().getContent(), diaryByDate.getId(), List.of(sleepsByDate.get(i).getSetTime().getSetSleepTime()),
-                    List.of(sleepsByDate.get(i).getSetTime().getSetWakeTime()), List.of(sleepsByDate.get(i).getSavingDate().getSavingDateTime()), List.of(sleepsByDate.get(i).getActualWakeTime()),
-                    score
-                    );
+        ArrayList<ZonedDateTime[]> sleepTimes = new ArrayList<>();
+        if(calendarDateDto.getDiary().isPresent()){
+            for(int i=0; i< calendarDateDto.getSleep().size(); i++){
+                sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getSetTime().getSetSleepTime(),
+                        calendarDateDto.getSleep().get(i).getSetTime().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
+                calendarDateResponse = CalendarDateResponse.of(calendarDateDto.getDiary().get().getContent().getContent(), calendarDateDto.getDiary().get().getId(),sleepTimes.get(i), calendarDateDto.getScore()
+                );
+            }
+            return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
         }
-        return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
+        for(int i=0; i< calendarDateDto.getSleep().size(); i++){
+            sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getSetTime().getSetSleepTime(),
+                    calendarDateDto.getSleep().get(i).getSetTime().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
+            calendarDateResponse = CalendarDateResponse.of(null, null, sleepTimes.get(i), calendarDateDto.getScore()
+            );
+        }
+        return new ResponseEntity<>(calendarDateResponse,HttpStatus.OK);
     }
 
 
     @GetMapping("/calendar")
     public ResponseEntity<CalendarResponse> readCalendar(@ Valid CommonRequest commonRequest){
         LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        List<Diary> diaries = diaryService.findDiariesBetWeenDates(DiaryFindDto.of(commonRequest.getUserPk(), localDate));
-        List<LocalDate> savingDates = new ArrayList<>();
-        for(Diary d : diaries){
-            savingDates = List.of(d.getSavingDate().getSavingDate());
-        }
-        CalendarResponse calendarResponse = CalendarResponse.of(savingDates);
+        CalendarResponse calendarResponse = calendarService.readCalendar(commonRequest.getUserPk(), localDate);
         return new ResponseEntity<>(calendarResponse,HttpStatus.OK);
     }
 

@@ -64,12 +64,6 @@ public class SleepService {
         sleep.updateActualSleepTime();
     }
 
-
-    public List<Sleep> findSleepsByUserAndDate(CalendarDto calendarDto){
-        List<Sleep> sleepsByUserAndDate = sleepRepository.findSleepsByUserAndDate(calendarDto.getUserPk(), calendarDto.getDate());
-        return sleepsByUserAndDate;
-    }
-
     public Integer assessExperience(Long sleepPk){
         Sleep sleep = sleepRepository.findByPk(sleepPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
@@ -86,8 +80,7 @@ public class SleepService {
                     .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)));
         }
         for(Sleep sleep : sleeps){
-            System.out.println("sleep = " + sleep.getSetTime().getSetWakeTime());
-            if(sleep.getSetTime().getSetWakeTime() != null){
+            if(sleep.getActualWakeTime() != null){
                 score += sleep.assessScore();
             }
         }

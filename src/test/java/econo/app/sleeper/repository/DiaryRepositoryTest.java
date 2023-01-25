@@ -11,10 +11,12 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -103,5 +105,9 @@ public class DiaryRepositoryTest {
 
     }
 
+    @Test
+    public void findDiaryByDate() {
+        Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(1L, LocalDate.of(2023, 1, 12));
+    }
 }
 

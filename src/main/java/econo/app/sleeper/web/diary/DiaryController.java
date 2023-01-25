@@ -72,11 +72,10 @@ public class DiaryController {
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
-    // todo update
 
     @GetMapping("/diaries/check")
     public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){
-        DiaryCheckDto diaryCheckDto = diaryService.giveIfDiaryExists(commonRequest.getUserPk());
+        DiaryCheckDto diaryCheckDto = diaryService.giveDiaryIfPresent(commonRequest.getUserPk());
         return new ResponseEntity<>(diaryCheckDto,HttpStatus.OK);
     }
 

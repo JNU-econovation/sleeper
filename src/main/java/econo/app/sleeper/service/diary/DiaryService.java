@@ -53,7 +53,7 @@ public class DiaryService {
     }
 
 
-    public DiaryCheckDto giveIfDiaryExists(Long userPk){
+    public DiaryCheckDto giveDiaryIfPresent(Long userPk){
         SavingDate savingDate = new SavingDate();
         LocalDate dateSavingDate = savingDate.getSavingDate();
         Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(userPk, dateSavingDate);
@@ -80,5 +80,8 @@ public class DiaryService {
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return diary;
     }
+
+
+
 
 }
