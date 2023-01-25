@@ -14,12 +14,10 @@ public class SpeechBubble {
     private String speechBubble;
 
     public void judgeSpeechBubbleAfterSaveDiary(Integer contentLength){ //감사일기 작성 후 사용
-
         if(contentLength == 0){
             speechBubble =  SpeechBubbleKind.NO_CONTENT.getMessage();
-
         }
-        speechBubble =  SpeechBubbleKind.SLEEP.getMessage();
+        
     }
 
     public void judgeSpeechBubbleAfterWakeUp(Boolean levelUpPotential){// 기상 후 사용
