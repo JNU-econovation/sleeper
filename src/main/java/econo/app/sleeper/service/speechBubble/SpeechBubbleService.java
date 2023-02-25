@@ -1,6 +1,6 @@
 package econo.app.sleeper.service.speechBubble;
 
-import econo.app.sleeper.domain.common.SpeechBubble;
+import econo.app.sleeper.domain.common.Notification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -8,18 +8,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SpeechBubbleService {
 
-    private final SpeechBubble speechBubble;
+    private final Notification notification;
 
     public void judgeSpeechBubbleAfterSaveDiary(Integer contentLength){
-        speechBubble.judgeSpeechBubbleAfterSaveDiary(contentLength);
+        notification.judgeSpeechBubbleAfterSaveDiary(contentLength);
     }
 
     public void judgeSpeechBubbleAfterWakeUp(Boolean levelUpPotential){
-        speechBubble.judgeSpeechBubbleAfterWakeUp(levelUpPotential);
+        notification.judgeSpeechBubbleAfterWakeUp(levelUpPotential);
     }
 
     public void afterSettingSetTime(){
-        speechBubble.afterSettingSetTime();
+        notification.afterSettingSetTime();
     }
 
 }

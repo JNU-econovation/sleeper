@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public class SpeechBubbleTest {
+public class NotificationTest {
 
     @Test
     public void test(){

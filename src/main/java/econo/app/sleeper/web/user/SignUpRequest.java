@@ -2,6 +2,7 @@ package econo.app.sleeper.web.user;
 
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.sleep.SleepAdvisor;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalTime;
@@ -20,7 +21,10 @@ public class SignUpRequest {
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime goalWakeTime;
 
-    public User toEntity(){
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime minimumSleepTime;
+
+    public User toUserEntity(){
         return User.builder()
                 .userId(userId)
                 .userPassword(userPassword)
@@ -29,6 +33,15 @@ public class SignUpRequest {
                 .roleType(RoleType.USER)
                 .build();
     }
+
+    public SleepAdvisor toUserSleepInfoEntity(){
+        return SleepAdvisor.builder()
+                .goalSleepTime(goalSleepTime)
+                .goalWakeTime(goalWakeTime)
+                .minimumSleepTime(minimumSleepTime)
+                .build();
+    }
+
 
 }
 

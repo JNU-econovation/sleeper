@@ -3,10 +3,9 @@ import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.util.DateTimeManager;
 import econo.app.sleeper.web.character.CharacterDto;
-import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
+import econo.app.sleeper.web.user.RecommendedTimes;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -42,14 +41,6 @@ public class SleepController {
     public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
         SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
         return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
-    }
-
-    @GetMapping("/sleeps/recommend")
-    public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
-        LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
-        List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);
-        RecommendedTimes recommendedTimes = RecommendedTimes.of(localTimess);
-        return new ResponseEntity<>(recommendedTimes,HttpStatus.OK);
     }
 
     @PutMapping("/sleeps/{nu}/setTime")

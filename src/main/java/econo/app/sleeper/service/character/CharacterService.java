@@ -3,7 +3,7 @@ package econo.app.sleeper.service.character;
 import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.character.Status;
 import econo.app.sleeper.domain.character.Growth;
-import econo.app.sleeper.domain.common.SpeechBubble;
+import econo.app.sleeper.domain.common.Notification;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
@@ -24,7 +24,7 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
     private final UserRepository userRepository;
 
-    private final SpeechBubble speechBubble;
+    private final Notification notification;
 
     @Transactional
     public void createCharacter(NewCharacterDto newCharacterDto){
@@ -39,7 +39,7 @@ public class CharacterService {
                 .color(character.getColor())
                 .status(character.getStatus())
                 .growth(character.getGrowth())
-                .speechBubble(speechBubble.getSpeechBubble())
+                .speechBubble(notification.getSpeechBubble())
                 .build();
         return characterResponse;
     }

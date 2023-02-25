@@ -6,7 +6,6 @@ import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.calendar.CalendarDto;
 import econo.app.sleeper.web.sleep.SetTimeRequest;
 import econo.app.sleeper.web.sleep.SetTimeResponse;
 import econo.app.sleeper.web.sleep.SleepDto;
@@ -35,19 +34,11 @@ public class SleepService {
         return sleep;
     }
 
-    // todo saveActualSleepTime 구현
-
     public SetTimeResponse readSetTime(Long sleepPk){
         Sleep sleep = sleepRepository.findByPk(sleepPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getSetTime().getSetSleepTime(), sleep.getSetTime().getSetWakeTime());
+        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getAlarm().getSetSleepTime(), sleep.getAlarm().getSetWakeTime());
         return setTimeResponse;
-    }
-
-    @Transactional
-    public void updateSetTime(Long sleepPk, SetTimeRequest setTimeRequest){       Sleep sleep = sleepRepository.findByPk(sleepPk)
-                .orElseThrow(()-> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        sleep.updateSetTime(setTimeRequest.getSetSleepTime(), setTimeRequest.getSetWakeTime());
     }
 
     @Transactional
@@ -57,33 +48,4 @@ public class SleepService {
         sleep.updateActualWakeTime(sleepDto.getActualWakeTime());
     }
 
-    @Transactional
-    public void updateActualSleepTime(Long userPk){
-        Sleep sleep = sleepRepository.findRecentSleepByUser(userPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        sleep.updateActualSleepTime();
-    }
-
-    public Integer assessExperience(Long sleepPk){
-        Sleep sleep = sleepRepository.findByPk(sleepPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Integer plusExperience = sleep.assessExperience();
-        return plusExperience;
-    }
-
-    public Integer assessScore(SleepScoreDto sleepScoreDto){
-        List<Long> sleepPks = sleepScoreDto.getSleepPks();
-        Integer score = 0;
-        List<Sleep> sleeps = null;
-        for(int i=0; i<sleepPks.size(); i++){
-            sleeps = List.of(sleepRepository.findByPk(sleepPks.get(i))
-                    .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND)));
-        }
-        for(Sleep sleep : sleeps){
-            if(sleep.getActualWakeTime() != null){
-                score += sleep.assessScore();
-            }
-        }
-        return score;
-    }
 }

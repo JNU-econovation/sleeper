@@ -8,14 +8,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-@Embeddable
 @Getter
 public class SavingDate {
 
-    @Column(name = "SAVING_DATE", columnDefinition = "DATE")
-    private LocalDate savingDate; // 수면 날짜
 
-    @Column(name = "SAVING_DATE_TIME", columnDefinition = "timeStamp")
+    private LocalDate savingDate;
     private ZonedDateTime savingDateTime; // 실제 수면 시작 시간
 
     public SavingDate(){

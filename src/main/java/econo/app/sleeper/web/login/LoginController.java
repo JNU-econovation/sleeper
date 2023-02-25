@@ -41,19 +41,18 @@ public class LoginController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-    // 로그아웃은 refresh토큰을 넣은 쿠키를 없애줘야한다.
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
 
         LoginTokenDto loginTokenDto = loginService.login(loginRequest, request);
-        String userId=loginRequest.getUserId();
-        User user=userRepository.findById(userId).get();
+        String userId= loginRequest.getUserId();
+        User user= userRepository.findById(userId).get();
         Long userPk= user.getId();
-        Sleep sleep=sleepRepository.findRecentSleepByUser(userPk).get();
-        Long sleepPk=sleep.getId();
-        LoginResponse loginResponse = new LoginResponse(loginTokenDto.getMessage(), sleepPk, userPk);
-
+        Sleep sleep= sleepRepository.findRecentSleepByUser(userPk).get();
+        Long sleepPk= sleep.getId();
+        Long userSleepIfoPk = user.getSleepAdvisor().getId();
+        LoginResponse loginResponse = new LoginResponse(loginTokenDto.getMessage(), sleepPk, userPk, userSleepIfoPk);
         if (loginTokenDto.getAccessToken().isBlank()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

@@ -1,14 +1,8 @@
 package econo.app.sleeper.web.calendar;
 
-import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.sleep.Sleep;
-import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.service.calendar.CalendarService;
 import econo.app.sleeper.service.diary.DiaryService;
-import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.web.common.CommonRequest;
-import econo.app.sleeper.web.diary.DiaryFindDto;
-import econo.app.sleeper.web.sleep.SleepScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -25,7 +19,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.List;
 
 
 @Slf4j
@@ -53,16 +46,16 @@ public class CalendarController {
         ArrayList<ZonedDateTime[]> sleepTimes = new ArrayList<>();
         if(calendarDateDto.getDiary().isPresent()){
             for(int i=0; i< calendarDateDto.getSleep().size(); i++){
-                sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getSetTime().getSetSleepTime(),
-                        calendarDateDto.getSleep().get(i).getSetTime().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
+                sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getAlarm().getSetSleepTime(),
+                        calendarDateDto.getSleep().get(i).getAlarm().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
                 calendarDateResponse = CalendarDateResponse.of(calendarDateDto.getDiary().get().getContent().getContent(), calendarDateDto.getDiary().get().getId(),sleepTimes.get(i), calendarDateDto.getScore()
                 );
             }
             return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
         }
         for(int i=0; i< calendarDateDto.getSleep().size(); i++){
-            sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getSetTime().getSetSleepTime(),
-                    calendarDateDto.getSleep().get(i).getSetTime().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
+            sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getAlarm().getSetSleepTime(),
+                    calendarDateDto.getSleep().get(i).getAlarm().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
             calendarDateResponse = CalendarDateResponse.of(null, null, sleepTimes.get(i), calendarDateDto.getScore()
             );
         }

@@ -1,5 +1,6 @@
 package econo.app.sleeper.service.user;
 
+import com.sun.xml.bind.v2.TODO;
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
@@ -22,7 +23,8 @@ public class UserService {
 
     @Transactional
     public User join(SignUpRequest signUpRequest) {
-        User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER, signUpRequest.getGoalSleepTime(), signUpRequest.getGoalWakeTime());
+        User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
+        // TODO: 2023-02-25 MODEL MAPPER 공부
         userRepository.save(user);
         return user;
     }

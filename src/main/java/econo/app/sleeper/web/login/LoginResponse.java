@@ -14,11 +14,13 @@ public class LoginResponse implements Serializable{
     private String message;
     private Long sleepPk;
     private Long userPk;
-    public static LoginResponse of (String message, Long sleepPk, Long userPk){
+    private Long userSleepPk;
+    public static LoginResponse of (String message, Long sleepPk, Long userPk, Long userSleepPk){
         return LoginResponse.builder()
                 .sleepPk(sleepPk)
                 .message(message)
                 .userPk(userPk)
+                .userSleepPk(userSleepPk)
                 .build();
     }
 

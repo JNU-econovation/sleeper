@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.sleep;
+package econo.app.sleeper.web.user;
 
 
 import lombok.Builder;
@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Builder
 public class RecommendedTimes {
-
 
     private final List<LocalTime> recommendedTimes;
 

@@ -3,7 +3,7 @@ package econo.app.sleeper.domain.common;
 import lombok.Getter;
 
 @Getter
-public enum SpeechBubbleKind {
+public enum Message {
 
     NO_CONTENT("내일은 좋은 일이 있을거야!"),
     NO_SLEEP("오늘 하루도 파이팅!"),
@@ -12,7 +12,7 @@ public enum SpeechBubbleKind {
     ;
     private final String message;
 
-    SpeechBubbleKind(String message) {
+    Message(String message) {
         this.message = message;
     }
 
