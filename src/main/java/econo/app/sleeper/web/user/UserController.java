@@ -5,7 +5,7 @@ import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.service.user.SleepAdvisorService;
+import econo.app.sleeper.service.sleep.SleepAdvisorService;
 import econo.app.sleeper.web.character.NewCharacterDto;
 import econo.app.sleeper.web.common.CommonResponse;
 import econo.app.sleeper.web.money.InitialMoneyDto;
@@ -53,7 +53,6 @@ public class UserController {
         sleepAdvisorService.create(signUpRequest);
         characterService.createCharacter(NewCharacterDto.of(user));
         moneyService.createMoney(InitialMoneyDto.of(user));
-        sleepService.saveSetTime(user.getId());
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }

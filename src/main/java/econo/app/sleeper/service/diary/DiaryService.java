@@ -1,6 +1,5 @@
 package econo.app.sleeper.service.diary;
 
-import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;

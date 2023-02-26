@@ -24,14 +24,8 @@ public class UserService {
     @Transactional
     public User join(SignUpRequest signUpRequest) {
         User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
-        // TODO: 2023-02-25 MODEL MAPPER 공부
         userRepository.save(user);
         return user;
-    }
-
-    public User readGoalTime(Long userPk) {
-        return userRepository.find(userPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
     public String idCheck(String userId) {

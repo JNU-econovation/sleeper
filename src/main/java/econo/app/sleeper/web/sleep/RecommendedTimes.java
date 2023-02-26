@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.user;
+package econo.app.sleeper.web.sleep;
 
 
 import lombok.Builder;

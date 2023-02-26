@@ -1,19 +1,19 @@
 package econo.app.sleeper.service.sleep;
 
+import econo.app.sleeper.domain.common.DatePolicy;
 import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.sleep.SetTimeRequest;
-import econo.app.sleeper.web.sleep.SetTimeResponse;
 import econo.app.sleeper.web.sleep.SleepDto;
-import econo.app.sleeper.web.sleep.SleepScoreDto;
+import econo.app.sleeper.web.sleep.SleepRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -24,21 +24,20 @@ public class SleepService {
 
     private final SleepRepository sleepRepository;
     private final UserRepository userRepository;
+    private final DatePolicy datePolicy;
 
     @Transactional
-    public Sleep saveSetTime(Long userPk){
-        User user = userRepository.find(userPk).get();
-        List<ZonedDateTime> zonedDateTimes = user.getGoalTime().toLocalDateTime();
-        Sleep sleep = Sleep.createSetSleep(zonedDateTimes.get(0), zonedDateTimes.get(1), user);
+    public Long saveSleep(SleepRequest sleepRequest){
+        User user = userRepository.find(sleepRequest.getUserPk()).get();
+        LocalDate decidedDate = decideDate(sleepRequest.getActualSleepTime());
+        Sleep sleep = Sleep.createSleep(sleepRequest.getSetSleepTime(),sleepRequest.getSetWakeTime(),sleepRequest.getActualSleepTime(),decidedDate,user);
         sleepRepository.save(sleep);
-        return sleep;
+        return sleep.getId();
     }
 
-    public SetTimeResponse readSetTime(Long sleepPk){
-        Sleep sleep = sleepRepository.findByPk(sleepPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        SetTimeResponse setTimeResponse = SetTimeResponse.of(sleep.getAlarm().getSetSleepTime(), sleep.getAlarm().getSetWakeTime());
-        return setTimeResponse;
+    private LocalDate decideDate(ZonedDateTime savedDateTime){
+        LocalDate decidedDate = datePolicy.decideDate(savedDateTime);
+        return decidedDate;
     }
 
     @Transactional

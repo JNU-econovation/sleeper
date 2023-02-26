@@ -1,6 +1,5 @@
 package econo.app.sleeper.domain.diary;
 
-import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;

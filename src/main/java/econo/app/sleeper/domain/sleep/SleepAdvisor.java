@@ -53,15 +53,9 @@ public class SleepAdvisor {
         return recommendWakeTimes.collect(Collectors.toList());
     }
 
-    public void updateGoalSleepTime(LocalTime goalSleepTime){
+    public void updateSleepAdvisor(LocalTime goalSleepTime, LocalTime goalWakeTime, LocalTime minimumSleepTime){
         this.goalSleepTime = goalSleepTime;
-    }
-
-    public void updateGoalWakeTime(LocalTime goalWakeTime){
         this.goalWakeTime = goalWakeTime;
-    }
-
-    public void updateMinimumSleepTime(LocalTime minimumSleepTime){
         this.minimumSleepTime = minimumSleepTime;
     }
 

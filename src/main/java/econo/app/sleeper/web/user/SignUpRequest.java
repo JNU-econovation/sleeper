@@ -34,7 +34,7 @@ public class SignUpRequest {
                 .build();
     }
 
-    public SleepAdvisor toUserSleepInfoEntity(){
+    public SleepAdvisor toSleepAdvisor(){
         return SleepAdvisor.builder()
                 .goalSleepTime(goalSleepTime)
                 .goalWakeTime(goalWakeTime)

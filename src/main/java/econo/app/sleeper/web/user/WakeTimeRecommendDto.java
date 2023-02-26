@@ -1,8 +1,6 @@
 package econo.app.sleeper.web.user;
 
-import econo.app.sleeper.web.sleep.SleepCharacterDto;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,7 +13,7 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class WakeTimeRecommendDto {
 
-    private Long userSleepId;
+    private Long sleepAdvisorPk;
 
     @DateTimeFormat(pattern = "HH:mm")
     private LocalTime expectedSleepTime;
@@ -23,7 +21,7 @@ public class WakeTimeRecommendDto {
 
     public static WakeTimeRecommendDto of(Long userSleepId, LocalTime expectedSleepTime){
         return WakeTimeRecommendDto.builder()
-                .userSleepId(userSleepId)
+                .sleepAdvisorPk(userSleepId)
                 .expectedSleepTime(expectedSleepTime)
                 .build();
     }
