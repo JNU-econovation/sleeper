@@ -59,7 +59,7 @@ public class CharacterService {
         User user = userRepository.find(userPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         Character character = user.getCharacter();
-        character.updateStatusToSleep();
+        character.oppositeStatus();
     }
 
     public Boolean approachLevel(Long characterPk){

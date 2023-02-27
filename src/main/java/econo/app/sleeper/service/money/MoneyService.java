@@ -1,7 +1,6 @@
 package econo.app.sleeper.service.money;
 
 import econo.app.sleeper.domain.money.Deal;
-import econo.app.sleeper.domain.diary.Content;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.MoneyRepository;

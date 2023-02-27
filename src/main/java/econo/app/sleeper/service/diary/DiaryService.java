@@ -1,5 +1,6 @@
 package econo.app.sleeper.service.diary;
 
+import econo.app.sleeper.domain.common.DatePolicy;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.exception.RestApiException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,14 +24,19 @@ public class DiaryService {
 
     private final DiaryRepository diaryRepository;
     private final UserRepository userRepository;
+    private final DatePolicy datePolicy;
 
     @Transactional
-    public Long save(DiaryRequest diaryRequest){
+    public void save(DiaryRequest diaryRequest){
         User user = userRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Diary diary = Diary.create(user, diaryRequest.getContent());
+        LocalDate decidedDate = decideDate(diaryRequest.getWritingDiaryTime());
+        Diary diary = Diary.create(user, diaryRequest.getContent(), decidedDate);
         diaryRepository.save(diary);
-        return diary.getId();
+    }
+    private LocalDate decideDate(ZonedDateTime savedDateTime){
+        LocalDate decidedDate = datePolicy.decideDate(savedDateTime);
+        return decidedDate;
     }
 
     @Transactional

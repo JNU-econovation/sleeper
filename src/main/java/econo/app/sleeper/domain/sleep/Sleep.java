@@ -38,7 +38,6 @@ public class Sleep {
     @JoinColumn(name = "USER_FK")
     private User user;
 
-
     @Builder
     public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, User user){
         this.setSleepTime = setSleepTime;
@@ -63,6 +62,10 @@ public class Sleep {
 
     public void updateActualWakeTime(ZonedDateTime actualWakeTime){
         this.actualWakeTime = actualWakeTime;
+    }
+
+    public Integer calculateXp(){
+        return 1;
     }
 
 }

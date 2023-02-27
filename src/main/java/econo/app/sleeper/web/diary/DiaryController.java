@@ -43,14 +43,16 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<DiarySaveResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest) {
-        Long diaryPk = diaryService.save(diaryRequest);
-        sleepService.updateActualSleepTime(diaryRequest.getUserPk());
-        Integer reward = moneyService.obtainMoney(DiaryRewardDto.of(diaryRequest.getContent(), diaryRequest.getUserPk()));
-        characterService.updateStatusToSleep(diaryRequest.getUserPk());
-        speechBubbleService.judgeSpeechBubbleAfterSaveDiary(diaryRequest.getContent().length());
-        DiarySaveResponse diarySaveResponse = DiarySaveResponse.of(diaryPk,reward);
-        return new ResponseEntity<>(diarySaveResponse,HttpStatus.CREATED);
+    public ResponseEntity<CommonResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest) {
+        diaryService.save(diaryRequest);
+        CommonResponse commonResponse = CommonResponse.of("감사일기 작성 완료");
+        return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
+    }
+
+    @GetMapping("/diaries")
+    public ResponseEntity<DiaryCheckDto> readDiaryIfFirstWriting(@Valid CommonRequest commonRequest){
+        DiaryCheckDto diaryCheckDto = diaryService.giveDiaryIfPresent(commonRequest.getUserPk());
+        return new ResponseEntity<>(diaryCheckDto,HttpStatus.OK);
     }
 
 
@@ -71,14 +73,6 @@ public class DiaryController {
         CommonResponse commonResponse = CommonResponse.of("감사일기 수정 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
-
-
-    @GetMapping("/diaries/check")
-    public ResponseEntity<DiaryCheckDto> checkDiary(@Valid CommonRequest commonRequest){
-        DiaryCheckDto diaryCheckDto = diaryService.giveDiaryIfPresent(commonRequest.getUserPk());
-        return new ResponseEntity<>(diaryCheckDto,HttpStatus.OK);
-    }
-
 
     @DeleteMapping("/diaries/{nu}")
     public ResponseEntity<CommonResponse> deleteDiary(@PathVariable("nu") Long diaryPk){

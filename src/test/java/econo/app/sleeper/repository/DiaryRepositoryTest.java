@@ -1,6 +1,5 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.diary.Content;
 import econo.app.sleeper.domain.diary.Diary;
 import econo.app.sleeper.domain.user.User;
 import org.junit.Test;
