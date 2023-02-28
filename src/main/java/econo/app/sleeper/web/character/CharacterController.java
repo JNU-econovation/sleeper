@@ -20,7 +20,6 @@ import javax.validation.Valid;
 @Tag(name = "character", description = "케릭터 관련 API")
 public class CharacterController{
 
-
     private final CharacterService characterService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
@@ -31,9 +30,9 @@ public class CharacterController{
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @GetMapping("/character")
-    public ResponseEntity<CharacterResponse> readCharacter(@Valid CommonRequest commonRequest){
-        CharacterResponse characterResponse = characterService.readCharacter(commonRequest.getUserPk());
+    @GetMapping("/character/{nu}")
+    public ResponseEntity<CharacterResponse> readCharacter(@PathVariable("nu")Long characterPk){
+        CharacterResponse characterResponse = characterService.readCharacter(characterPk);
         return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }
 }

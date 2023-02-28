@@ -7,15 +7,14 @@ import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.SleepRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.sleep.SleepDto;
-import econo.app.sleeper.web.sleep.SleepRequest;
+import econo.app.sleeper.web.sleep.dto.SleepDto;
+import econo.app.sleeper.web.sleep.dto.SleepRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -34,8 +33,6 @@ public class SleepService {
         sleepRepository.save(sleep);
         return sleep.getId();
     }
-
-
 
     private LocalDate decideDate(ZonedDateTime savedDateTime){
         LocalDate decidedDate = datePolicy.decideDate(savedDateTime);

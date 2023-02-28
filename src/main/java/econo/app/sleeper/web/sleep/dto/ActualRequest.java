@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.sleep;
+package econo.app.sleeper.web.sleep.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
@@ -15,6 +15,6 @@ public class ActualRequest {
     private ZonedDateTime actualWakeTime;
 
     @NotNull
-    private Long userPk;
+    private Long characterPk;
 
 }

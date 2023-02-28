@@ -11,16 +11,17 @@ import java.io.Serializable;
 @Builder
 public class LoginResponse implements Serializable{
 
-    private String message;
-    private Long sleepPk;
+    private Long characterPk;
     private Long userPk;
     private Long sleepAdvisorPk;
-    public static LoginResponse of (String message, Long sleepPk, Long userPk, Long userSleepPk){
+    private String message;
+
+    public static LoginResponse of (Long characterPk, Long userPk, Long userSleepPk, String message){
         return LoginResponse.builder()
-                .sleepPk(sleepPk)
-                .message(message)
+                .characterPk(characterPk)
                 .userPk(userPk)
                 .sleepAdvisorPk(userSleepPk)
+                .message(message)
                 .build();
     }
 

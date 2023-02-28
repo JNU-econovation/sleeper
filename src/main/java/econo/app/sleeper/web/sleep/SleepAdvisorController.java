@@ -1,8 +1,12 @@
 package econo.app.sleeper.web.sleep;
 
 import econo.app.sleeper.service.sleep.SleepAdvisorService;
-import econo.app.sleeper.web.user.WakeTimeRecommendDto;
-import econo.app.sleeper.web.user.WakeTimeRecommendRequest;
+import econo.app.sleeper.web.sleep.dto.RecommendedTimes;
+import econo.app.sleeper.web.sleep.dto.SleepAdvisorDto;
+import econo.app.sleeper.web.sleep.dto.SleepAdvisorRequest;
+import econo.app.sleeper.web.sleep.dto.SleepAdvisorResponse;
+import econo.app.sleeper.web.user.dto.WakeTimeRecommendDto;
+import econo.app.sleeper.web.user.dto.WakeTimeRecommendRequest;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

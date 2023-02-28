@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.sleep;
+package econo.app.sleeper.web.sleep.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import econo.app.sleeper.domain.sleep.Sleep;
@@ -25,6 +25,6 @@ public class SleepRequest {
     private ZonedDateTime actualSleepTime;
 
     @NotNull
-    private Long userPk;
+    private Long characterPk;
 
 }

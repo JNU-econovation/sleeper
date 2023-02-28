@@ -3,9 +3,8 @@ package econo.app.sleeper.service;
 import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.user.UserService;
-import econo.app.sleeper.web.user.SignUpRequest;
+import econo.app.sleeper.web.user.dto.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -17,8 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest

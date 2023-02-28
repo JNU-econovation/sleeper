@@ -1,7 +1,6 @@
-package econo.app.sleeper.web.sleep;
+package econo.app.sleeper.web.sleep.dto;
 
 
-import econo.app.sleeper.web.common.CommonResponse;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

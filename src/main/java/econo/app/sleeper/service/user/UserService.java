@@ -1,12 +1,8 @@
 package econo.app.sleeper.service.user;
 
-import com.sun.xml.bind.v2.TODO;
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.exception.RestApiException;
-import econo.app.sleeper.exception.error.CommonErrorCode;
-import econo.app.sleeper.web.user.IdRequest;
-import econo.app.sleeper.web.user.SignUpRequest;
+import econo.app.sleeper.web.user.dto.SignUpRequest;
 import econo.app.sleeper.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter
@@ -39,11 +40,11 @@ public class Sleep {
     private User user;
 
     @Builder
-    public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, User user){
+    public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, LocalDate sleepDate){
         this.setSleepTime = setSleepTime;
         this.setWakeTime = setWakeTime;
         this.actualSleepTime = actualSleepTime;
-        this.user = user;
+        this.sleepDate = sleepDate;
     }
 
     private void mappingUser(User user){
@@ -55,7 +56,7 @@ public class Sleep {
         sleep.setSleepTime = setSleepTime;
         sleep.setWakeTime = setWakeTime;
         sleep.actualSleepTime = actualSleepTime;
-        sleep.sleepDate =sleepDate;
+        sleep.sleepDate = sleepDate;
         sleep.mappingUser(user);
         return sleep;
     }
@@ -64,8 +65,25 @@ public class Sleep {
         this.actualWakeTime = actualWakeTime;
     }
 
-    public Integer calculateXp(){
-        return 1;
+    public Integer calculateXp() {
+        if(actualSleepTime.isAfter(setWakeTime)){
+            return 0;
+        } else if(actualWakeTime.isBefore(setSleepTime)){
+            return 0;
+        } else if(actualWakeTime.isAfter(setSleepTime) & actualWakeTime.isBefore(setWakeTime)){
+            long between = ChronoUnit.HOURS.between(setSleepTime,actualWakeTime);
+            return (int)between;
+        } else if(actualSleepTime.isBefore(setSleepTime) & actualWakeTime.isAfter(setWakeTime)){
+            long between = ChronoUnit.HOURS.between(setSleepTime, setWakeTime);
+            return (int)between;
+        } else if (actualSleepTime.isAfter(setSleepTime) & actualSleepTime.isBefore(setWakeTime)) {
+            long between = ChronoUnit.HOURS.between(actualSleepTime, setWakeTime);
+            return (int)between;
+        } else if (actualWakeTime.isBefore(setSleepTime) & actualWakeTime.isBefore(setWakeTime)) {
+            long between = ChronoUnit.HOURS.between(setSleepTime, actualWakeTime);
+            return (int)between;
+        }
+        return 0;
     }
 
 }

@@ -37,9 +37,11 @@ public class Character {
         this.cumulativeXp = cumulativeXp;
         this.level = level;
     }
+
     public void oppositeStatus() {
         this.status.opposite();
     }
+
     public void plusXp(Integer xp){
         this.cumulativeXp += xp;
         levelUpOrStay();
@@ -49,13 +51,9 @@ public class Character {
         XpPerLevel.getCurrentLevel(cumulativeXp,level);
     }
 
-    public void updateColor(Color color){
-        this.color = color;
-    }
-
     public static Character createCharacter(User user){
         Character character = Character.builder()
-                .color(Color.GRAY)
+                .color(Color.YELLOW)
                 .status(Status.NO_SLEEP)
                 .cumulativeXp(0)
                 .level(1L)

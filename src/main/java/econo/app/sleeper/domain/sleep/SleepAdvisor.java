@@ -1,5 +1,6 @@
 package econo.app.sleeper.domain.sleep;
 
+import econo.app.sleeper.domain.user.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -59,8 +60,9 @@ public class SleepAdvisor {
         this.minimumSleepTime = minimumSleepTime;
     }
 
-    public static SleepAdvisor createSleepAdvisor(LocalTime goalSleepTime, LocalTime goalWakeTime, LocalTime minimumSleepTime){
+    public static SleepAdvisor createSleepAdvisor(LocalTime goalSleepTime, LocalTime goalWakeTime, LocalTime minimumSleepTime, User user){
         SleepAdvisor sleepAdvisor = new SleepAdvisor(goalSleepTime,goalWakeTime,minimumSleepTime);
+        user.mappingSleepAdvisor(sleepAdvisor);
         return sleepAdvisor;
     }
 

@@ -32,8 +32,6 @@ public class LoginController {
 
     private final UserRepository userRepository;
 
-    private final SleepRepository sleepRepository;
-
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -49,10 +47,10 @@ public class LoginController {
         String userId= loginRequest.getUserId();
         User user= userRepository.findById(userId).get();
         Long userPk= user.getId();
-        Sleep sleep= sleepRepository.findRecentSleepByUser(userPk).get();
-        Long sleepPk= sleep.getId();
-        Long userSleepIfoPk = user.getSleepAdvisor().getId();
-        LoginResponse loginResponse = new LoginResponse(loginTokenDto.getMessage(), sleepPk, userPk, userSleepIfoPk);
+        Long characterPk = user.getCharacter().getId();
+        Long sleepAdvisorPk = user.getSleepAdvisor().getId();
+        LoginResponse loginResponse = new LoginResponse(characterPk,userPk,sleepAdvisorPk,loginTokenDto.getMessage());
+
         if (loginTokenDto.getAccessToken().isBlank()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -64,8 +62,6 @@ public class LoginController {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         response.addHeader("authorization", accessToken);
         response.addCookie(cookie);
-
-
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 

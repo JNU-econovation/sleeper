@@ -31,7 +31,7 @@ public class DiaryService {
         User user = userRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         LocalDate decidedDate = decideDate(diaryRequest.getWritingDiaryTime());
-        Diary diary = Diary.create(user, diaryRequest.getContent(), decidedDate);
+        Diary diary = Diary.create(diaryRequest.getContent(), decidedDate, user);
         diaryRepository.save(diary);
     }
     private LocalDate decideDate(ZonedDateTime savedDateTime){

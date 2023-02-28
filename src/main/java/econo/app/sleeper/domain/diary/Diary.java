@@ -25,8 +25,6 @@ public class Diary {
     @Column
     private LocalDate diaryDate;
 
-    private boolean isFirstWriting;
-
     @Builder
     public Diary(String content, User user){
         this.content = content;
@@ -37,44 +35,21 @@ public class Diary {
         this.user = user;
     }
 
-    public static Diary create(User user,String content, LocalDate diaryDate){
+    public static Diary create(String content, LocalDate diaryDate, User user){
         Diary diary = new Diary();
-        diary.associate(user);
         diary.content = content;
         diary.diaryDate = diaryDate;
-        diary.isFirstWriting = false;
+        diary.associate(user);
         return diary;
     }
 
-    public Boolean isFirstWriting(){
-        return isFirstWriting;
-    }
     public void update(String content) {
         this.content = content;
     }
 
-    public Integer reward(){
-
-        Integer contentLength = content.length();
-
-        if(contentLength < 1){
-            return RewardStage.BRONZE_REWARD.getReward();
-        }else if(contentLength < 10){
-            return RewardStage.SILVER_REWARD.getReward();
-        }else{
-            return RewardStage.BRONZE_REWARD.getReward();
-        }
+    public Integer getContentLength(){
+        return this.content.length();
     }
 
-    @RequiredArgsConstructor
-    @Getter
-    private enum RewardStage{
-        GOLD_REWARD(1,10),
-        SILVER_REWARD(2,5),
-        BRONZE_REWARD(3,1);
-
-        private final Integer grade;
-        private final Integer reward;
-    }
 
 }

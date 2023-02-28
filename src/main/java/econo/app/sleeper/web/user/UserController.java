@@ -6,9 +6,12 @@ import econo.app.sleeper.service.money.MoneyService;
 import econo.app.sleeper.service.sleep.SleepService;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.service.sleep.SleepAdvisorService;
-import econo.app.sleeper.web.character.NewCharacterDto;
+import econo.app.sleeper.web.character.dto.InitialCharacterDto;
 import econo.app.sleeper.web.common.CommonResponse;
 import econo.app.sleeper.web.money.InitialMoneyDto;
+import econo.app.sleeper.web.sleep.dto.InitialSleepAdvisorDto;
+import econo.app.sleeper.web.user.dto.IdRequest;
+import econo.app.sleeper.web.user.dto.SignUpRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -50,8 +53,8 @@ public class UserController {
     @PostMapping("/users")
     public ResponseEntity<CommonResponse> signup(@RequestBody SignUpRequest signUpRequest) {
         User user = userService.join(signUpRequest);
-        sleepAdvisorService.create(signUpRequest);
-        characterService.createCharacter(NewCharacterDto.of(user));
+        sleepAdvisorService.create(InitialSleepAdvisorDto.of(user,signUpRequest.getGoalSleepTime(),signUpRequest.getGoalWakeTime(),signUpRequest.getMinimumSleepTime()));
+        characterService.createCharacter(InitialCharacterDto.of(user));
         moneyService.createMoney(InitialMoneyDto.of(user));
         CommonResponse commonResponse = CommonResponse.of("회원가입 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);

@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.sleep;
+package econo.app.sleeper.web.sleep.dto;
 
 
 import lombok.Builder;

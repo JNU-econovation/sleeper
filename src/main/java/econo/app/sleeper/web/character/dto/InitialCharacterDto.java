@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.character;
+package econo.app.sleeper.web.character.dto;
 
 import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 @Builder
-public class NewCharacterDto {
+public class InitialCharacterDto {
 
     private final User user;
 
-    public static NewCharacterDto of(User user){
-        return NewCharacterDto.builder()
+    public static InitialCharacterDto of(User user){
+        return InitialCharacterDto.builder()
                 .user(user)
                 .build();
     }

@@ -1,8 +1,7 @@
 package econo.app.sleeper.repository;
 
-import econo.app.sleeper.domain.money.Deal;
+import econo.app.sleeper.domain.money.Money;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.exception.RestApiException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @Transactional
 @Rollback(value = false)
-public class MoneyDealRepositoryTest {
+public class MoneyMoneyRepositoryTest {
 
     @Autowired
     MoneyRepository moneyRepository;
@@ -27,8 +26,8 @@ public class MoneyDealRepositoryTest {
     public void findRecentMoneyByUser() {
 
         User sleeper = userRepository.findById("sleeper").get();
-        Deal moneyDeal = moneyRepository.findRecentMoneyByUser(sleeper.getId()).get();
-        Deal moneyDeal1 = moneyDeal.plusMoney(10);
-        moneyRepository.save(moneyDeal1);
+        Money moneyMoney = moneyRepository.findRecentMoneyByUser(sleeper.getId()).get();
+        Money moneyMoney1 = moneyMoney.plusCash(10);
+        moneyRepository.save(moneyMoney1);
     }
 }

@@ -1,6 +1,6 @@
 package econo.app.sleeper.service.money;
 
-import econo.app.sleeper.domain.money.Deal;
+import econo.app.sleeper.domain.money.Money;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.MoneyRepository;
@@ -20,15 +20,15 @@ public class MoneyService {
     @Transactional
     public Integer obtainMoney(DiaryRewardDto diaryRewardDto){
         Integer reward = new Content(diaryRewardDto.getContent()).reward();
-        Deal deal = moneyRepository.findRecentMoneyByUser(diaryRewardDto.getUserPk())
+        Money money = moneyRepository.findRecentMoneyByUser(diaryRewardDto.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        moneyRepository.save(deal.plusMoney(reward));
+        moneyRepository.save(money.plusCash(reward));
         return reward;
     }
 
     @Transactional
     public void createMoney(InitialMoneyDto initialMoneyDto){
-        moneyRepository.save(Deal.createMoney(initialMoneyDto.getUser()));
+        moneyRepository.save(Money.createMoney(initialMoneyDto.getUser()));
     }
 
 }

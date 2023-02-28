@@ -1,10 +1,11 @@
 package econo.app.sleeper.web.sleep;
-import econo.app.sleeper.domain.sleep.Sleep;
-import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.web.character.CharacterDto;
 import econo.app.sleeper.web.common.CommonResponse;
+import econo.app.sleeper.web.sleep.dto.ActualRequest;
+import econo.app.sleeper.web.sleep.dto.SleepDto;
+import econo.app.sleeper.web.sleep.dto.SleepRequest;
+import econo.app.sleeper.web.sleep.dto.SleepResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 public class SleepController {
 
     private final SleepService sleepService;
+    private final CharacterService characterService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -34,6 +36,7 @@ public class SleepController {
     @PostMapping ("/sleeps")
     public ResponseEntity<SleepResponse> saveSleep(@RequestBody @Valid SleepRequest sleepRequest){
         Long sleepPk = sleepService.saveSleep(sleepRequest);
+        characterService.oppositeStatus(sleepRequest.getCharacterPk());
         SleepResponse sleepResponse = SleepResponse.of(sleepPk);
         return new ResponseEntity<>(sleepResponse,HttpStatus.OK);
     }
@@ -43,6 +46,8 @@ public class SleepController {
                                                            @RequestBody @Valid ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
         sleepService.updateActualWakeTime(sleepDto);
+        characterService.updateCharacterXp(actualRequest.getCharacterPk());
+        characterService.oppositeStatus(actualRequest.getCharacterPk());
         CommonResponse commonResponse = CommonResponse.of("실제 기상 시간 업데이트 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }

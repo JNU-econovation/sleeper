@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MoneyDealManagerTest {
+public class MoneyMoneyManagerTest {
 
     @Test
     public void countLength(){

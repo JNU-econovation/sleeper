@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @Slf4j
@@ -19,12 +18,13 @@ public class CharacterRepository {
     @PersistenceContext
     private final EntityManager em;
 
-    public void save(Character character){
+    public Long save(Character character){
         em.persist(character);
         log.info("save: character={}", character);
+        return character.getId();
     }
 
-    public Optional<Character> findByPk(Long characterPk){
+    public Optional<Character> find(Long characterPk){
         Character character = em.find(Character.class, characterPk);
         return Optional.ofNullable(character);
     }

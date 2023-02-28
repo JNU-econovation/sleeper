@@ -48,6 +48,10 @@ public class User {
       this.character = character;
    }
 
+   public void mappingSleepAdvisor(SleepAdvisor sleepAdvisor){
+      this.sleepAdvisor = sleepAdvisor;
+   }
+
    public static User createUser(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
       User user = new User(userId,userPassword,userNickName,userAge,roleType);
       return user;

@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.user;
+package econo.app.sleeper.web.user.dto;
 
 import econo.app.sleeper.domain.user.User;
 import lombok.Builder;
