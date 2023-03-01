@@ -11,6 +11,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -119,7 +121,14 @@ public class Sleep {
 
     }
 
-
+    public List<ZonedDateTime> getSleepInfo(){
+        List<ZonedDateTime> sleepInfo = new ArrayList<>();
+        sleepInfo.add(setSleepTime);
+        sleepInfo.add(setWakeTime);
+        sleepInfo.add(actualSleepTime);
+        sleepInfo.add(actualWakeTime);
+        return sleepInfo;
+    }
 
 
 

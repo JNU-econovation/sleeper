@@ -32,7 +32,7 @@ public class SleepRepository {
 
     // 회원의 수면 기록 중 날짜가 ~ 인 것
     public List<Sleep> findSleepsByUserAndDate(Long userPk, LocalDate localDate){
-        return em.createQuery("select s from Sleep s join s.user u where u.id = :userPk and s.savingDate.savingDate = :localDate", Sleep.class)
+        return em.createQuery("select s from Sleep s join s.user u where u.id = :userPk and s.sleepDate = :localDate", Sleep.class)
                 .setParameter("userPk",userPk)
                 .setParameter("localDate",localDate)
                 .getResultList();
@@ -49,7 +49,7 @@ public class SleepRepository {
     }
 
     public List<Sleep> findSleepsBetweenDates(Long userPk, LocalDate startDate, LocalDate endDate){
-        return em.createQuery("select s from Sleep s join s.user u where u.id = :userPk and s.savingDate.savingDate between :startDate and :endDate order by s.savingDate.savingDate")
+        return em.createQuery("select s from Sleep s join s.user u where u.id = :userPk and s.sleepDate between :startDate and :endDate order by s.sleepDate")
                 .setParameter("userPk",userPk)
                 .setParameter("startDate",startDate)
                 .setParameter("endDate",endDate)

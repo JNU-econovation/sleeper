@@ -27,7 +27,6 @@ import java.util.ArrayList;
 @Tag(name = "calendar", description = "캘린더 관련 API")
 public class CalendarController {
 
-    private final DiaryService diaryService;
     private final CalendarService calendarService;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
@@ -39,34 +38,16 @@ public class CalendarController {
     })
 
     @GetMapping("/calendar/{date}")
-    public ResponseEntity<CalendarDateResponse> readCalendarByDate(@Valid CommonRequest commonRequest,
-                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate localDate){
-        CalendarDateDto calendarDateDto = calendarService.readCalendarByDate(CalendarDto.of(commonRequest.getUserPk(), localDate));
-        CalendarDateResponse calendarDateResponse = null;
-        ArrayList<ZonedDateTime[]> sleepTimes = new ArrayList<>();
-        if(calendarDateDto.getDiary().isPresent()){
-            for(int i=0; i< calendarDateDto.getSleep().size(); i++){
-                sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getAlarm().getSetSleepTime(),
-                        calendarDateDto.getSleep().get(i).getAlarm().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
-                calendarDateResponse = CalendarDateResponse.of(calendarDateDto.getDiary().get().getContent().getContent(), calendarDateDto.getDiary().get().getId(),sleepTimes.get(i), calendarDateDto.getScore()
-                );
-            }
-            return new ResponseEntity<>(calendarDateResponse, HttpStatus.OK);
-        }
-        for(int i=0; i< calendarDateDto.getSleep().size(); i++){
-            sleepTimes.add(new ZonedDateTime[]{calendarDateDto.getSleep().get(i).getAlarm().getSetSleepTime(),
-                    calendarDateDto.getSleep().get(i).getAlarm().getSetWakeTime(), calendarDateDto.getSleep().get(i).getSavingDate().getSavingDateTime(), calendarDateDto.getSleep().get(i).getActualWakeTime()});
-            calendarDateResponse = CalendarDateResponse.of(null, null, sleepTimes.get(i), calendarDateDto.getScore()
-            );
-        }
-        return new ResponseEntity<>(calendarDateResponse,HttpStatus.OK);
+    public ResponseEntity<CalendarDateDto> readCalendarByDate(@Valid CommonRequest commonRequest,
+                                                                   @DateTimeFormat(pattern = "yyyy-MM-dd") @PathVariable("date")LocalDate nowDate){
+        CalendarDateDto calendarDateDto = calendarService.readCalendarByDate(CalendarDto.of(commonRequest.getUserPk(), nowDate));
+        return new ResponseEntity<>(calendarDateDto,HttpStatus.OK);
     }
 
 
     @GetMapping("/calendar")
-    public ResponseEntity<CalendarResponse> readCalendar(@ Valid CommonRequest commonRequest){
-        LocalDate localDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        CalendarResponse calendarResponse = calendarService.readCalendar(commonRequest.getUserPk(), localDate);
+    public ResponseEntity<CalendarResponse> readCalendar(@ Valid CalendarRequest calendarRequest){
+        CalendarResponse calendarResponse = calendarService.readCalendar(calendarRequest);
         return new ResponseEntity<>(calendarResponse,HttpStatus.OK);
     }
 
