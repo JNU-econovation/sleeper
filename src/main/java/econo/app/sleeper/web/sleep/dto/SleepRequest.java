@@ -27,4 +27,7 @@ public class SleepRequest {
     @NotNull
     private Long characterPk;
 
+    @NotNull
+    private Long userPk;
+
 }

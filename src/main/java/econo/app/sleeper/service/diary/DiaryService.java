@@ -7,7 +7,8 @@ import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.repository.DiaryRepository;
 import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.diary.*;
+import econo.app.sleeper.web.diary.dto.DiaryFindDto;
+import econo.app.sleeper.web.diary.dto.DiaryRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -31,7 +31,7 @@ public class DiaryService {
         User user = userRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         LocalDate decidedDate = decideDate(diaryRequest.getWritingDiaryTime());
-        Diary diary = Diary.create(diaryRequest.getContent(), decidedDate, user);
+        Diary diary = Diary.create(diaryRequest.getContent(), decidedDate, diaryRequest.getWritingDiaryTime(), user);
         diaryRepository.save(diary);
     }
     private LocalDate decideDate(ZonedDateTime savedDateTime){
@@ -41,44 +41,27 @@ public class DiaryService {
 
     @Transactional
     public void updateDiary(Long diaryPk,String content) {
-        Diary diary = diaryRepository.findByPk(diaryPk)
+        Diary diary = diaryRepository.find(diaryPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        diary.getContent().update(content);
+        diary.update(content);
     }
 
     @Transactional
     public void deleteDiary(Long diaryPk){
-        Diary diary = diaryRepository.findByPk(diaryPk)
+        Diary diary = diaryRepository.find(diaryPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         diaryRepository.delete(diary);
     }
 
     public Diary findDiary(Long diaryPk) throws RestApiException{
-        return diaryRepository.findByPk(diaryPk)
+        return diaryRepository.find(diaryPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
-
-    public DiaryCheckDto giveDiaryIfPresent(Long userPk){
-        SavingDate savingDate = new SavingDate();
-        LocalDate dateSavingDate = savingDate.getSavingDate();
-        Optional<Diary> diaryByDate = diaryRepository.findDiaryByDate(userPk, dateSavingDate);
-        if (diaryByDate.isPresent()){
-            return DiaryCheckDto.of(diaryByDate.get().getId(),diaryByDate.get().getContent().getContent(),true);
-        }
-        return DiaryCheckDto.of(null,null,false);
-    }
-
-    public List<Diary> findDiariesByUser(Long userPk){
+    public List<Diary> findDiaries(Long userPk){
         User user = userRepository.find(userPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         return diaryRepository.findAllByPk(user.getId());
-    }
-
-    public List<Diary> findDiariesBetWeenDates(DiaryFindDto diaryFindDto){
-        List<Diary> diaryBetweenDates = diaryRepository.findDiaryBetweenDates(diaryFindDto.getUserPk(), diaryFindDto.getLocalDate().withDayOfMonth(1),
-                diaryFindDto.getLocalDate().withDayOfMonth(diaryFindDto.getLocalDate().lengthOfMonth()));
-        return diaryBetweenDates;
     }
 
     public Diary findDiaryByDate(DiaryFindDto diaryFindDto){

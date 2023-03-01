@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -25,6 +26,9 @@ public class Diary {
     @Column
     private LocalDate diaryDate;
 
+    @Column
+    private ZonedDateTime writingTIme;
+
     @Builder
     public Diary(String content, User user){
         this.content = content;
@@ -35,10 +39,11 @@ public class Diary {
         this.user = user;
     }
 
-    public static Diary create(String content, LocalDate diaryDate, User user){
+    public static Diary create(String content, LocalDate diaryDate, ZonedDateTime writingTIme, User user){
         Diary diary = new Diary();
         diary.content = content;
         diary.diaryDate = diaryDate;
+        diary.writingTIme = writingTIme;
         diary.associate(user);
         return diary;
     }

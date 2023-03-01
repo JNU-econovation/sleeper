@@ -1,9 +1,7 @@
 package econo.app.sleeper.service.diary;
 
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.repository.DiaryRepository;
-import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.diary.DiaryRequest;
+import econo.app.sleeper.web.diary.dto.DiaryRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

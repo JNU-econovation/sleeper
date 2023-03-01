@@ -2,7 +2,6 @@ package econo.app.sleeper.repository;
 
 
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.sleep.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -33,7 +32,7 @@ public class DiaryRepository {
     }
 
 
-    public Optional<Diary> findByPk(Long diaryPk){
+    public Optional<Diary> find(Long diaryPk){
         Diary diary = em.find(Diary.class, diaryPk);
         return Optional.ofNullable(diary);
     }

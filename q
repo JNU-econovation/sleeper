@@ -1,0 +1,143 @@
+* bebdf2c = Daesun Hwang , 12 hours ago : feat : 돈 정책
+* a9e2cd6 = Daesun Hwang , 34 hours ago : feat : 케릭터 경험치 정책 기능 - 도메인
+* f2c7014 = Daesun Hwang , 3 days ago : refactor : 날짜를 판단하는 기능
+* d46048d = Daesun Hwang , 4 days ago : refactor : 기상 시간 추천 기능
+* 49347e0 = Daesun Hwang , 5 weeks ago : feat : SpeechBubbleKind.SLEEP 삭제
+*   392c2aa = Daesun Hwang , 5 weeks ago : Merge branch 'master' of https://github.com/hwangdaesun/sleeper
+[32m|[m[33m\[m  
+[32m|[m * 573bdb7 = Sonny , 6 weeks ago : Update README.md
+[32m|[m * efa3856 = Sonny , 6 weeks ago : Create README.md
+* [33m|[m 31c37c9 = Daesun Hwang , 5 weeks ago : fix : 감사일기 삭제후 캘린더에서 날짜별로 조회 되지 않는 오류 수정
+* [33m|[m   303394d = LimSumi , 5 weeks ago : Merge pull request #18 from JNU-econovation/sumi
+[34m|[m[35m\[m [33m\[m  
+[34m|[m * [33m|[m 048df25 = LimSumi , 5 weeks ago : fix : 인터셉터 리다이렉트 설정
+[34m|[m * [33m|[m 7d2b747 = LimSumi , 5 weeks ago : update : 토큰 만료시간 설정
+[34m|[m * [33m|[m c8ab05e = LimSumi , 5 weeks ago : feat : 회원가입 아이디 중복체크 버튼 구현
+[34m|[m * [33m|[m 06db4f7 = LimSumi , 5 weeks ago : feat : 회원가입 아이디 중복체크 버튼 구현
+[34m|[m * [33m|[m f84e580 = LimSumi , 5 weeks ago : update : LoginTokenDto 명칭 변경
+* [35m|[m [33m|[m 06ebeb8 = LimSumi , 6 weeks ago : Merge pull request #17 from JNU-econovation/sumi
+[36m|[m[35m\[m[35m|[m [33m|[m 
+[36m|[m * [33m|[m 61491b7 = LimSumi , 6 weeks ago : update : sleepPk return, Login 할때  response 변경
+[36m|[m[36m/[m [33m/[m  
+* [33m|[m 30436ca = Sonny , 6 weeks ago : Merge pull request #16 from hwangdaesun/master
+[1;32m|[m[33m\[m[33m|[m 
+[1;32m|[m *   f81f666 = Sonny , 6 weeks ago : Merge pull request #5 from hwangdaesun/feature
+[1;32m|[m [1;34m|[m[1;35m\[m  
+[1;32m|[m [1;34m|[m * 3c81cbd = Daesun Hwang , 6 weeks ago : feat : sleepRepsitory의 findRecentSleepByUser 쿼리 변경, DiaryController에 continueDiary 메서드 추가, updateDiary -> editDiary로 메서드명 변경
+[1;32m|[m [1;34m|[m[1;34m/[m  
+* [1;34m|[m 7177cb7 = Sonny , 6 weeks ago : Merge pull request #15 from hwangdaesun/master
+[1;36m|[m[1;34m\[m[1;34m|[m 
+[1;36m|[m * ce024f2 = Daesun Hwang , 6 weeks ago : feat : 수면 점수 기능 추가
+* [31m|[m 42159a7 = Sonny , 6 weeks ago : Merge pull request #14 from hwangdaesun/master
+[32m|[m[31m\[m[31m|[m 
+[32m|[m * 7e98e53 = Daesun Hwang , 6 weeks ago : fix : 병합 문제 해결
+[32m|[m *   c6f6edf = Daesun Hwang , 6 weeks ago : fix : 깃 충돌
+[32m|[m [34m|[m[32m\[m  
+[32m|[m [34m|[m[32m/[m  
+[32m|[m[32m/[m[34m|[m   
+* [34m|[m   13fb792 = Sonny , 6 weeks ago : Merge pull request #12 from JNU-econovation/sumi
+[36m|[m[1;31m\[m [34m\[m  
+[36m|[m * [34m|[m e292cf1 = LimSumi , 6 weeks ago : update : develop과 동기화 완료
+[36m|[m * [34m|[m c65089c = LimSumi , 6 weeks ago : feat : 로그인 구현
+[36m|[m * [34m|[m   0b721e9 = sonny , 6 weeks ago : Merge pull request #11 from hwangdaesun/master
+[36m|[m [1;32m|[m[1;33m\[m [34m\[m  
+[36m|[m * [1;33m\[m [34m\[m   648cec8 = sonny , 7 weeks ago : Merge pull request #9 from hwangdaesun/master
+[36m|[m [1;34m|[m[1;35m\[m [1;33m\[m [34m\[m  
+[36m|[m * [1;35m\[m [1;33m\[m [34m\[m   57ed3af = sonny , 7 weeks ago : Merge pull request #8 from hwangdaesun/master
+[36m|[m [1;36m|[m[31m\[m [1;35m\[m [1;33m\[m [34m\[m  
+[36m|[m * [31m\[m [1;35m\[m [1;33m\[m [34m\[m   48163aa = sonny , 7 weeks ago : Merge pull request #6 from hwangdaesun/master
+[36m|[m [32m|[m[33m\[m [31m\[m [1;35m\[m [1;33m\[m [34m\[m  
+[36m|[m * [33m\[m [31m\[m [1;35m\[m [1;33m\[m [34m\[m   d40cd9b = sonny , 8 weeks ago : Merge pull request #4 from hwangdaesun/master
+[36m|[m [34m|[m[35m\[m [33m\[m [31m\[m [1;35m\[m [1;33m\[m [34m\[m  
+[36m|[m * [35m\[m [33m\[m [31m\[m [1;35m\[m [1;33m\[m [34m\[m   fa659f1 = sonny , 9 weeks ago : Merge pull request #2 from hwangdaesun/master
+[36m|[m [36m|[m[1;31m\[m [35m\[m [33m\[m [31m\[m [1;35m\[m [1;33m\[m [34m\[m  
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m * 039327c = Daesun Hwang , 6 weeks ago : refactor : 주석 제거 및 미사용 import  제거
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m * b3cdffa = Daesun Hwang , 6 weeks ago : refactor : 설정 수면 시간 및 실제 기상 시간 요청 dto에서 기존의 LocalDateTime으로 역직렬화하는 것을 ZonedDateTime으로 역질렬화하는 방식으로 변경
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m * 00b7ef5 = Daesun Hwang , 6 weeks ago : refactor : 수면 설정 시간 읽기 - SetTimeResponse의 setSleepTIme과 setWakeTime 타입 LocalDateTime -> LocalTime으로 수정
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m * ebbacae = Daesun Hwang , 6 weeks ago : feat : 수면 설정 시간 읽기 기능 추가
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m * 0e0c7b9 = Daesun Hwang , 6 weeks ago : feat : 감사일기 2번 작성을 판단하고 처리하는 로직 추가
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;33m|[m[1;33m/[m  
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * ed45278 = Daesun Hwang , 6 weeks ago : refactor : User와Character OneToOne 단방향으로 수정, Deal과 User의 관계ManyToOne 단방향 관계로 수정, Diary와 User의 관계 단방향으로 수정, Sleep과 User의 관계 단방향으로 수정
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * 8327081 = Daesun Hwang , 6 weeks ago : refactor : User 엔티티의 deal 과 character FetchType을 Lazy로 변경
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * 476990a = Daesun Hwang , 6 weeks ago : feat : BindException에 관한 예외처리 추가
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * dee22a8 = Daesun Hwang , 6 weeks ago : feat : RESOURCE_NOT_FOUND에대한 예외 처리 추가
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * 07d73e3 = Daesun Hwang , 6 weeks ago : refactor : SpeechBubble Class를 생성하여 말풍선을 관리하는 책임 부여, Money 클래스와 Deal 클래스의 명명에 대한 고찰-> 수정 완료(값객체와 엔티티의 차이)
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * 8741222 = Daesun Hwang , 7 weeks ago : refactor : 프론트 화면 변경에 따른 회원가입 요청값 수정
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m * 71f822f = Daesun Hwang , 7 weeks ago : feat : 사용자가 선택한 수면시간 바탕으로 한 기상 시간 추천 기능 추가
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m *   66e6418 = Daesun Hwang , 7 weeks ago : erge branch 'master' of https://github.com/hwangdaesun/sleeper
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;32m|[m[1;33m\[m  
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;32m|[m *   59d216e = sonny , 7 weeks ago : Merge branch 'JNU-econovation:master' into master
+[36m|[m [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;32m|[m [1;34m|[m[36m\[m  
+[36m|[m [36m|[m[36m_[m[1;31m|[m[36m_[m[35m|[m[36m_[m[33m|[m[36m_[m[31m|[m[36m_[m[1;35m|[m[36m_[m[1;32m|[m[36m_[m[1;34m|[m[36m/[m  
+[36m|[m[36m/[m[36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;32m|[m [1;34m|[m   
+* [36m|[m [1;31m|[m [35m|[m [33m|[m [31m|[m [1;35m|[m [1;32m|[m [1;34m|[m   3d2615b = sonny , 7 weeks ago : Merge pull request #5 from hwangdaesun/master
+[36m|[m[33m\[m [36m\[m [1;31m\[m [35m\[m [33m\[m [31m\[m [1;35m\[m [1;32m\[m [1;34m\[m  
+[36m|[m [33m|[m[36m/[m [1;31m/[m [35m/[m [33m/[m [31m/[m [1;35m/[m [1;32m/[m [1;34m/[m  
+[36m|[m[36m/[m[33m|[m [1;31m|[m [35m|[m [33m/[m [31m/[m [1;35m/[m [1;32m/[m [1;34m/[m   
+[36m|[m [33m|[m [1;31m|[m[33m_[m[35m|[m[33m/[m [31m/[m [1;35m/[m [1;32m/[m [1;34m/[m    
+[36m|[m [33m|[m[33m/[m[1;31m|[m [35m|[m [31m|[m [1;35m|[m [1;32m|[m [1;34m|[m     
+* [33m|[m [1;31m|[m [35m|[m [31m|[m [1;35m|[m [1;32m|[m [1;34m|[m   9153486 = sonny , 9 weeks ago : Merge pull request #1 from hwangdaesun/master
+[32m|[m[33m\[m [33m\[m [1;31m\[m [35m\[m [31m\[m [1;35m\[m [1;32m\[m [1;34m\[m  
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m [31m|[m [1;35m|[m [1;32m|[m * 9ac2b0c = sonny , 7 weeks ago : Merge pull request #4 from hwangdaesun/feature/1
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m [31m|[m [1;35m|[m [1;32m|[m[1;35m/[m[35m|[m 
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m [31m|[m [1;35m|[m[1;35m/[m[1;32m|[m [35m|[m 
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m [31m|[m * [1;32m|[m [35m|[m 4e9da55 = sonny , 7 weeks ago : Merge pull request #3 from hwangdaesun/feature/1
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m [31m|[m[31m/[m[1;31m|[m [1;32m|[m [35m|[m 
+[32m|[m [33m|[m [33m|[m [1;31m|[m [35m|[m * [1;31m|[m [1;32m|[m [35m|[m 9efadc6 = sonny , 7 weeks ago : Merge pull request #2 from hwangdaesun/feature/1
+[32m|[m [33m|[m [33m|[m [1;31m|[m[33m_[m[35m|[m[33m/[m[1;33m|[m [1;31m|[m [1;32m|[m [35m|[m 
+[32m|[m [33m|[m [33m|[m[33m/[m[1;31m|[m [35m|[m [1;33m|[m [1;31m|[m [1;32m|[m [35m|[m 
+[32m|[m [33m|[m * [1;31m|[m [35m|[m [1;33m|[m [1;31m|[m [1;32m|[m [35m|[m   e8a205a = sonny , 7 weeks ago : Merge pull request #1 from hwangdaesun/feature/1
+[32m|[m [33m|[m [1;34m|[m[1;35m\[m [1;31m\[m [35m\[m [1;33m\[m [1;31m\[m [1;32m\[m [35m\[m  
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m [1;31m|[m * [35m|[m 3e934c6 = Daesun Hwang , 7 weeks ago : refactor : put 매핑 application/json 형식으로 요청을 받기 위해 @RequestBody 애노테이션 추가
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m [1;31m|[m [35m|[m[35m/[m  
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m [1;31m|[m * 526a906 = Daesun Hwang , 7 weeks ago : refactor : swagger관련 어노테이션
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m [1;31m|[m[1;31m/[m  
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m * be8dabf = Daesun Hwang , 7 weeks ago : refactor : Post 요청시 application/json 형식으로 받을 수 있게끔 수정
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m * 0f7fed1 = Daesun Hwang , 7 weeks ago : refactor : Deal 클래스 추가
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m [1;33m|[m[1;33m/[m  
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m * f52e6f1 = Daesun Hwang , 7 weeks ago : refactor : SetTime, GoalTime 클래스 추가
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m [35m|[m * 7c98218 = Daesun Hwang , 7 weeks ago : refactor : SavingDate 클래스에 savingDateTime 컬럼 추가
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m [1;31m|[m[1;35m_[m[35m|[m[1;35m/[m  
+[32m|[m [33m|[m [1;34m|[m [1;35m|[m[1;35m/[m[1;31m|[m [35m|[m   
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 0529731 = Daesun Hwang , 7 weeks ago : refactor : Controller들의  응답 수정
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 949e627 = Daesun Hwang , 7 weeks ago : feat : 실제 기상 시간과 실제 수면 시작 시간 저장하는 코드 분리
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m e73ce7b = Daesun Hwang , 7 weeks ago : refactor : Content 클래스 생성
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 46d59f5 = Daesun Hwang , 7 weeks ago : Feat : Growth 클래스 추가, refactor : 말풍선 관련 기능
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m db2007f = Daesun Hwang , 8 weeks ago : refactor : RewardManager 감사일기 내용에 따른 리워드 판단 역할 부여, moneyService의 get 메서드 수정
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 60e95cc = Daesun Hwang , 8 weeks ago : refactor : UserController의 signupUser 메서드
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 5d46573 = Daesun Hwang , 8 weeks ago : refactor : 회원가입,  감사일기 작성, Money 엔티티
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 8338f65 = Daesun Hwang , 8 weeks ago : refactor : DateTimeManager 생성자 수정
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 48729ab = Daesun Hwang , 8 weeks ago : refactor : DateManager 수정
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 28e1b0d = Daesun Hwang , 8 weeks ago : refactro : 감사일기 관련 코드 리팩토링
+[32m|[m [33m|[m [1;34m|[m * [1;31m|[m [35m|[m 315f2fe = Daesun Hwang , 8 weeks ago : reafactor : 주석 제거
+[32m|[m [33m|[m [1;34m|[m[1;34m/[m [1;31m/[m [35m/[m  
+[32m|[m [33m|[m * [1;31m|[m [35m|[m 7e7694c = Daesun Hwang , 8 weeks ago : refactor : diary 패키지의 감사일기 코드
+[32m|[m [33m|[m * [1;31m|[m [35m|[m 9244eda = Daesun Hwang , 8 weeks ago : refactor : login 패키지 dto 클래스 명 변경
+[32m|[m [33m|[m * [1;31m|[m [35m|[m a4e9377 = Daesun Hwang , 8 weeks ago : refactor : sleep 패키지의 설정수면시간,실제수면시간 관련 코드
+[32m|[m [33m|[m * [1;31m|[m [35m|[m c37cb34 = Daesun Hwang , 8 weeks ago : refactor : user 패키지의 목표시간 관련 코드
+[32m|[m [33m|[m [35m|[m [1;31m|[m[35m/[m  
+[32m|[m [33m|[m [35m|[m[35m/[m[1;31m|[m   
+[32m|[m [33m|[m * [1;31m|[m 1790e21 = Daesun Hwang , 8 weeks ago : feat : 설정 수면 시간이 넘었는 데 잠을 자지 않을 시 케릭터 말풍선 변경  기능 추가
+[32m|[m [33m|[m * [1;31m|[m 582101c = Daesun Hwang , 8 weeks ago : fix  : 설정 수면 시간 저장시 데이터베이스에 USER_FK가 들어가지 않는 버그 수정
+[32m|[m [33m|[m * [1;31m|[m cd9cd1a = Daesun Hwang , 8 weeks ago : feat : 케릭터가 레벨 업 직전일 때의 말풍선 추가
+[32m|[m [33m|[m * [1;31m|[m 31625f0 = Daesun Hwang , 8 weeks ago : feat : 수면 시 케릭터 경험치 증가하는 기능 추가
+[32m|[m [33m|[m * [1;31m|[m 993b356 = Daesun Hwang , 8 weeks ago : refactor : Diary Class 필드명 변경
+[32m|[m [33m|[m * [1;31m|[m b59f6fb = Daesun Hwang , 8 weeks ago : feat : 해당 월의 캘린더를 읽고 감사일기 작성한 날짜를 반환하는 기능 추가
+[32m|[m [33m|[m * [1;31m|[m e1b1a2d = Daesun Hwang , 8 weeks ago : feat : 해당 날짜의 캘린더 정보를 읽는 기능 추가, HATEOAS 부분 적용
+[32m|[m [33m|[m * [1;31m|[m 695d335 = Daesun Hwang , 9 weeks ago : feat : 취침 관련 시간들을 저장할 날짜 기능 추가
+[32m|[m [33m|[m * [1;31m|[m 4739d75 = Daesun Hwang , 9 weeks ago : refactor : Sleep class에  savingDate 필드 추가
+[32m|[m [33m|[m * [1;31m|[m 570b36a = Daesun Hwang , 9 weeks ago : feat : 사용자가 설정한 취침 및 기상시간 관련 기능, 실체 취침 시간 및 기상 시간 저장 기능 추가
+[32m|[m [33m|[m * [1;31m|[m 455d3c2 = Daesun Hwang , 9 weeks ago : feat : 목표 및 설정 수면 시간 저장 기능 추가
+[32m|[m [33m|[m * [1;31m|[m 6d92faf = Daesun Hwang , 9 weeks ago : feat : 회원가입 직후 목표수면 시간 받는 기능 추가
+[32m|[m [33m|[m * [1;31m|[m 0abf38f = Daesun Hwang , 9 weeks ago : feat : sleep 테이블 추가 후 매핑
+[32m|[m [33m|[m * [1;31m|[m 2a1e5d8 = Daesun Hwang , 9 weeks ago : refactor : user 테이블에 디폴트 수면 기상,시작 시간 추가
+[32m|[m [33m|[m * [1;31m|[m 2794985 = Daesun Hwang , 9 weeks ago : refactor : Diary 컬럼 타입 text로 변경
+[32m|[m [33m|[m [1;31m|[m[1;31m/[m  
+[32m|[m [33m|[m * 06b424e = Daesun Hwang , 9 weeks ago : feat : 케릭터 경험치에따른 레벨변환 기능
+[32m|[m [33m|[m * 1a88965 = Daesun Hwang , 9 weeks ago : feat : 감사일기 작성 시 케릭터 말풍선 추가
+[32m|[m [33m|[m[33m/[m  
+[32m|[m * 44aa815 = Daesun Hwang , 9 weeks ago : feat : 회원가입시 케릭터 생성기능 추가
+[32m|[m * f5999be = Daesun Hwang , 9 weeks ago : feat : Character Class 추가
+[32m|[m * 2d74cfb = Daesun Hwang , 9 weeks ago : refactor: 데이터베이스 컬럼명 변경
+[32m|[m[32m/[m  
+* 7fc43e1 = Daesun Hwang , 9 weeks ago : feat : Add diary api

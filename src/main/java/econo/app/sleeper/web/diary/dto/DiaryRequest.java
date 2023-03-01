@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.diary;
+package econo.app.sleeper.web.diary.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import econo.app.sleeper.domain.diary.Diary;
@@ -18,8 +18,11 @@ public class DiaryRequest {
     @NotNull
     private Long userPk;
 
-    @JsonProperty("actualWakeTime")
+    @JsonProperty("writingDiaryTime")
     private ZonedDateTime writingDiaryTime;
+
+    @NotNull
+    private Long level;
 
     public Diary toEntity(String content,User user){
         return Diary.builder()

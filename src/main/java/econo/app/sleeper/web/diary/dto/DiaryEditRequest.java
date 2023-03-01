@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.diary;
+package econo.app.sleeper.web.diary.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

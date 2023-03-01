@@ -27,7 +27,8 @@ public class SleepService {
 
     @Transactional
     public Long saveSleep(SleepRequest sleepRequest){
-        User user = userRepository.find(sleepRequest.getUserPk()).get();
+        User user = userRepository.find(sleepRequest.getUserPk())
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         LocalDate decidedDate = decideDate(sleepRequest.getActualSleepTime());
         Sleep sleep = Sleep.createSleep(sleepRequest.getSetSleepTime(),sleepRequest.getSetWakeTime(),sleepRequest.getActualSleepTime(),decidedDate,user);
         sleepRepository.save(sleep);

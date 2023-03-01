@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -85,5 +86,41 @@ public class Sleep {
         }
         return 0;
     }
+
+    public Long evaluateSleep(){
+        LocalTime goalSleepTime = user.getSleepAdvisor().getGoalSleepTime();
+        LocalTime goalWakeTime = user.getSleepAdvisor().getGoalWakeTime();
+        Long denominator = ChronoUnit.HOURS.between(goalWakeTime, goalSleepTime);
+        LocalTime actualSleepTime = this.actualSleepTime.toLocalTime();
+        LocalTime actualWakeTime = this.actualWakeTime.toLocalTime();
+        Long score = 0L;
+        if(goalSleepTime.isAfter(actualWakeTime)){
+            return score;
+        } else if(goalWakeTime.isBefore(actualSleepTime)){
+            return score;
+        } else if(goalWakeTime.isAfter(actualSleepTime) & goalWakeTime.isBefore(actualWakeTime)){
+            long between = ChronoUnit.HOURS.between(actualSleepTime,goalWakeTime);
+            score = between/denominator;
+            return score;
+        } else if(goalSleepTime.isBefore(actualSleepTime) & goalWakeTime.isAfter(actualWakeTime)){
+            long between = ChronoUnit.HOURS.between(actualSleepTime, actualWakeTime);
+            score = between/denominator;
+            return score;
+        } else if (goalSleepTime.isAfter(actualSleepTime) & goalSleepTime.isBefore(actualWakeTime)) {
+            long between = ChronoUnit.HOURS.between(goalSleepTime, actualWakeTime);
+            score = between/denominator;
+            return score;
+        } else if (goalWakeTime.isBefore(actualSleepTime) & goalWakeTime.isBefore(actualWakeTime)) {
+            long between = ChronoUnit.HOURS.between(actualSleepTime, goalWakeTime);
+            score = between/denominator;
+            return score;
+        }
+        return 0L;
+
+    }
+
+
+
+
 
 }
