@@ -2,10 +2,10 @@ package econo.app.sleeper.service;
 
 import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.repository.CharacterRepository;
+import econo.app.sleeper.domain.character.CharacterRepository;
 import econo.app.sleeper.service.user.UserService;
 import econo.app.sleeper.web.user.dto.SignUpRequest;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;

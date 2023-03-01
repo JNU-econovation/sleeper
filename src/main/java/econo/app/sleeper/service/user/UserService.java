@@ -3,7 +3,7 @@ package econo.app.sleeper.service.user;
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
 import econo.app.sleeper.web.user.dto.SignUpRequest;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

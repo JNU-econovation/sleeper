@@ -1,4 +1,4 @@
-package econo.app.sleeper.repository;
+package econo.app.sleeper.domain.diary;
 
 
 import econo.app.sleeper.domain.diary.Diary;

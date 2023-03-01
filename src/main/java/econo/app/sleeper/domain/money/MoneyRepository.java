@@ -1,4 +1,4 @@
-package econo.app.sleeper.repository;
+package econo.app.sleeper.domain.money;
 
 import econo.app.sleeper.domain.money.Money;
 import lombok.RequiredArgsConstructor;

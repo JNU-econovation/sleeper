@@ -1,4 +1,4 @@
-package econo.app.sleeper.repository;
+package econo.app.sleeper.domain.sleep;
 
 import econo.app.sleeper.domain.sleep.SleepAdvisor;
 import lombok.RequiredArgsConstructor;

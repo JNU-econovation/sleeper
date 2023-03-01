@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.money.Money;
 import econo.app.sleeper.domain.money.RewardPolicy;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
-import econo.app.sleeper.repository.MoneyRepository;
+import econo.app.sleeper.domain.money.MoneyRepository;
 import econo.app.sleeper.web.money.MoneyDto;
 import econo.app.sleeper.web.money.InitialMoneyDto;
 import lombok.RequiredArgsConstructor;

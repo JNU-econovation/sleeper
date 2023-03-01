@@ -1,7 +1,7 @@
 package econo.app.sleeper.web.login;
 
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.user.UserRepository;
 import econo.app.sleeper.service.login.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

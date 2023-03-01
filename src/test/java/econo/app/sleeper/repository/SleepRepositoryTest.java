@@ -1,6 +1,7 @@
 package econo.app.sleeper.repository;
 
 import econo.app.sleeper.domain.sleep.Sleep;
+import econo.app.sleeper.domain.sleep.SleepRepository;
 import econo.app.sleeper.service.sleep.SleepService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

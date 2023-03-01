@@ -1,4 +1,4 @@
-package econo.app.sleeper.repository;
+package econo.app.sleeper.domain.character;
 
 
 import econo.app.sleeper.domain.character.Character;

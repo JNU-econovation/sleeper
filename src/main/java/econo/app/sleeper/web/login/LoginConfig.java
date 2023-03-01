@@ -1,7 +1,6 @@
 package econo.app.sleeper.web.login;
 
 
-import econo.app.sleeper.repository.UserRepository;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;

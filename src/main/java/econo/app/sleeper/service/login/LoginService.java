@@ -1,7 +1,7 @@
 package econo.app.sleeper.service.login;
 
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.user.UserRepository;
 import econo.app.sleeper.web.login.JwtTokenProvider;
 import econo.app.sleeper.web.login.LoginRequest;
 import econo.app.sleeper.web.login.LoginTokenDto;

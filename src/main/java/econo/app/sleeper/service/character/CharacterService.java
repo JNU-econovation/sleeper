@@ -4,7 +4,7 @@ import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.character.XpPolicy;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
-import econo.app.sleeper.repository.CharacterRepository;
+import econo.app.sleeper.domain.character.CharacterRepository;
 import econo.app.sleeper.web.character.CharacterResponse;
 import econo.app.sleeper.web.character.dto.InitialCharacterDto;
 import lombok.RequiredArgsConstructor;

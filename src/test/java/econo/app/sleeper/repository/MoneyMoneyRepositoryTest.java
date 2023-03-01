@@ -1,7 +1,9 @@
 package econo.app.sleeper.repository;
 
 import econo.app.sleeper.domain.money.Money;
+import econo.app.sleeper.domain.money.MoneyRepository;
 import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.user.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
