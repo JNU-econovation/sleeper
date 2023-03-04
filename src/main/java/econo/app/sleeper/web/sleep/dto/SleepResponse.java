@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class SleepResponse {
 
-    private Long sleepPk;
+    private final Long sleepPk;
 
     public static SleepResponse of(Long sleepPk){
         SleepResponse sleepResponse = SleepResponse.builder()

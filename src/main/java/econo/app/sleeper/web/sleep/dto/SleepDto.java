@@ -12,10 +12,10 @@ import java.time.ZonedDateTime;
 @Builder
 public class SleepDto {
 
-    private Long sleepPk;
+    private final Long sleepPk;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private ZonedDateTime actualWakeTime;
+    private final ZonedDateTime actualWakeTime;
 
     public static SleepDto of(Long sleepPk, ZonedDateTime actualRequest){
         return SleepDto.builder()

@@ -9,20 +9,19 @@ import java.time.ZonedDateTime;
 
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DiaryRequest {
 
-    private String content;
+    private final String content;
 
     @NotNull
-    private Long userPk;
+    private final Long userPk;
 
     @JsonProperty("writingDiaryTime")
-    private ZonedDateTime writingDiaryTime;
+    private final ZonedDateTime writingDiaryTime;
 
     @NotNull
-    private Long level;
+    private final Long level;
 
     public Diary toEntity(String content,User user){
         return Diary.builder()

@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 public class SleepAdvisor {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private final Integer recommendWakeTimeCount = 4;

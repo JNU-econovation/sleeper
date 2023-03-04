@@ -14,9 +14,9 @@ import java.time.LocalDate;
 public class CalendarRequest {
 
     @NotNull(message = "userPk는 필수 입력값입니다.")
-    private Long userPk;
+    private final Long userPk;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate nowDate;
+    private final LocalDate nowDate;
 
 }

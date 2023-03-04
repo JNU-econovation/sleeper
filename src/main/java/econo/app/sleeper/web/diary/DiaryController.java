@@ -19,6 +19,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.time.LocalDate;
 
@@ -40,12 +43,15 @@ public class DiaryController {
     })
 
     @PostMapping("/diaries")
-    public ResponseEntity<CommonResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest) {
+    public ResponseEntity<CommonResponse> saveDiary(@RequestBody @Valid DiaryRequest diaryRequest, HttpServletResponse response) {
         diaryService.save(diaryRequest);
         moneyService.plusCash(MoneyDto.of(diaryRequest.getUserPk(),diaryRequest.getLevel()));
+        Cookie idCookie = new Cookie("content", String.valueOf(diaryRequest.getContent()));
+        response.addCookie(idCookie);
         CommonResponse commonResponse = CommonResponse.of("감사일기 작성 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.CREATED);
     }
+
 
     @PutMapping("/diaries/{nu}")
     public ResponseEntity<CommonResponse> updateDiary(@PathVariable("nu") Long diaryPk, @RequestBody @Valid DiaryEditRequest diaryEditRequest){
@@ -64,7 +70,7 @@ public class DiaryController {
     @GetMapping("/diaries/{nu}")
     public ResponseEntity<DiaryResponse> findDiary(@PathVariable("nu") Long diaryPk){
         Diary diary = diaryService.findDiary(diaryPk);
-        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent(),diary.getWritingTIme());
+        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent(),diary.getWritingTime());
         return new ResponseEntity<>(diaryResponse,HttpStatus.OK);
     }
 
@@ -73,7 +79,7 @@ public class DiaryController {
                                                              @Valid CommonRequest commonRequest) {
         DiaryFindDto diaryFindDto = DiaryFindDto.of(commonRequest.getUserPk(), date);
         Diary diary = diaryService.findDiaryByDate(diaryFindDto);
-        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent(),diary.getWritingTIme());
+        DiaryResponse diaryResponse = DiaryResponse.of(diary.getContent(),diary.getWritingTime());
         return new ResponseEntity<>(diaryResponse,HttpStatus.OK);
     }
 

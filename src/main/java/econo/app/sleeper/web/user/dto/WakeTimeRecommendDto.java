@@ -13,10 +13,10 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class WakeTimeRecommendDto {
 
-    private Long sleepAdvisorPk;
+    private final Long sleepAdvisorPk;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime expectedSleepTime;
+    private final LocalTime expectedSleepTime;
 
 
     public static WakeTimeRecommendDto of(Long userSleepId, LocalTime expectedSleepTime){

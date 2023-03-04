@@ -13,6 +13,6 @@ import java.time.LocalTime;
 public class WakeTimeRecommendRequest {
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime expectedSleepTime;
+    private final LocalTime expectedSleepTime;
 
 }

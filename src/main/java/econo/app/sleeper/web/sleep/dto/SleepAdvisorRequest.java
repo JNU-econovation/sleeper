@@ -13,11 +13,11 @@ import java.time.LocalTime;
 public class SleepAdvisorRequest {
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalSleepTime;
+    private final LocalTime goalSleepTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalWakeTime;
+    private final LocalTime goalWakeTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime minimumSleepTime;
+    private final LocalTime minimumSleepTime;
 }

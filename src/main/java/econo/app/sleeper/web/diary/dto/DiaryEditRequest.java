@@ -2,14 +2,15 @@ package econo.app.sleeper.web.diary.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class DiaryEditRequest {
 
     @NotNull
-    private String content;
+    private final String content;
 
 }

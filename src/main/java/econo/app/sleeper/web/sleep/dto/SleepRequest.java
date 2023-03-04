@@ -5,29 +5,30 @@ import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class SleepRequest {
 
     @NotNull
     @JsonProperty("setSleepTime")
-    private ZonedDateTime setSleepTime;
+    private final ZonedDateTime setSleepTime;
     @NotNull
     @JsonProperty("setWakeTime")
-    private ZonedDateTime setWakeTime;
+    private final ZonedDateTime setWakeTime;
 
     @NotNull
     @JsonProperty("actualSleepTime")
-    private ZonedDateTime actualSleepTime;
+    private final ZonedDateTime actualSleepTime;
 
     @NotNull
-    private Long characterPk;
+    private final Long characterPk;
 
     @NotNull
-    private Long userPk;
+    private final Long userPk;
 
 }

@@ -27,7 +27,7 @@ public class Diary {
     private LocalDate diaryDate;
 
     @Column
-    private ZonedDateTime writingTIme;
+    private ZonedDateTime writingTime;
 
     @Builder
     public Diary(String content, User user){
@@ -43,7 +43,7 @@ public class Diary {
         Diary diary = new Diary();
         diary.content = content;
         diary.diaryDate = diaryDate;
-        diary.writingTIme = writingTIme;
+        diary.writingTime = writingTIme;
         diary.associate(user);
         return diary;
     }

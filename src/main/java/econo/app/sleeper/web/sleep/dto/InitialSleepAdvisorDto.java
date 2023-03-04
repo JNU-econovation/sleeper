@@ -18,13 +18,13 @@ public class InitialSleepAdvisorDto {
     private final User user;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalSleepTime;
+    private final LocalTime goalSleepTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalWakeTime;
+    private final LocalTime goalWakeTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime minimumSleepTime;
+    private final LocalTime minimumSleepTime;
 
     public static InitialSleepAdvisorDto of(User user, LocalTime goalSleepTime, LocalTime goalWakeTime, LocalTime minimumSleepTime){
         return InitialSleepAdvisorDto.builder()

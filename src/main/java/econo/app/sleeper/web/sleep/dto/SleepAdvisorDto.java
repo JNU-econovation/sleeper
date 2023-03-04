@@ -13,14 +13,14 @@ import java.time.LocalTime;
 @RequiredArgsConstructor
 public class SleepAdvisorDto {
 
-    private Long sleepAdvisorPk;
+    private final Long sleepAdvisorPk;
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalSleepTime;
+    private final LocalTime goalSleepTime;
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalWakeTime;
+    private final LocalTime goalWakeTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime minimumSleepTime;
+    private final LocalTime minimumSleepTime;
 
     public SleepAdvisor toEntity(){
         return SleepAdvisor.builder()

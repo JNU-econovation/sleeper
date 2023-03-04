@@ -3,18 +3,20 @@ package econo.app.sleeper.web.sleep.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class ActualRequest {
 
     @NotNull
     @JsonProperty("actualWakeTime")
-    private ZonedDateTime actualWakeTime;
+    private final ZonedDateTime actualWakeTime;
 
     @NotNull
-    private Long characterPk;
+    private final Long characterPk;
 
 }

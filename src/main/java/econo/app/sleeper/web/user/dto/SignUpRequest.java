@@ -7,22 +7,24 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalTime;
 
-@Data
+@Builder
+@Getter
+@RequiredArgsConstructor
 public class SignUpRequest {
 
-    private String userId;
-    private String userPassword;
-    private String userNickName;
-    private Long userAge;
+    private final String userId;
+    private final String userPassword;
+    private final String userNickName;
+    private final Long userAge;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalSleepTime;
+    private final LocalTime goalSleepTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime goalWakeTime;
+    private final LocalTime goalWakeTime;
 
     @DateTimeFormat(pattern = "HH:mm")
-    private LocalTime minimumSleepTime;
+    private final LocalTime minimumSleepTime;
 
     public User toUserEntity(){
         return User.builder()
