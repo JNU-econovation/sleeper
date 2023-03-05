@@ -1,13 +1,10 @@
 package econo.app.sleeper.domain.sleep;
 
-import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.sleep.Sleep;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +22,7 @@ public class SleepRepository {
         log.info("save: sleep={}", sleep);
     }
 
-    public Optional<Sleep> findByPk(Long sleepPk){
+    public Optional<Sleep> find(Long sleepPk){
         Sleep sleep = em.find(Sleep.class, sleepPk);
         return Optional.ofNullable(sleep);
     }
@@ -36,16 +33,6 @@ public class SleepRepository {
                 .setParameter("userPk",userPk)
                 .setParameter("localDate",localDate)
                 .getResultList();
-    }
-
-    // 해당 회원의 가장 최근의 sleep 기록 찾기 -- 설정수면시간
-    public Optional<Sleep> findRecentSleepByUser(Long userPk){
-        TypedQuery<Sleep> query = em.createQuery("select s from Sleep s join s.user u where u.id = :userPk order by s.id desc", Sleep.class)
-                .setParameter("userPk",userPk);
-        query.setFirstResult(0);
-        query.setMaxResults(1);
-        Optional<Sleep> optionalSleep = Optional.ofNullable(query.getSingleResult());
-        return  optionalSleep;
     }
 
     public List<Sleep> findSleepsBetweenDates(Long userPk, LocalDate startDate, LocalDate endDate){

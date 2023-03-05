@@ -23,8 +23,6 @@ public class SleepAdvisor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private final Integer recommendWakeTimeCount = 4;
-
     @Column(name = "USER_GOAL_SLEEP_TIME", columnDefinition = "TIME")
     private LocalTime goalSleepTime;
 
@@ -42,6 +40,8 @@ public class SleepAdvisor {
     }
 
     public List<LocalTime> recommendWakeTimes(LocalTime expectedSleepTime){
+
+        Integer recommendWakeTimeCount = 4;
 
         List<LocalTime> wakeTimes = new ArrayList<>();
         LocalTime baseWakeTime = expectedSleepTime.plusHours(minimumSleepTime.getHour()).plusMinutes(minimumSleepTime.getMinute());
