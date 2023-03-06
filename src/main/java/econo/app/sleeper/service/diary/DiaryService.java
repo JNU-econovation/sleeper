@@ -61,7 +61,7 @@ public class DiaryService {
     public List<Diary> findDiaries(Long userPk){
         User user = userRepository.find(userPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        return diaryRepository.findAllByPk(user.getId());
+        return diaryRepository.findAll(user.getId());
     }
 
     public Diary findDiaryByDate(DiaryFindDto diaryFindDto){

@@ -2,6 +2,7 @@ package econo.app.sleeper.domain.diary;
 
 import econo.app.sleeper.domain.user.User;
 import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +14,8 @@ import java.time.ZonedDateTime;
 @Table(name = "DIARY")
 public class Diary {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
     private String content;
@@ -23,10 +25,10 @@ public class Diary {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user; // 연관관계의 주인
-    @Column
+    @Column(name = "DIARY_DATE")
     private LocalDate diaryDate;
 
-    @Column
+    @Column(name = "DIARY_WRITING_TIME")
     private ZonedDateTime writingTime;
 
     @Builder
