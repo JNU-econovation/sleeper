@@ -7,8 +7,8 @@ public enum Status {
 
     }
 
-    public Status opposite(){
-        if ( this == Status.SLEEP) {
+    public Status opposite(String status){
+        if ( status.equals("SLEEP")) {
             return Status.NO_SLEEP;
         }else{
             return Status.SLEEP;

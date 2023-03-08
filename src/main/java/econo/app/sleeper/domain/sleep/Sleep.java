@@ -69,6 +69,7 @@ public class Sleep {
     }
 
     public Integer calculateXp() {
+        System.out.println(" = ");
         if(actualSleepTime.isAfter(setWakeTime)){
             return 0;
         } else if(actualWakeTime.isBefore(setSleepTime)){

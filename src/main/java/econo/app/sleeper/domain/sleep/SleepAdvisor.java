@@ -45,13 +45,16 @@ public class SleepAdvisor {
 
         List<LocalTime> wakeTimes = new ArrayList<>();
         LocalTime baseWakeTime = expectedSleepTime.plusHours(minimumSleepTime.getHour()).plusMinutes(minimumSleepTime.getMinute());
-
         for(int i = 0; i < recommendWakeTimeCount; i++) {
             LocalTime plusWakeTime = baseWakeTime.plusHours(1).plusMinutes(30);
             wakeTimes.add(plusWakeTime);
         }
         Stream<LocalTime> recommendWakeTimes = wakeTimes.stream().filter(recommendWakeTime -> recommendWakeTime.isBefore(goalWakeTime));
-        return recommendWakeTimes.collect(Collectors.toList());
+        List<LocalTime> times = recommendWakeTimes.collect(Collectors.toList());
+        if(times.isEmpty()){
+            times.add(goalWakeTime);
+        }
+        return times;
     }
 
     public void updateSleepAdvisor(LocalTime goalSleepTime, LocalTime goalWakeTime, LocalTime minimumSleepTime){

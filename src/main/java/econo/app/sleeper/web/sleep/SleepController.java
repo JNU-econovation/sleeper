@@ -45,8 +45,8 @@ public class SleepController {
     public ResponseEntity<CommonResponse> updateActualTime(@PathVariable("nu") Long sleepPk,
                                                            @RequestBody @Valid ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
-        sleepService.updateActualWakeTime(sleepDto);
-        characterService.updateCharacterXp(actualRequest.getCharacterPk());
+        Integer increasingExperience = sleepService.updateActualWakeTime(sleepDto);
+        characterService.updateCharacterXp(actualRequest.getCharacterPk(),increasingExperience);
         characterService.oppositeStatus(actualRequest.getCharacterPk());
         CommonResponse commonResponse = CommonResponse.of("실제 기상 시간 업데이트 완료");
         return new ResponseEntity<>(commonResponse,HttpStatus.OK);

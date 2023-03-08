@@ -5,9 +5,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Primary
-public class PercentBonusXpPolicy extends XpPolicy {
+public class PercentBonusXpPolicy implements XpPolicy {
     @Override
-    public Integer calculateBonusXp(Integer increasingExperience, Long level) {
+    public Integer calculateXp(Integer increasingExperience, Long level) {
         Integer percentOfBonusXp = XpOfIncrease.getPercentOfBonusXp(level);
         long bonusXp = Math.round(increasingExperience * ((100 + percentOfBonusXp)/100));
         return (int)bonusXp;

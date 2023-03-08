@@ -8,6 +8,7 @@ import econo.app.sleeper.domain.character.CharacterRepository;
 import econo.app.sleeper.web.character.CharacterResponse;
 import econo.app.sleeper.web.character.dto.InitialCharacterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,12 @@ public class CharacterService {
     private final CharacterRepository characterRepository;
 
     private final XpPolicy xpPolicy;
+
+    @Autowired
+    public CharacterService(XpPolicy xpPolicy, CharacterRepository characterRepository){
+        this.xpPolicy = xpPolicy;
+        this.characterRepository = characterRepository;
+    }
 
     @Transactional
     public Long createCharacter(InitialCharacterDto initialCharacterDto){
@@ -41,10 +48,10 @@ public class CharacterService {
     }
 
     @Transactional
-    public void updateCharacterXp(Long characterPk) {
+    public void updateCharacterXp(Long characterPk, Integer increasingExperience) {
         Character character = characterRepository.find(characterPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Integer xp = xpPolicy.calculateXp(character.getLevel());
+        Integer xp = xpPolicy.calculateXp(increasingExperience,character.getLevel());
         character.plusXp(xp);
     }
 

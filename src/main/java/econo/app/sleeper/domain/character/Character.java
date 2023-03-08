@@ -39,7 +39,8 @@ public class Character {
     }
 
     public void oppositeStatus() {
-        this.status.opposite();
+        Status oppositeStatus = status.opposite(status.name());
+        this.status = oppositeStatus;
     }
 
     public void plusXp(Integer xp){

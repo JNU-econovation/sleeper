@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FixedBonusXpPolicy extends XpPolicy {
+public class FixedBonusXpPolicy implements XpPolicy {
     @Override
-    public Integer calculateBonusXp(Integer increasingExperience, Long level) {
+    public Integer calculateXp(Integer increasingExperience, Long level) {
         Integer bonusXp = XpOfIncrease.getFixedBonusXpOfLevel(level);
         return bonusXp;
     }

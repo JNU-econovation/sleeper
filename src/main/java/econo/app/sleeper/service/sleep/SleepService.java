@@ -41,10 +41,22 @@ public class SleepService {
     }
 
     @Transactional
-    public void updateActualWakeTime(SleepDto sleepDto){
+    public Integer updateActualWakeTime(SleepDto sleepDto){
         Sleep sleep = sleepRepository.find(sleepDto.getSleepPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         sleep.updateActualWakeTime(sleepDto.getActualWakeTime());
+        return calculateXp(sleepDto.getSleepPk());
     }
+
+    private Integer calculateXp(Long sleepPk){
+        Sleep sleep = sleepRepository.find(sleepPk)
+                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
+        Integer xp = sleep.calculateXp();
+        return xp;
+    }
+
+
+
+
 
 }
