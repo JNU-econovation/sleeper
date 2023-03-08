@@ -17,7 +17,6 @@ public class MoneyRepositoryTest {
 
     @Autowired
     private MoneyRepository moneyRepository;
-
     @Test
     public void findRecentMoneyByUser() {
         Money money = moneyRepository.findRecentMoneyByUser(1L).get();
