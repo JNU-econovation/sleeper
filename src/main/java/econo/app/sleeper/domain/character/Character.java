@@ -1,6 +1,7 @@
 package econo.app.sleeper.domain.character;
 
 import econo.app.sleeper.domain.user.User;
+import io.swagger.models.auth.In;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,43 +23,41 @@ public class Character {
     @Enumerated(EnumType.STRING)
     @Column(name = "CHARACTER_STATUS")
     private Status status;
-    @Embedded
-    private Growth growth;
+
+    @Column(name = "CHARACTER_EXPERIENCE")
+    private Integer cumulativeXp;
+
+    @Column(name = "CHARACTER_LEVEL")
+    private Long level;
 
     @Builder
-    public Character(Color color, Status status, Growth growth){
+    public Character(Color color, Status status, Integer cumulativeXp, Long level){
         this.color = color;
         this.status = status;
-        this.growth = growth;
+        this.cumulativeXp = cumulativeXp;
+        this.level = level;
     }
 
-
-    public Character(Long id, Color color, Status status, Growth growth) {
-        this.id = id;
-        this.color = color;
-        this.status = status;
-        this.growth = growth;
+    public void oppositeStatus() {
+        Status oppositeStatus = status.opposite(status.name());
+        this.status = oppositeStatus;
     }
 
-    public void updateGrowthAndStatus(Growth growth, Status status){
-        this.growth = growth;
-        this.status = status;
+    public void plusXp(Integer xp){
+        this.cumulativeXp += xp;
+        levelUpOrStay();
     }
 
-    public void updateStatusToSleep() {
-        this.status = Status.SLEEP;
+    private void levelUpOrStay(){
+        XpPerLevel.getCurrentLevel(cumulativeXp,level);
     }
-
-    public void updateColor(Color color){
-        this.color = color;
-    }
-
 
     public static Character createCharacter(User user){
         Character character = Character.builder()
-                .color(Color.GRAY)
+                .color(Color.YELLOW)
                 .status(Status.NO_SLEEP)
-                .growth(new Growth(0,0L))
+                .cumulativeXp(0)
+                .level(1L)
                 .build();
         user.mappingCharacter(character);
         return character;

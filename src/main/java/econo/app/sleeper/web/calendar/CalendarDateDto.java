@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +15,16 @@ import java.util.Optional;
 @Builder
 public class CalendarDateDto {
 
-    private final List<Sleep> sleep;
+    private final List<List<ZonedDateTime>> sleepInfo;
 
-    private final Optional<Diary> diary;
+    private final String content;
 
-    private final Integer score;
+    private final Long score;
 
-    public static CalendarDateDto of(List<Sleep> sleep, Optional<Diary> diary, Integer score){
+    public static CalendarDateDto of(List<List<ZonedDateTime>> sleepInfo, String content, Long score){
         return CalendarDateDto.builder()
-                .diary(diary)
-                .sleep(sleep)
+                .sleepInfo(sleepInfo)
+                .content(content)
                 .score(score)
                 .build();
     }

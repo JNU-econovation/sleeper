@@ -1,6 +1,5 @@
 package econo.app.sleeper.web.character;
 import econo.app.sleeper.service.character.CharacterService;
-import econo.app.sleeper.web.common.CommonRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -10,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
 
 
 
@@ -19,7 +17,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @Tag(name = "character", description = "케릭터 관련 API")
 public class CharacterController{
-
 
     private final CharacterService characterService;
 
@@ -31,9 +28,9 @@ public class CharacterController{
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @GetMapping("/character")
-    public ResponseEntity<CharacterResponse> readCharacter(@Valid CommonRequest commonRequest){
-        CharacterResponse characterResponse = characterService.readCharacter(commonRequest.getUserPk());
+    @GetMapping("/character/{nu}")
+    public ResponseEntity<CharacterResponse> readCharacter(@PathVariable("nu")Long characterPk){
+        CharacterResponse characterResponse = characterService.readCharacter(characterPk);
         return new ResponseEntity<>(characterResponse, HttpStatus.OK);
     }
 }

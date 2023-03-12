@@ -1,9 +1,7 @@
 package econo.app.sleeper.web.login;
 
-import econo.app.sleeper.domain.sleep.Sleep;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.repository.SleepRepository;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.domain.user.UserRepository;
 import econo.app.sleeper.service.login.LoginService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -32,8 +30,6 @@ public class LoginController {
 
     private final UserRepository userRepository;
 
-    private final SleepRepository sleepRepository;
-
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -41,18 +37,17 @@ public class LoginController {
             @ApiResponse(responseCode = "404", description = "NOT FOUND"),
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
-    // 로그아웃은 refresh토큰을 넣은 쿠키를 없애줘야한다.
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
 
         LoginTokenDto loginTokenDto = loginService.login(loginRequest, request);
-        String userId=loginRequest.getUserId();
-        User user=userRepository.findById(userId).get();
+        String userId= loginRequest.getUserId();
+        User user= userRepository.findById(userId).get();
         Long userPk= user.getId();
-        Sleep sleep=sleepRepository.findRecentSleepByUser(userPk).get();
-        Long sleepPk=sleep.getId();
-        LoginResponse loginResponse = new LoginResponse(loginTokenDto.getMessage(), sleepPk, userPk);
+        Long characterPk = user.getCharacter().getId();
+        Long sleepAdvisorPk = user.getSleepAdvisor().getId();
+        LoginResponse loginResponse = new LoginResponse(characterPk,userPk,sleepAdvisorPk,loginTokenDto.getMessage());
 
         if (loginTokenDto.getAccessToken().isBlank()) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -65,8 +60,6 @@ public class LoginController {
         Cookie cookie = new Cookie("refreshToken", refreshToken);
         response.addHeader("authorization", accessToken);
         response.addCookie(cookie);
-
-
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
     }
 

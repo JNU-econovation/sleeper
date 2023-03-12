@@ -1,18 +1,14 @@
 package econo.app.sleeper.service.character;
 
 import econo.app.sleeper.domain.character.Character;
-import econo.app.sleeper.domain.character.Status;
-import econo.app.sleeper.domain.character.Growth;
-import econo.app.sleeper.domain.common.SpeechBubble;
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.character.XpPolicy;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
-import econo.app.sleeper.repository.CharacterRepository;
-import econo.app.sleeper.repository.UserRepository;
-import econo.app.sleeper.web.character.CharacterDto;
+import econo.app.sleeper.domain.character.CharacterRepository;
 import econo.app.sleeper.web.character.CharacterResponse;
-import econo.app.sleeper.web.character.NewCharacterDto;
+import econo.app.sleeper.web.character.dto.InitialCharacterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,50 +18,41 @@ import org.springframework.transaction.annotation.Transactional;
 public class CharacterService {
 
     private final CharacterRepository characterRepository;
-    private final UserRepository userRepository;
 
-    private final SpeechBubble speechBubble;
+    private final XpPolicy xpPolicy;
 
-    @Transactional
-    public void createCharacter(NewCharacterDto newCharacterDto){
-        characterRepository.save(Character.createCharacter(newCharacterDto.getUser()));
+    @Autowired
+    public CharacterService(XpPolicy xpPolicy, CharacterRepository characterRepository){
+        this.xpPolicy = xpPolicy;
+        this.characterRepository = characterRepository;
     }
 
-    public CharacterResponse readCharacter(Long userPk){
-        User user = userRepository.find(userPk)
+    @Transactional
+    public Long createCharacter(InitialCharacterDto initialCharacterDto){
+        Long characterPk = characterRepository.save(Character.createCharacter(initialCharacterDto.getUser()));
+        return characterPk;
+    }
+
+    public CharacterResponse readCharacter(Long characterPk){
+        Character character = characterRepository.find(characterPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Character character = user.getCharacter();
-        CharacterResponse characterResponse = CharacterResponse.builder()
-                .color(character.getColor())
-                .status(character.getStatus())
-                .growth(character.getGrowth())
-                .speechBubble(speechBubble.getSpeechBubble())
-                .build();
+        CharacterResponse characterResponse = CharacterResponse.of(character.getColor(), character.getStatus(), character.getCumulativeXp(), character.getLevel());
         return characterResponse;
     }
 
     @Transactional
-    public Long updateGrowthAndStatus(CharacterDto characterDto) {
-        User user = userRepository.find(characterDto.getUserPk())
+    public void oppositeStatus(Long characterPk){
+        Character character = characterRepository.find(characterPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Character character = user.getCharacter();
-        Growth growth = character.getGrowth().growUp(characterDto.getPlusExperience());
-        character.updateGrowthAndStatus(growth,Status.SLEEP);
-        return character.getId();
+        character.oppositeStatus();
     }
 
     @Transactional
-    public void updateStatusToSleep(Long userPk){
-        User user = userRepository.find(userPk)
+    public void updateCharacterXp(Long characterPk, Integer increasingExperience) {
+        Character character = characterRepository.find(characterPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        Character character = user.getCharacter();
-        character.updateStatusToSleep();
-    }
-
-    public Boolean approachLevel(Long characterPk){
-        Character character = characterRepository.findByPk(characterPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        return character.getGrowth().approachLevel();
+        Integer xp = xpPolicy.calculateXp(increasingExperience,character.getLevel());
+        character.plusXp(xp);
     }
 
 }

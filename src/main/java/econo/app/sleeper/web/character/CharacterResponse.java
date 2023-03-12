@@ -2,7 +2,6 @@ package econo.app.sleeper.web.character;
 
 import econo.app.sleeper.domain.character.Color;
 import econo.app.sleeper.domain.character.Status;
-import econo.app.sleeper.domain.character.Growth;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -13,17 +12,17 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class CharacterResponse {
 
-    private final Color color;
-    private final Status status;
-    private final Growth growth;
-    private final String  speechBubble;
+    private final String color;
+    private final String status;
+    private final Integer cumulativeXp;
+    private final Long level;
 
-    public CharacterResponse of(Color color, Status status, Growth growth, String speechBubble){
+    public static CharacterResponse of(Color color, Status status, Integer cumulativeXp, Long level){
         return CharacterResponse.builder()
-                .color(color)
-                .status(status)
-                .growth(growth)
-                .speechBubble(speechBubble)
+                .color(color.name())
+                .status(status.name())
+                .cumulativeXp(cumulativeXp)
+                .level(level)
                 .build();
     }
 }

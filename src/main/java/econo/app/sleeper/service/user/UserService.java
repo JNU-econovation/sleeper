@@ -2,11 +2,8 @@ package econo.app.sleeper.service.user;
 
 import econo.app.sleeper.domain.user.RoleType;
 import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.exception.RestApiException;
-import econo.app.sleeper.exception.error.CommonErrorCode;
-import econo.app.sleeper.web.user.IdRequest;
-import econo.app.sleeper.web.user.SignUpRequest;
-import econo.app.sleeper.repository.UserRepository;
+import econo.app.sleeper.web.user.dto.SignUpRequest;
+import econo.app.sleeper.domain.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +19,9 @@ public class UserService {
 
     @Transactional
     public User join(SignUpRequest signUpRequest) {
-        User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER, signUpRequest.getGoalSleepTime(), signUpRequest.getGoalWakeTime());
+        User user = User.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
         userRepository.save(user);
         return user;
-    }
-
-    public User readGoalTime(Long userPk) {
-        return userRepository.find(userPk)
-                .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
     }
 
     public String idCheck(String userId) {
@@ -37,6 +29,7 @@ public class UserService {
         if(duplicateId.isPresent()) {return "중복";}
         else return "유효";
     }
+
 }
 
 

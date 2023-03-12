@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class CommonRequest {
 
     @NotNull(message = "userPk는 필수 입력값입니다.")
-    private Long userPk;
+    private final Long userPk;
 
 }

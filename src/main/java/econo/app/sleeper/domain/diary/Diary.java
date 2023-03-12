@@ -1,14 +1,12 @@
 package econo.app.sleeper.domain.diary;
 
-import econo.app.sleeper.domain.common.SavingDate;
 import econo.app.sleeper.domain.user.User;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
@@ -16,23 +14,26 @@ import java.time.LocalDate;
 @Table(name = "DIARY")
 public class Diary {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Embedded
-    private Content content;
-    @Embedded
-    private SavingDate savingDate;
+    @Column(name = "DIARY_CONTENT", columnDefinition = "TEXT")
+    private String content;
 
     @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
-    private LocalDate deleteLocalDate;
+    private LocalDate deleteDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_FK")
     private User user; // 연관관계의 주인
+    @Column(name = "DIARY_DATE")
+    private LocalDate diaryDate;
+
+    @Column(name = "DIARY_WRITING_TIME")
+    private ZonedDateTime writingTime;
 
     @Builder
-    public Diary(Content content, User user){
+    public Diary(String content, User user){
         this.content = content;
-        this.savingDate = new SavingDate();
         this.user = user;
     }
 
@@ -40,12 +41,21 @@ public class Diary {
         this.user = user;
     }
 
-    public static Diary create(User user,String content){
+    public static Diary create(String content, LocalDate diaryDate, ZonedDateTime writingTIme, User user){
         Diary diary = new Diary();
+        diary.content = content;
+        diary.diaryDate = diaryDate;
+        diary.writingTime = writingTIme;
         diary.associate(user);
-        diary.content = new Content(content);
-        diary.savingDate = new SavingDate();
         return diary;
+    }
+
+    public void update(String content) {
+        this.content = content;
+    }
+
+    public Integer getContentLength(){
+        return this.content.length();
     }
 
 

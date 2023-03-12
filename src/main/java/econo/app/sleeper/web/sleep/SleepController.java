@@ -1,12 +1,11 @@
 package econo.app.sleeper.web.sleep;
-import econo.app.sleeper.domain.sleep.Sleep;
-import econo.app.sleeper.service.speechBubble.SpeechBubbleService;
 import econo.app.sleeper.service.character.CharacterService;
 import econo.app.sleeper.service.sleep.SleepService;
-import econo.app.sleeper.util.DateTimeManager;
-import econo.app.sleeper.web.character.CharacterDto;
-import econo.app.sleeper.web.common.CommonRequest;
 import econo.app.sleeper.web.common.CommonResponse;
+import econo.app.sleeper.web.sleep.dto.ActualRequest;
+import econo.app.sleeper.web.sleep.dto.SleepDto;
+import econo.app.sleeper.web.sleep.dto.SleepRequest;
+import econo.app.sleeper.web.sleep.dto.SleepResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -17,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,8 +25,6 @@ public class SleepController {
     private final SleepService sleepService;
     private final CharacterService characterService;
 
-    private final SpeechBubbleService speechBubbleService;
-
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
@@ -38,42 +33,23 @@ public class SleepController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @GetMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<SetTimeResponse> readSetTime(@PathVariable("nu") Long sleepPk){
-        SetTimeResponse setTimeResponse = sleepService.readSetTime(sleepPk);
-        return new ResponseEntity<>(setTimeResponse,HttpStatus.OK);
+    @PostMapping ("/sleeps")
+    public ResponseEntity<SleepResponse> saveSleep(@RequestBody @Valid SleepRequest sleepRequest){
+        Long sleepPk = sleepService.saveSleep(sleepRequest);
+        characterService.oppositeStatus(sleepRequest.getCharacterPk());
+        SleepResponse sleepResponse = SleepResponse.of(sleepPk);
+        return new ResponseEntity<>(sleepResponse,HttpStatus.OK);
     }
 
-    @GetMapping("/sleeps/recommend")
-    public ResponseEntity<RecommendedTimes> recommendWakeTimes(@Valid SetSleepTimeDto setSleepTimeDto){
-        LocalTime setSleepTime = setSleepTimeDto.getSetSleepTime();
-        List<LocalTime> localTimess = DateTimeManager.suggestWakeTime(setSleepTime);
-        RecommendedTimes recommendedTimes = RecommendedTimes.of(localTimess);
-        return new ResponseEntity<>(recommendedTimes,HttpStatus.OK);
-    }
-
-    @PutMapping("/sleeps/{nu}/setTime")
-    public ResponseEntity<CommonResponse> updateSetTime(@PathVariable("nu") Long sleepPk, @RequestBody @Valid SetTimeRequest setTimeRequest){
-        sleepService.updateSetTime(sleepPk, setTimeRequest);
-        speechBubbleService.afterSettingSetTime();
-        CommonResponse commonResponse = CommonResponse.of("설정 수면 시간 업데이트 완료", setTimeRequest.getUserPk());
-        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
-    }
-
-
-    @PutMapping("/sleeps/{nu}/actualTime")
-    public ResponseEntity<ActualTimeResponse> updateActualTime(@PathVariable("nu") Long sleepPk,
+    @PutMapping("/sleeps/{nu}")
+    public ResponseEntity<CommonResponse> updateActualTime(@PathVariable("nu") Long sleepPk,
                                                            @RequestBody @Valid ActualRequest actualRequest){
         SleepDto sleepDto = SleepDto.of(sleepPk, actualRequest.getActualWakeTime());
-        sleepService.updateActualWakeTime(sleepDto);
-        Integer plusExperience = sleepService.assessExperience(sleepPk);
-        CharacterDto characterDto = CharacterDto.of(actualRequest.getUserPk(), plusExperience);
-        Long characterPk = characterService.updateGrowthAndStatus(characterDto);
-        Boolean approachLevel = characterService.approachLevel(characterPk);
-        speechBubbleService.judgeSpeechBubbleAfterWakeUp(approachLevel);
-        Sleep sleep = sleepService.saveSetTime(actualRequest.getUserPk());
-        ActualTimeResponse actualTimeResponse = ActualTimeResponse.of("실제 기상 시간 업데이트 완료 및 새로운 sleepPk 반환", sleep.getId(), actualRequest.getUserPk());
-        return new ResponseEntity<>(actualTimeResponse,HttpStatus.OK);
+        Integer increasingExperience = sleepService.updateActualWakeTime(sleepDto);
+        characterService.updateCharacterXp(actualRequest.getCharacterPk(),increasingExperience);
+        characterService.oppositeStatus(actualRequest.getCharacterPk());
+        CommonResponse commonResponse = CommonResponse.of("실제 기상 시간 업데이트 완료");
+        return new ResponseEntity<>(commonResponse,HttpStatus.OK);
     }
 
 }
