@@ -19,11 +19,11 @@ Sleeper는 20대 대학생을 위한 규칙적인 수면관리 어플리케이�
 
 ## 역할 분담
 
-임수미
+[임수미](https://github.com/LimSumi/sleeper)
 
 - 로그인
 
-황대선
+[황대선](https://github.com/hwangdaesun/sleeper)
 
 - 회원가입
 - 감사일기 
