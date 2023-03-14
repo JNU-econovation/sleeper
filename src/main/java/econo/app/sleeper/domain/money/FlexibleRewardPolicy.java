@@ -18,9 +18,9 @@ public class FlexibleRewardPolicy implements RewardPolicy{
 
         if(diaryContentLength == 0){
             return 0;
-        } else if (diaryContentLength < 20) {
+        } else if (diaryContentLength <= 20) {
             return 100;
-        } else if(diaryContentLength <40) {
+        } else if(diaryContentLength <= 40) {
             return 200;
         }
         return 300;
