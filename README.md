@@ -45,7 +45,7 @@ Sleeper는 20대 대학생을 위한 규칙적인 수면관리 어플리케이�
 - RewardPolicy : 리워드 지급 정책 추상화
 - SleepAdvisor : 사용자의 수면정보를 바탕으로 기상시간을 추천할 책임
 
-도메인에대한 상세 설명은 ['여기']([README.md](https://github.com/JNU-econovation/sleeper/files/10966187/README.md)
+도메인에대한 상세 설명은 ['여기'](https://github.com/hwangdaesun/sleeper/blob/master/docs/%EB%8F%84%EB%A9%94%EC%9D%B8%20%EC%83%81%EC%84%B8%20%EC%84%A4%EB%AA%85.md
 )에 있습니다.
 
 ---
