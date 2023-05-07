@@ -22,7 +22,7 @@ public class MoneyService {
 
     @Transactional
     public void createMoney(InitialMoneyDto initialMoneyDto){
-        moneyRepository.save(Money.createMoney(initialMoneyDto.getUser()));
+        moneyRepository.save(Money.createMoney(initialMoneyDto.getMember()));
     }
 
     @Transactional

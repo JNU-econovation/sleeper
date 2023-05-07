@@ -29,7 +29,7 @@ public class CharacterService {
 
     @Transactional
     public Long createCharacter(InitialCharacterDto initialCharacterDto){
-        Long characterPk = characterRepository.save(Character.createCharacter(initialCharacterDto.getUser()));
+        Long characterPk = characterRepository.save(Character.createCharacter(initialCharacterDto.getMember()));
         return characterPk;
     }
 
