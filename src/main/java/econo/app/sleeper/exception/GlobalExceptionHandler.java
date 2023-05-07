@@ -3,6 +3,9 @@ package econo.app.sleeper.exception;
 
 import econo.app.sleeper.exception.error.ErrorCode;
 import econo.app.sleeper.exception.error.ErrorResponse;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -46,6 +49,21 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<Object> handleIllegalStateException(IllegalStateException e){
+        return handleExceptionInternal(e);
+    }
+
+    @ExceptionHandler(UnsupportedJwtException.class)
+    public ResponseEntity<Object> handleUnsupportedJwtException(UnsupportedJwtException e){
+        return handleExceptionInternal(e);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Object> handleMalformedJwtException(MalformedJwtException e){
+        return handleExceptionInternal(e);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(SignatureException e){
         return handleExceptionInternal(e);
     }
 
