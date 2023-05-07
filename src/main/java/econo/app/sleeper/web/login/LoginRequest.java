@@ -9,9 +9,9 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LoginRequest {
 
-    private String userId;
+    private String memberId;
 
-    private String userPassword;
+    private String memberPassword;
 
 
 }
