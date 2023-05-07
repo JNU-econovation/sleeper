@@ -1,56 +1,56 @@
 package econo.app.sleeper.web.login;
 
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.WebUtils;
-
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.DatatypeConverter;
-import java.util.Base64;
 import java.util.Date;
+
+import static io.jsonwebtoken.SignatureAlgorithm.HS256;
+import static io.jsonwebtoken.SignatureAlgorithm.PS256;
 
 
 @Component
+@Slf4j
 public class JwtTokenProvider {
-    private static String secret;
-    private static long tokenValidityInMilliseconds;
-    private final String refreshSecret;
-    private final long refreshTokenValidityInMilliseconds;
 
-    public JwtTokenProvider(@Value("bimiliya") String secret, @Value("3600000") long tokenValidityInMilliseconds,
-                            @Value("bimil") String refreshSecret, @Value("604800000") long refreshTokenValidityInMilliseconds) {
-        this.secret = Base64.getEncoder().encodeToString(secret.getBytes());
-        this.tokenValidityInMilliseconds = tokenValidityInMilliseconds;
-        this.refreshSecret = Base64.getEncoder().encodeToString(refreshSecret.getBytes());
-        this.refreshTokenValidityInMilliseconds = refreshTokenValidityInMilliseconds;
+    private final String accessSecretKey = "sleeper_is_good_for_you";
+    private final String refreshSecretKey = "bokdungi_is_a_good_team";
+    private long accessTokenExp;
+    private long refreshTokenExp;
+
+    public JwtTokenProvider(@Value("600000") long accessTokenExp,@Value("3600000") long refreshTokenExp) {
+        this.accessTokenExp = accessTokenExp;
+        this.refreshTokenExp = refreshTokenExp;
     }
 
-    //    todo userId userPk로 바꾸기
     public String createAccessToken(String userId) {
-        Claims claims = Jwts.claims().setId(userId);
-        Date now = new Date();
         Date validity = new Date(System.currentTimeMillis()
-                + tokenValidityInMilliseconds);
+                + accessTokenExp);
+        Date now = new Date();
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
+                .setHeaderParam("alg","HS256")
+                .setIssuer("sleeper")
+                .setSubject(userId)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secret)
+                .setIssuedAt(now)
+                .signWith(HS256, accessSecretKey.getBytes())
                 .compact();
     }
 
     public String createRefreshToken(String userId) {
-        Claims claims = Jwts.claims().setId(userId);
-        Date now = new Date();
         Date validity = new Date(System.currentTimeMillis()
-                + refreshTokenValidityInMilliseconds);
+                + refreshTokenExp);
+        Date now = new Date();
         return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
+                .setHeaderParam("alg","HS256")
+                .setIssuer("sleeper")
+                .setSubject(userId)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, refreshSecret)
+                .setIssuedAt(now)
+                .signWith(HS256, refreshSecretKey.getBytes())
                 .compact();
     }
 
@@ -59,60 +59,48 @@ public class JwtTokenProvider {
         return accessToken;
     }
     public String extractRefreshToken(HttpServletRequest request) {
-        String refreshToken = null;
-        Cookie cookie = WebUtils.getCookie(request, "refreshToken");
-        if (cookie != null)
-            refreshToken = cookie.getValue();
+        String refreshToken = request.getHeader("refreshToken");
         return refreshToken;
+    }
+
+    public String getSignatureAccessToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(accessSecretKey.getBytes())
+                .parseClaimsJws(token)
+                .getSignature();
     }
 
     public Claims getClaimsAccessToken(String token) {
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(secret))
+                .setSigningKey(accessSecretKey.getBytes())
                 .parseClaimsJws(token)
                 .getBody();
     }
 
-    public Claims getClaimsRefreshToken(String token) {
+    private String getSignatureRefreshToken(String token) {
         return Jwts.parser()
-                .setSigningKey(DatatypeConverter.parseBase64Binary(refreshSecret))
+                .setSigningKey(refreshSecretKey.getBytes())
                 .parseClaimsJws(token)
-                .getBody();
+                .getSignature();
     }
 
     public boolean isValidAccessToken(String accessToken) {
-        try {
-            Claims accessClaims = getClaimsAccessToken(accessToken);
-            System.out.println("Access expireTime: " + accessClaims.getExpiration());
-            System.out.println("Access userId: " + accessClaims.get("userId"));
-            return true;
-        } catch (ExpiredJwtException exception) {
-            System.out.println("토큰이 만료되었습니다. : " + exception.getClaims().get("userId"));
-            return false;
-        } catch (JwtException exception) {
-            System.out.println("잘못된 토큰입니다.");
-            return false;
-        } catch (NullPointerException exception) {
-            System.out.println("토큰이 비어있습니다.");
+        try{
+            String signatureAccessToken = getSignatureAccessToken(accessToken);
+        }catch (ExpiredJwtException e){
             return false;
         }
-
+        return true;
     }
-    public boolean isValidRefreshToken(String refreshToken) {
 
-        try {
-            Claims accessClaims = getClaimsRefreshToken(refreshToken);
-            return true;
-        } catch (ExpiredJwtException exception) {
-            System.out.println("토큰이 만료되었습니다. : " + exception.getClaims().get("userId"));
-            return false;
-        } catch (JwtException exception) {
-            System.out.println("잘못된 토큰입니다.");
-            return false;
-        } catch (NullPointerException exception) {
-            System.out.println("토큰이 비어있습니다.");
+    public boolean isValidRefreshToken(String refreshToken){
+        try{
+            String signatureRefreshToken = getSignatureRefreshToken(refreshToken);
+        }catch (ExpiredJwtException e){
             return false;
         }
+        return true;
 
     }
+
 }
