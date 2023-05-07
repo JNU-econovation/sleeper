@@ -1,9 +1,7 @@
-package econo.app.sleeper.service.user;
+package econo.app.sleeper.service.member;
 
-import econo.app.sleeper.domain.user.RoleType;
-import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.domain.user.UserRepository;
-import econo.app.sleeper.web.user.dto.SignUpRequest;
+import econo.app.sleeper.domain.member.Member;
+import econo.app.sleeper.web.member.dto.SignUpRequest;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,21 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
-public class UserServiceTest {
+public class MemberServiceTest {
 
     @Autowired
-    private UserService userService;
+    private MemberService memberService;
 
     @Test
     public void join() {
         SignUpRequest signUpRequest = new SignUpRequest("aaa", "aaa12", "아이으", 24L, LocalTime.of(02, 00),LocalTime.of(07, 20),LocalTime.of(5, 20));
-        User user = userService.join(signUpRequest);
-        Assertions.assertThat(user.getUserId()).isEqualTo("aaa");
+        Member member = memberService.join(signUpRequest);
+        Assertions.assertThat(member.getMemberId()).isEqualTo("aaa");
     }
 
 }
