@@ -1,12 +1,9 @@
 package econo.app.sleeper.domain.Auth;
 
-
-import econo.app.sleeper.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.ComponentScan;
 
 import javax.persistence.*;
 
@@ -20,13 +17,12 @@ public class Auth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "ACECESS_TOKEN")
+    @Column(name = "ACCESS_TOKEN")
     private String accessToken;
 
     @Column(name = "REFRESH_TOKEN")
     private String refreshToken;
 
-    // 멤버와 1:N관계 매핑 해주고...
 
     @Builder
     public Auth(String accessToken,String refreshToken){

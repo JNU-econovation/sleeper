@@ -7,14 +7,10 @@ import econo.app.sleeper.domain.member.MemberRepository;
 import econo.app.sleeper.web.login.JwtTokenProvider;
 import econo.app.sleeper.web.login.LoginRequest;
 import econo.app.sleeper.web.login.LoginTokenDto;
-import econo.app.sleeper.web.login.ReissueResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.servlet.http.Cookie;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,15 +33,15 @@ public class AuthService {
         return loginTokenDto;
     }
 
-    public LoginTokenDto generateToken(String loginId){
-        String newAccessToken = jwtTokenProvider.createAccessToken(loginId);
-        String newRefreshToken = jwtTokenProvider.createRefreshToken(loginId);
+    public LoginTokenDto generateToken(String memberId){
+        String newAccessToken = jwtTokenProvider.createAccessToken(memberId);
+        String newRefreshToken = jwtTokenProvider.createRefreshToken(memberId);
         LoginTokenDto loginTokenDto = LoginTokenDto.of(newAccessToken, newRefreshToken);
         return loginTokenDto;
     }
 
     public boolean isEqualToRefreshToken(String accessToken, String refreshToken){
-        String recentRefreshToken = authRepository.findRecentRefreshToken(accessToken);
+        String recentRefreshToken = authRepository.findByAccessTokenAndId(accessToken).getRefreshToken();
         if(refreshToken.equals(recentRefreshToken)){
             return true;
         }

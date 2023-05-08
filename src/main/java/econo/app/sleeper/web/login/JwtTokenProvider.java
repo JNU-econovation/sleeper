@@ -1,6 +1,7 @@
 package econo.app.sleeper.web.login;
 
 import io.jsonwebtoken.*;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import static io.jsonwebtoken.SignatureAlgorithm.PS256;
 
 @Component
 @Slf4j
+@NoArgsConstructor
 public class JwtTokenProvider {
 
     private final String accessSecretKey = "sleeper_is_good_for_you";
@@ -84,10 +86,19 @@ public class JwtTokenProvider {
                 .getSignature();
     }
 
+
     public boolean isValidAccessToken(String accessToken) {
         try{
             String signatureAccessToken = getSignatureAccessToken(accessToken);
         }catch (ExpiredJwtException e){
+            return false;
+        }catch (UnsupportedJwtException e){
+            return false;
+        }catch (MalformedJwtException e){
+            return false;
+        }catch (SignatureException e){
+            return false;
+        }catch (IllegalArgumentException e){
             return false;
         }
         return true;
@@ -97,6 +108,14 @@ public class JwtTokenProvider {
         try{
             String signatureRefreshToken = getSignatureRefreshToken(refreshToken);
         }catch (ExpiredJwtException e){
+            return false;
+        }catch (UnsupportedJwtException e){
+            return false;
+        }catch (MalformedJwtException e){
+            return false;
+        }catch (SignatureException e){
+            return false;
+        }catch (IllegalArgumentException e){
             return false;
         }
         return true;

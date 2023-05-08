@@ -57,7 +57,7 @@ public class Member {
       this.sleepAdvisor = sleepAdvisor;
    }
 
-   public static Member createUser(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
+   public static Member createMember(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
       Member member = new Member(userId,userPassword,userNickName,userAge,roleType);
       return member;
    }

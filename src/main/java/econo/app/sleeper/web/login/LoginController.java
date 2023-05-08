@@ -73,9 +73,9 @@ public class LoginController {
     }
 
     @PostMapping("/auth/reissue")
-    public ResponseEntity<Void> reissue(String refreshToken, String accessToken, String loginId,HttpServletResponse response){
-        if(authService.isEqualToRefreshToken(accessToken,refreshToken)){
-            LoginTokenDto loginTokenDto = authService.generateToken(loginId);
+    public ResponseEntity<Void> reissue(@RequestBody ReissueRequest reissueRequest,HttpServletResponse response){
+        if(authService.isEqualToRefreshToken(reissueRequest.getAccessToken(),reissueRequest.getRefreshToken())){
+            LoginTokenDto loginTokenDto = authService.generateToken(reissueRequest.getMemberId());
             response.addHeader("authorization", loginTokenDto.getAccessToken());
             response.addHeader("refreshToken", loginTokenDto.getRefreshToken());
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

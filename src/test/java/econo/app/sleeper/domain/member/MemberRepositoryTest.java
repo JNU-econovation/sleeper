@@ -20,7 +20,7 @@ public class MemberRepositoryTest {
 
     @Test
     public void save() {
-        Member member = Member.createUser("test", "test", "sleeper", 25L, RoleType.USER);
+        Member member = Member.createMember("test", "test", "sleeper", 25L, RoleType.USER);
         memberRepository.save(member);
     }
 
@@ -32,7 +32,7 @@ public class MemberRepositoryTest {
 
     @Test
     public void findAll() {
-        Member member = Member.createUser("test", "test", "sleeper", 25L, RoleType.USER);
+        Member member = Member.createMember("test", "test", "sleeper", 25L, RoleType.USER);
         memberRepository.save(member);
         List<Member> members = memberRepository.findAll();
         Assertions.assertThat(members.size()).isEqualTo(2);

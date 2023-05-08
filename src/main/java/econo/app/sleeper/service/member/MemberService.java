@@ -19,7 +19,7 @@ public class MemberService {
 
     @Transactional
     public Member join(SignUpRequest signUpRequest) {
-        Member member = Member.createUser(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
+        Member member = Member.createMember(signUpRequest.getUserId(), signUpRequest.getUserPassword(), signUpRequest.getUserNickName(), signUpRequest.getUserAge(), RoleType.USER);
         memberRepository.save(member);
         return member;
     }

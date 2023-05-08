@@ -7,17 +7,17 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 @Builder
-public class ReissueResponse {
+public class ReissueRequest {
 
     private String accessToken;
     private String refreshToken;
-    private String reIssueToken;
+    private String memberId;
 
-    public static ReissueResponse of (String accessToken, String refreshToken, String reIssueToken){
-        return ReissueResponse.builder()
+    public static ReissueRequest of (String accessToken, String refreshToken, String memberId){
+        return ReissueRequest.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
-                .reIssueToken(reIssueToken)
+                .memberId(memberId)
                 .build();
     }
 }

@@ -1,6 +1,5 @@
 package econo.app.sleeper.domain.character;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
