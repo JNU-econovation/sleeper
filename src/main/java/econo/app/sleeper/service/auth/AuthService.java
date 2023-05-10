@@ -28,10 +28,15 @@ public class AuthService {
             throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
         LoginTokenDto loginTokenDto = generateToken(loginId);
-        Auth auth = Auth.createAuth(loginTokenDto.getAccessToken(),loginTokenDto.getRefreshToken());
-        authRepository.save(auth);
+        save(loginTokenDto);
         return loginTokenDto;
     }
+
+    private void save(LoginTokenDto loginTokenDto){
+        Auth auth = Auth.createAuth(loginTokenDto.getAccessToken(), loginTokenDto.getRefreshToken());
+        authRepository.save(auth);
+    }
+
 
     public LoginTokenDto generateToken(String memberId){
         String newAccessToken = jwtTokenProvider.createAccessToken(memberId);
