@@ -47,24 +47,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return handleExceptionInternal(errorCode);
     }
 
-    @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<Object> handleIllegalStateException(IllegalStateException e){
-        return handleExceptionInternal(e);
-    }
-
-    @ExceptionHandler(UnsupportedJwtException.class)
-    public ResponseEntity<Object> handleUnsupportedJwtException(UnsupportedJwtException e){
-        return handleExceptionInternal(e);
-    }
-
-    @ExceptionHandler(MalformedJwtException.class)
-    public ResponseEntity<Object> handleMalformedJwtException(MalformedJwtException e){
-        return handleExceptionInternal(e);
-    }
-
-    @ExceptionHandler(SignatureException.class)
-    public ResponseEntity<Object> handleSignatureException(SignatureException e){
-        return handleExceptionInternal(e);
+    @ExceptionHandler(CustomJwtException.class)
+    public ResponseEntity<Object> handleCustomJwtException(CustomJwtException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        return handleExceptionInternal(errorCode);
     }
 
     @ExceptionHandler(Exception.class)
