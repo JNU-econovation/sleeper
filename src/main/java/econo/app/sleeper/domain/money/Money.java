@@ -56,6 +56,7 @@ public class Money {
     }
 
     public Money useCash(Integer cash) {
+
         if(cash < 0){
             throw new IllegalStateException("음수가 될 수 없습니다");
         }
@@ -64,6 +65,7 @@ public class Money {
         }
         Money money = new Money(this.holdingCash - cash, ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
         return money;
+
     }
 
 

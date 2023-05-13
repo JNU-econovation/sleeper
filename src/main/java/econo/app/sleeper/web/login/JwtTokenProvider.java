@@ -1,16 +1,18 @@
 package econo.app.sleeper.web.login;
 
+import econo.app.sleeper.exception.CustomJwtException;
+import econo.app.sleeper.exception.error.ErrorCode;
+import econo.app.sleeper.exception.error.JwtErrorCode;
 import io.jsonwebtoken.*;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
 import java.util.Date;
 
 import static io.jsonwebtoken.SignatureAlgorithm.HS256;
-import static io.jsonwebtoken.SignatureAlgorithm.PS256;
+import static io.jsonwebtoken.SignatureAlgorithm.HS512;
 
 
 @Component
@@ -18,27 +20,27 @@ import static io.jsonwebtoken.SignatureAlgorithm.PS256;
 @NoArgsConstructor
 public class JwtTokenProvider {
 
-    private final String accessSecretKey = "sleeper_is_good_for_you";
-    private final String refreshSecretKey = "bokdungi_is_a_good_team";
-    private long accessTokenExp;
-    private long refreshTokenExp;
+    @Value("${jwt.accessSecretKey}")
+    private  String accessSecretKey;
 
-    public JwtTokenProvider(@Value("600000") long accessTokenExp,@Value("3600000") long refreshTokenExp) {
-        this.accessTokenExp = accessTokenExp;
-        this.refreshTokenExp = refreshTokenExp;
-    }
+    @Value("${jwt.refreshSecretKey}")
+    private String refreshSecretKey;
+
+    @Value("${jwt.accessTokenExp}")
+    private long accessTokenExp;
+
+    @Value("${jwt.refreshTokenExp}")
+    private long refreshTokenExp;
 
     public String createAccessToken(String userId) {
         Date validity = new Date(System.currentTimeMillis()
                 + accessTokenExp);
-        Date now = new Date();
         return Jwts.builder()
-                .setHeaderParam("alg","HS256")
-                .setIssuer("sleeper")
+                .setHeaderParam("typ","JWT")
                 .setSubject(userId)
+                .setIssuedAt(new Date())
                 .setExpiration(validity)
-                .setIssuedAt(now)
-                .signWith(HS256, accessSecretKey.getBytes())
+                .signWith(SignatureAlgorithm.HS256, accessSecretKey)
                 .compact();
     }
 
@@ -47,78 +49,53 @@ public class JwtTokenProvider {
                 + refreshTokenExp);
         Date now = new Date();
         return Jwts.builder()
-                .setHeaderParam("alg","HS256")
-                .setIssuer("sleeper")
+                .setHeaderParam("typ","JWT")
                 .setSubject(userId)
+                .setIssuedAt(new Date())
                 .setExpiration(validity)
-                .setIssuedAt(now)
-                .signWith(HS256, refreshSecretKey.getBytes())
+                .signWith(SignatureAlgorithm.HS256, refreshSecretKey)
                 .compact();
     }
 
     public String extractAccessToken(HttpServletRequest request) {
-        String accessToken = request.getHeader("authorization");
+        String accessToken = request.getHeader("Authorization").replace("Bearer ","");
         return accessToken;
     }
     public String extractRefreshToken(HttpServletRequest request) {
-        String refreshToken = request.getHeader("refreshToken");
+        String refreshToken = request.getHeader("refreshToken").replace("Bearer ","");
         return refreshToken;
     }
 
-    public String getSignatureAccessToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(accessSecretKey.getBytes())
-                .parseClaimsJws(token)
-                .getSignature();
-    }
-
-    public Claims getClaimsAccessToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(accessSecretKey.getBytes())
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
-    private String getSignatureRefreshToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(refreshSecretKey.getBytes())
-                .parseClaimsJws(token)
-                .getSignature();
-    }
-
-
     public boolean isValidAccessToken(String accessToken) {
         try{
-            String signatureAccessToken = getSignatureAccessToken(accessToken);
+            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(accessSecretKey).build();
+            jwtParser.parseClaimsJws(accessToken);
+            return true;
         }catch (ExpiredJwtException e){
-            return false;
-        }catch (UnsupportedJwtException e){
-            return false;
+           throw new CustomJwtException(JwtErrorCode.Expired_JWT);
         }catch (MalformedJwtException e){
-            return false;
+            throw new CustomJwtException(JwtErrorCode.Invalid_JWT);
+        }catch (UnsupportedJwtException e){
+            throw new CustomJwtException(JwtErrorCode.Unsupported_JWT);
         }catch (SignatureException e){
-            return false;
-        }catch (IllegalArgumentException e){
-            return false;
+            throw new CustomJwtException(JwtErrorCode.Invalid_JWT_Signature);
         }
-        return true;
     }
 
     public boolean isValidRefreshToken(String refreshToken){
         try{
-            String signatureRefreshToken = getSignatureRefreshToken(refreshToken);
+            JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(accessSecretKey).build();
+            jwtParser.parseClaimsJws(refreshToken);
+            return true;
         }catch (ExpiredJwtException e){
-            return false;
-        }catch (UnsupportedJwtException e){
-            return false;
+            throw new CustomJwtException(JwtErrorCode.Expired_JWT);
         }catch (MalformedJwtException e){
-            return false;
+            throw new CustomJwtException(JwtErrorCode.Invalid_JWT);
+        }catch (UnsupportedJwtException e){
+            throw new CustomJwtException(JwtErrorCode.Unsupported_JWT);
         }catch (SignatureException e){
-            return false;
-        }catch (IllegalArgumentException e){
-            return false;
+            throw new CustomJwtException(JwtErrorCode.Invalid_JWT_Signature);
         }
-        return true;
 
     }
 

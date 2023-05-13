@@ -43,18 +43,17 @@ public class LoginController {
     @PostMapping("/auth/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest,HttpServletResponse response) {
         LoginTokenDto loginTokenDto = authService.login(loginRequest);
-
         String memberId= loginRequest.getMemberId();
         Member member = memberRepository.findById(memberId).get();
         Long memberPk= member.getId();
         Long characterPk = member.getCharacter().getId();
         Long sleepAdvisorPk = member.getSleepAdvisor().getId();
 
-        response.addHeader("authorization", loginTokenDto.getAccessToken());
-        response.addHeader("refreshToken", loginTokenDto.getRefreshToken());
+        response.addHeader("Authorization","Bearer " + loginTokenDto.getAccessToken());
+        response.addHeader("refreshToken", "Bearer " + loginTokenDto.getRefreshToken());
 
         LoginResponse loginResponse = new LoginResponse(characterPk,memberPk,sleepAdvisorPk,LoginMessage.issue_AccessToken_RefreshToken.toString());
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        return new ResponseEntity<>(loginResponse, HttpStatus.CREATED);
     }
 
 
@@ -78,7 +77,7 @@ public class LoginController {
             LoginTokenDto loginTokenDto = authService.generateToken(reissueRequest.getMemberId());
             response.addHeader("authorization", loginTokenDto.getAccessToken());
             response.addHeader("refreshToken", loginTokenDto.getRefreshToken());
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }else{
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

@@ -40,5 +40,10 @@ logging:
   level:
     root: DEBUG
 
+jwt:
+  accessSecretKey : 591a894d557edd952aa186c3e4d69de12caa543e059e88cc6ff26b082df94a63c998293a677a1d8475f2c1215e2a32f2a6bdb81d1d8908d43294bffa1c3d9357
+  refreshSecretKey : 7e08766b6607fd7b1a51e40cb8a6425c8716fdff93cded0059cc9b8af61711876255d1ffff5991beea7d774f33c4c0096e8ef1c0c5b95212b7dc43b279d429a8
+  accessTokenExp: 600000
+  refreshTokenExp : 3600000
 
 

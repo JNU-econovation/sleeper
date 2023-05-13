@@ -15,11 +15,11 @@ public class JwtInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
         String accessToken = jwtTokenProvider.extractAccessToken(request);
-        String refreshToken = jwtTokenProvider.extractRefreshToken(request);
 
         if (jwtTokenProvider.isValidAccessToken(accessToken)) {
             return true;
         }else{
+            String refreshToken = jwtTokenProvider.extractRefreshToken(request);
             if (refreshToken.isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/auth/re-request");
                 return false;
