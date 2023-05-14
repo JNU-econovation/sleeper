@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Optional;
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 class JwtTokenProviderTest {
@@ -20,8 +22,25 @@ class JwtTokenProviderTest {
     @Test
     void testAccessToken() throws InterruptedException {
 
-        JwtParser jwtParser = Jwts.parserBuilder().setSigningKey("591a894d557edd952aa186c3e4d69de12caa543e059e88cc6ff26b082df94a63c998293a677a1d8475f2c1215e2a32f2a6bdb81d1d8908d43294bffa1c3d9357").build();
-        jwtParser.parseClaimsJws("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib2tkdW5naSIsImlhdCI6MTY4NDAwNDE2NCwiZXhwIjoxNjg0MDA0NzY0fQ.t6EYa3b7tnNWIyP_BRtaSN2iGvXhc3Vj2SUd0GQimiE");
+        String accessToken = jwtTokenProvider.createAccessToken("bokdungi");
+        System.out.println("accessToken = " + accessToken);
+        // 만료된 엑세스 토큰 만들기
+        //  eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib2tkdW5naSIsImlhdCI6MTY4NDA1MTY0NywiZXhwIjoxNjg0MDUxNjQ3fQ.TCst8CFT4L8l6X2B_OydCSi62TBFRfb_ijOiBjZ_Yco
+
+        String refreshToken = jwtTokenProvider.createRefreshToken("bokdungi");
+        System.out.println("refreshToken = " + refreshToken);
+
+        // 리프레시 토큰 만들기
+        // eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJib2tkdW5naSIsImlhdCI6MTY4NDA3NjE5MCwiZXhwIjoxNjg0OTc2MTkwfQ.Kk4SJq6JV7TpRT_KrVS5RIHPi1vqRMbI0X2JDT-x70Y
+
+    }
+
+    @Test
+    void test(){
+
+        String accessToken = null;
+        Optional<String> accessToken1 = Optional.ofNullable(accessToken);
+        System.out.println(accessToken1.isEmpty());
 
     }
 }

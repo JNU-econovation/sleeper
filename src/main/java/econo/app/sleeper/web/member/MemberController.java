@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Tag(name = "user", description = "사용자 관련 API")
 public class MemberController {
+
     private final MemberService memberService;
     private final SleepAdvisorService sleepAdvisorService;
     private final CharacterService characterService;
@@ -38,7 +39,7 @@ public class MemberController {
     })
 
 
-@PostMapping("/users/idCheck")
+    @PostMapping("/users/idCheck")
     public ResponseEntity<Boolean> idCheck(@RequestBody IdRequest idRequest){
         String check= memberService.idCheck(idRequest.getRequestId());
        if(check.equals("중복"))

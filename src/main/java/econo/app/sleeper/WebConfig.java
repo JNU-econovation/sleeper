@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new JwtInterceptor(jwtTokenProvider))
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/users","/auth/login");
+                .excludePathPatterns("/users","/auth/login","/auth/re-request","/auth/fail");
     }
 
 }

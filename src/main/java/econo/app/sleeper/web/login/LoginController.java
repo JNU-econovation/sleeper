@@ -31,6 +31,7 @@ public class LoginController {
 
     private final AuthService authService;
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -72,10 +73,10 @@ public class LoginController {
     }
 
     @PostMapping("/auth/reissue")
-    public ResponseEntity<Void> reissue(@RequestBody ReissueRequest reissueRequest,HttpServletResponse response){
-        if(authService.isEqualToRefreshToken(reissueRequest.getAccessToken(),reissueRequest.getRefreshToken())){
-            LoginTokenDto loginTokenDto = authService.generateToken(reissueRequest.getMemberId());
-            response.addHeader("authorization", loginTokenDto.getAccessToken());
+    public ResponseEntity<Void> reissue(HttpServletRequest request,HttpServletResponse response,String memberId){
+        if(authService.isEqualToRefreshToken(jwtTokenProvider.extractAccessToken(request),jwtTokenProvider.extractRefreshToken(request).orElse(""))){
+            LoginTokenDto loginTokenDto = authService.generateToken(memberId);
+            response.addHeader("Authorization", loginTokenDto.getAccessToken());
             response.addHeader("refreshToken", loginTokenDto.getRefreshToken());
             return new ResponseEntity<>(HttpStatus.CREATED);
         }else{

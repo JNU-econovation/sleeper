@@ -6,6 +6,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 public class JwtInterceptor implements HandlerInterceptor {
@@ -19,12 +21,12 @@ public class JwtInterceptor implements HandlerInterceptor {
         if (jwtTokenProvider.isValidAccessToken(accessToken)) {
             return true;
         }else{
-            String refreshToken = jwtTokenProvider.extractRefreshToken(request);
+            Optional<String> refreshToken = jwtTokenProvider.extractRefreshToken(request);
             if (refreshToken.isEmpty()) {
                 response.sendRedirect(request.getContextPath() + "/auth/re-request");
                 return false;
             }else{
-                if (jwtTokenProvider.isValidRefreshToken(refreshToken)) {
+                if (jwtTokenProvider.isValidRefreshToken(refreshToken.get())) {
                     return true; // 토큰들 재발행
                 }else{
                     response.sendRedirect(request.getContextPath() + "/auth/fail");
