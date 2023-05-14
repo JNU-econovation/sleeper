@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.money;
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class InitialMoneyDto {
 
-    private final User user;
+    private final Member member;
 
-    public static InitialMoneyDto of(User user){
+    public static InitialMoneyDto of(Member member){
         return InitialMoneyDto.builder()
-                .user(user)
+                .member(member)
                 .build();
     }
 

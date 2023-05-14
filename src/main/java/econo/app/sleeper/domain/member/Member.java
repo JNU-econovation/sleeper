@@ -1,4 +1,4 @@
-package econo.app.sleeper.domain.user;
+package econo.app.sleeper.domain.member;
 
 import econo.app.sleeper.domain.character.Character;
 import econo.app.sleeper.domain.sleep.SleepAdvisor;
@@ -9,20 +9,25 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "USER")
-public class User {
+@Table(name = "MEMBER")
+public class Member {
 
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private Long id;
+
    @Column(nullable = false)
-   private String userId;
+   private String memberId;
+
    @Column(nullable = false)
-   private String userPassword;
+   private String memberPassword;
+
    @Column(length = 20, nullable = false)
-   private String userNickName;
+   private String memberNickName;
+
    @Column(nullable = false)
-   private Long userAge;
+   private Long memberAge;
+
    @Enumerated(EnumType.STRING)
    @Column(name = "USER_ROLE_TYPE")
    private RoleType roleType;
@@ -36,11 +41,11 @@ public class User {
    private SleepAdvisor sleepAdvisor;
 
    @Builder
-   public User(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
-      this.userId = userId;
-      this.userPassword = userPassword;
-      this.userNickName = userNickName;
-      this.userAge = userAge;
+   public Member(String memberId, String memberPassword, String memberNickName, Long memberAge, RoleType roleType){
+      this.memberId = memberId;
+      this.memberPassword = memberPassword;
+      this.memberNickName = memberNickName;
+      this.memberAge = memberAge;
       this.roleType = roleType;
    }
 
@@ -52,9 +57,9 @@ public class User {
       this.sleepAdvisor = sleepAdvisor;
    }
 
-   public static User createUser(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
-      User user = new User(userId,userPassword,userNickName,userAge,roleType);
-      return user;
+   public static Member createMember(String userId, String userPassword, String userNickName, Long userAge, RoleType roleType){
+      Member member = new Member(userId,userPassword,userNickName,userAge,roleType);
+      return member;
    }
 
 

@@ -1,6 +1,6 @@
 package econo.app.sleeper.domain.money;
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,23 +27,23 @@ public class Money {
     private ZonedDateTime date;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_FK")
-    private User user;
+    @JoinColumn(name = "MEMBER_FK")
+    private Member member;
 
     @Builder
     public Money(Integer holdingCash, ZonedDateTime date){
         this.holdingCash = holdingCash;
         this.date = date;
     }
-    public void mappingUser(User user) {
-        this.user = user;
+    public void mappingUser(Member member) {
+        this.member = member;
     }
 
-    public static Money createMoney(User user){
+    public static Money createMoney(Member member){
         Money money = new Money();
         money.holdingCash = 0;
         money.date = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
-        money.mappingUser(user);
+        money.mappingUser(member);
         return money;
     }
 
@@ -56,6 +56,7 @@ public class Money {
     }
 
     public Money useCash(Integer cash) {
+
         if(cash < 0){
             throw new IllegalStateException("음수가 될 수 없습니다");
         }
@@ -64,6 +65,7 @@ public class Money {
         }
         Money money = new Money(this.holdingCash - cash, ZonedDateTime.now(ZoneId.of("Asia/Seoul")));
         return money;
+
     }
 
 

@@ -28,7 +28,7 @@ public class MoneyRepository {
     }
 
     public Optional<Money> findRecentMoneyByUser(Long userPk){
-        TypedQuery<Money> query = em.createQuery("select d from Money d join d.user u where u.id = :userPk order by d.date desc", Money.class)
+        TypedQuery<Money> query = em.createQuery("select mo from Money mo join mo.member m where m.id = :userPk order by mo.date desc", Money.class)
                 .setParameter("userPk",userPk);
         query.setFirstResult(0);
         query.setMaxResults(1);

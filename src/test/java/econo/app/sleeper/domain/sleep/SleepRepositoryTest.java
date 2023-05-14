@@ -1,9 +1,8 @@
 package econo.app.sleeper.domain.sleep;
 
-import econo.app.sleeper.domain.user.RoleType;
-import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.domain.user.UserRepository;
-import econo.app.sleeper.domain.user.UserRepositoryTest;
+import econo.app.sleeper.domain.member.Member;
+import econo.app.sleeper.domain.member.MemberRepository;
+import econo.app.sleeper.domain.member.RoleType;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,8 +18,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Transactional
@@ -30,18 +27,18 @@ public class SleepRepositoryTest {
     private SleepRepository sleepRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
 
     @Before
     public void init(){
-        User user = User.createUser("test12", "test12", "test12", 25L, RoleType.USER);
-        userRepository.save(user);
+        Member member = Member.createMember("test12", "test12", "test12", 25L, RoleType.USER);
+        memberRepository.save(member);
         ZonedDateTime setSleepTime = ZonedDateTime.of(LocalDateTime.of(2023, 03, 03, 01, 40), ZoneId.of("Asia/Seoul"));
         ZonedDateTime setWakeTime = ZonedDateTime.of(LocalDateTime.of(2023, 03, 03, 9, 00), ZoneId.of("Asia/Seoul"));
         ZonedDateTime actualSleepTime = ZonedDateTime.of(LocalDateTime.of(2023, 03, 03, 02, 10), ZoneId.of("Asia/Seoul"));
         ZonedDateTime actualWakeTime = ZonedDateTime.of(LocalDateTime.of(2023, 03, 03, 8, 40), ZoneId.of("Asia/Seoul"));
         LocalDate sleepDae = LocalDate.of(2023, 03, 02);
-        Sleep sleep = Sleep.createSleep(setSleepTime, setWakeTime, actualSleepTime, sleepDae, user);
+        Sleep sleep = Sleep.createSleep(setSleepTime, setWakeTime, actualSleepTime, sleepDae, member);
         sleepRepository.save(sleep);
         sleep.updateActualWakeTime(actualWakeTime);
     }
@@ -71,8 +68,8 @@ public class SleepRepositoryTest {
         ZonedDateTime actualSleepTime2 = ZonedDateTime.of(LocalDateTime.of(2023, 03, 01, 02, 10), ZoneId.of("Asia/Seoul"));
         ZonedDateTime actualWakeTime2 = ZonedDateTime.of(LocalDateTime.of(2023, 03, 01, 8, 40), ZoneId.of("Asia/Seoul"));
         LocalDate sleepDae2 = LocalDate.of(2023, 02, 28);
-        User user = userRepository.find(2L).get();
-        Sleep sleep2 = Sleep.createSleep(setSleepTime2, setWakeTime2, actualSleepTime2, sleepDae2, user);
+        Member member = memberRepository.find(2L).get();
+        Sleep sleep2 = Sleep.createSleep(setSleepTime2, setWakeTime2, actualSleepTime2, sleepDae2, member);
         sleepRepository.save(sleep2);
         sleep2.updateActualWakeTime(actualWakeTime2);
 

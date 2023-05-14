@@ -8,8 +8,7 @@ import econo.app.sleeper.web.sleep.dto.InitialSleepAdvisorDto;
 import econo.app.sleeper.web.sleep.dto.RecommendedTimes;
 import econo.app.sleeper.web.sleep.dto.SleepAdvisorDto;
 import econo.app.sleeper.web.sleep.dto.SleepAdvisorResponse;
-import econo.app.sleeper.web.user.dto.WakeTimeRecommendDto;
-import lombok.RequiredArgsConstructor;
+import econo.app.sleeper.web.member.dto.WakeTimeRecommendDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +29,7 @@ public class SleepAdvisorService {
 
     @Transactional
     public void create(InitialSleepAdvisorDto initialSleepAdvisorDto) {
-        SleepAdvisor sleepAdvisor = SleepAdvisor.createSleepAdvisor(initialSleepAdvisorDto.getGoalSleepTime(), initialSleepAdvisorDto.getGoalWakeTime(), initialSleepAdvisorDto.getMinimumSleepTime(), initialSleepAdvisorDto.getUser());
+        SleepAdvisor sleepAdvisor = SleepAdvisor.createSleepAdvisor(initialSleepAdvisorDto.getGoalSleepTime(), initialSleepAdvisorDto.getGoalWakeTime(), initialSleepAdvisorDto.getMinimumSleepTime(), initialSleepAdvisorDto.getMember());
         sleepAdvisorRepository.save(sleepAdvisor);
     }
 

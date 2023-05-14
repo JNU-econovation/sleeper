@@ -2,11 +2,11 @@ package econo.app.sleeper.service.diary;
 
 import econo.app.sleeper.domain.common.DatePolicy;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.domain.diary.DiaryRepository;
-import econo.app.sleeper.domain.user.UserRepository;
+import econo.app.sleeper.domain.member.MemberRepository;
 import econo.app.sleeper.web.diary.dto.DiaryFindDto;
 import econo.app.sleeper.web.diary.dto.DiaryRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +23,15 @@ import java.util.List;
 public class DiaryService {
 
     private final DiaryRepository diaryRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final DatePolicy datePolicy;
 
     @Transactional
     public void save(DiaryRequest diaryRequest){
-        User user = userRepository.find(diaryRequest.getUserPk())
+        Member member = memberRepository.find(diaryRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         LocalDate decidedDate = decideDate(diaryRequest.getWritingDiaryTime());
-        Diary diary = Diary.create(diaryRequest.getContent(), decidedDate, diaryRequest.getWritingDiaryTime(), user);
+        Diary diary = Diary.create(diaryRequest.getContent(), decidedDate, diaryRequest.getWritingDiaryTime(), member);
         diaryRepository.save(diary);
     }
     private LocalDate decideDate(ZonedDateTime savedDateTime){
@@ -59,9 +59,9 @@ public class DiaryService {
     }
 
     public List<Diary> findDiaries(Long userPk){
-        User user = userRepository.find(userPk)
+        Member member = memberRepository.find(userPk)
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
-        return diaryRepository.findAll(user.getId());
+        return diaryRepository.findAll(member.getId());
     }
 
     public Diary findDiaryByDate(DiaryFindDto diaryFindDto){

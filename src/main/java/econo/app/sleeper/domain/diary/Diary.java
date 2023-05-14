@@ -1,8 +1,7 @@
 package econo.app.sleeper.domain.diary;
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.*;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -22,9 +21,11 @@ public class Diary {
 
     @Column(name = "DIARY_DELETE_DATE", columnDefinition = "DATE")
     private LocalDate deleteDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_FK")
-    private User user; // 연관관계의 주인
+    @JoinColumn(name = "MEMBER_FK")
+    private Member member; // 연관관계의 주인
+
     @Column(name = "DIARY_DATE")
     private LocalDate diaryDate;
 
@@ -32,21 +33,21 @@ public class Diary {
     private ZonedDateTime writingTime;
 
     @Builder
-    public Diary(String content, User user){
+    public Diary(String content, Member member){
         this.content = content;
-        this.user = user;
+        this.member = member;
     }
 
-    public void associate(User user){
-        this.user = user;
+    public void associate(Member member){
+        this.member = member;
     }
 
-    public static Diary create(String content, LocalDate diaryDate, ZonedDateTime writingTIme, User user){
+    public static Diary create(String content, LocalDate diaryDate, ZonedDateTime writingTIme, Member member){
         Diary diary = new Diary();
         diary.content = content;
         diary.diaryDate = diaryDate;
         diary.writingTime = writingTIme;
-        diary.associate(user);
+        diary.associate(member);
         return diary;
     }
 

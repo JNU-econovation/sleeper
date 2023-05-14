@@ -1,6 +1,6 @@
-package econo.app.sleeper.web.user.dto;
+package econo.app.sleeper.web.member.dto;
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +12,9 @@ public class SignupResponse {
 
     private final String userId;
 
-    public static SignupResponse toDto(User user){
+    public static SignupResponse toDto(Member member){
         return SignupResponse.builder()
-                .userId(user.getUserId())
+                .userId(member.getMemberId())
                 .build();
     }
 

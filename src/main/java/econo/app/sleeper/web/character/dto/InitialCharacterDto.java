@@ -1,6 +1,6 @@
 package econo.app.sleeper.web.character.dto;
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,11 +10,11 @@ import lombok.RequiredArgsConstructor;
 @Builder
 public class InitialCharacterDto {
 
-    private final User user;
+    private final Member member;
 
-    public static InitialCharacterDto of(User user){
+    public static InitialCharacterDto of(Member member){
         return InitialCharacterDto.builder()
-                .user(user)
+                .member(member)
                 .build();
     }
 
