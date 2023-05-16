@@ -1,7 +1,6 @@
 package econo.app.sleeper.domain.character;
 
-import econo.app.sleeper.domain.user.User;
-import io.swagger.models.auth.In;
+import econo.app.sleeper.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,14 +51,14 @@ public class Character {
         XpPerLevel.getCurrentLevel(cumulativeXp,level);
     }
 
-    public static Character createCharacter(User user){
+    public static Character createCharacter(Member member){
         Character character = Character.builder()
                 .color(Color.YELLOW)
                 .status(Status.NO_SLEEP)
                 .cumulativeXp(0)
                 .level(1L)
                 .build();
-        user.mappingCharacter(character);
+        member.mappingCharacter(character);
         return character;
     }
 

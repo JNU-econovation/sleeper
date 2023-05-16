@@ -2,11 +2,11 @@ package econo.app.sleeper.service.sleep;
 
 import econo.app.sleeper.domain.common.DatePolicy;
 import econo.app.sleeper.domain.sleep.Sleep;
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import econo.app.sleeper.exception.RestApiException;
 import econo.app.sleeper.exception.error.CommonErrorCode;
 import econo.app.sleeper.domain.sleep.SleepRepository;
-import econo.app.sleeper.domain.user.UserRepository;
+import econo.app.sleeper.domain.member.MemberRepository;
 import econo.app.sleeper.web.sleep.dto.SleepDto;
 import econo.app.sleeper.web.sleep.dto.SleepRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +22,15 @@ import java.time.ZonedDateTime;
 public class SleepService {
 
     private final SleepRepository sleepRepository;
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final DatePolicy datePolicy;
 
     @Transactional
     public Long saveSleep(SleepRequest sleepRequest){
-        User user = userRepository.find(sleepRequest.getUserPk())
+        Member member = memberRepository.find(sleepRequest.getUserPk())
                 .orElseThrow(() -> new RestApiException(CommonErrorCode.RESOURCE_NOT_FOUND));
         LocalDate decidedDate = decideDate(sleepRequest.getActualSleepTime());
-        Sleep sleep = Sleep.createSleep(sleepRequest.getSetSleepTime(),sleepRequest.getSetWakeTime(),sleepRequest.getActualSleepTime(),decidedDate,user);
+        Sleep sleep = Sleep.createSleep(sleepRequest.getSetSleepTime(),sleepRequest.getSetWakeTime(),sleepRequest.getActualSleepTime(),decidedDate, member);
         sleepRepository.save(sleep);
         return sleep.getId();
     }

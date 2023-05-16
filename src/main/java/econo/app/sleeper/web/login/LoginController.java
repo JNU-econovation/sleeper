@@ -1,8 +1,9 @@
 package econo.app.sleeper.web.login;
 
-import econo.app.sleeper.domain.user.User;
-import econo.app.sleeper.domain.user.UserRepository;
-import econo.app.sleeper.service.login.LoginService;
+import econo.app.sleeper.domain.member.Member;
+import econo.app.sleeper.domain.member.MemberRepository;
+import econo.app.sleeper.service.auth.AuthService;
+import econo.app.sleeper.web.common.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,16 +21,17 @@ import org.springframework.web.util.WebUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "login", description = "로그인 관련 API")
 public class LoginController {
-    private final LoginService loginService;
-    private final JwtTokenProvider jwtTokenProvider;
 
-    private final UserRepository userRepository;
+    private final AuthService authService;
+    private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Operation(summary = "api simple explain", description = "api specific explain")
     @ApiResponses({
@@ -38,37 +41,53 @@ public class LoginController {
             @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest, HttpServletRequest request, HttpServletResponse response) {
+    @PostMapping("/auth/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest,HttpServletResponse response) {
+        LoginTokenDto loginTokenDto = authService.login(loginRequest);
+        String memberId= loginRequest.getMemberId();
+        Member member = memberRepository.findById(memberId).get();
+        Long memberPk= member.getId();
+        Long characterPk = member.getCharacter().getId();
+        Long sleepAdvisorPk = member.getSleepAdvisor().getId();
 
-        LoginTokenDto loginTokenDto = loginService.login(loginRequest, request);
-        String userId= loginRequest.getUserId();
-        User user= userRepository.findById(userId).get();
-        Long userPk= user.getId();
-        Long characterPk = user.getCharacter().getId();
-        Long sleepAdvisorPk = user.getSleepAdvisor().getId();
-        LoginResponse loginResponse = new LoginResponse(characterPk,userPk,sleepAdvisorPk,loginTokenDto.getMessage());
+        response.addHeader("Authorization","Bearer " + loginTokenDto.getAccessToken());
+        response.addHeader("refreshToken", "Bearer " + loginTokenDto.getRefreshToken());
 
-        if (loginTokenDto.getAccessToken().isBlank()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        if (loginTokenDto.getRefreshToken().isBlank()) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-        String accessToken = jwtTokenProvider.createAccessToken(userId);
-        String refreshToken = jwtTokenProvider.createRefreshToken(userId);
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        response.addHeader("authorization", accessToken);
-        response.addCookie(cookie);
-        return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+        LoginResponse loginResponse = new LoginResponse(characterPk,memberPk,sleepAdvisorPk,LoginMessage.issue_AccessToken_RefreshToken.toString());
+        return new ResponseEntity<>(loginResponse, HttpStatus.CREATED);
     }
 
-    //Body에는 쿠키가 없다.
-    @PostMapping("/logout")
-    public ResponseEntity<Void>logout( HttpServletRequest request, HttpServletResponse response) {
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<Void> logout(HttpServletRequest request, HttpServletResponse response) {
         Cookie cookie = WebUtils.getCookie(request, "refreshToken");
-        Cookie nullCookie = loginService.logout(cookie);
+        Cookie nullCookie = authService.logout(cookie);
         response.addCookie(nullCookie);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping("/auth/re-request")
+    public ResponseEntity<CommonResponse> reRequest(){
+        CommonResponse commonResponse = new CommonResponse(LoginMessage.re_request_with_AccessToken_RefreshToken.toString());
+        return new ResponseEntity<>(commonResponse,HttpStatus.UNAUTHORIZED);
+    }
+
+    @PostMapping("/auth/reissue")
+    public ResponseEntity<Void> reissue(HttpServletRequest request,HttpServletResponse response,String memberId){
+        if(authService.isEqualToRefreshToken(jwtTokenProvider.extractAccessToken(request),jwtTokenProvider.extractRefreshToken(request).orElse(""))){
+            LoginTokenDto loginTokenDto = authService.generateToken(memberId);
+            response.addHeader("Authorization", loginTokenDto.getAccessToken());
+            response.addHeader("refreshToken", loginTokenDto.getRefreshToken());
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @GetMapping("/auth/fail")
+    public ResponseEntity<Void> loginFail(){
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+
 }

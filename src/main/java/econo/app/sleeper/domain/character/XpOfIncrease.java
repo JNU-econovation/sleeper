@@ -1,6 +1,5 @@
 package econo.app.sleeper.domain.character;
 
-import lombok.Getter;
 
 import java.util.Arrays;
 

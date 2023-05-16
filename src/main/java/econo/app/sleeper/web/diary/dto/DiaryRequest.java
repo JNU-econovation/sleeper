@@ -2,7 +2,7 @@ package econo.app.sleeper.web.diary.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import econo.app.sleeper.domain.diary.Diary;
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.*;
 import javax.validation.constraints.NotNull;
 import java.time.ZonedDateTime;
@@ -23,9 +23,9 @@ public class DiaryRequest {
     @NotNull
     private final Long level;
 
-    public Diary toEntity(String content,User user){
+    public Diary toEntity(String content, Member member){
         return Diary.builder()
-                .user(user)
+                .member(member)
                 .content(content)
                 .build();
     }

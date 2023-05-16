@@ -11,18 +11,14 @@ import java.io.Serializable;
 @Builder
 public class LoginTokenDto implements Serializable{
 
-    private String message;
     private String accessToken;
     private String refreshToken;
 
-    public static LoginTokenDto of (String message, String accessToken, String refreshToken){
+    public static LoginTokenDto of (String accessToken, String refreshToken){
         return LoginTokenDto.builder()
-                .message(message)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
     }
-
-
 
 }

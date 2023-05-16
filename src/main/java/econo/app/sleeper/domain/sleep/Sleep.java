@@ -1,7 +1,7 @@
 package econo.app.sleeper.domain.sleep;
 
 
-import econo.app.sleeper.domain.user.User;
+import econo.app.sleeper.domain.member.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,8 +39,8 @@ public class Sleep {
     private LocalDate sleepDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_FK")
-    private User user;
+    @JoinColumn(name = "MEMBER_FK")
+    private Member member;
 
     @Builder
     public Sleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, LocalDate sleepDate){
@@ -50,17 +50,17 @@ public class Sleep {
         this.sleepDate = sleepDate;
     }
 
-    private void mappingUser(User user){
-        this.user = user;
+    private void mappingUser(Member member){
+        this.member = member;
     }
 
-    public static Sleep createSleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, LocalDate sleepDate, User user){
+    public static Sleep createSleep(ZonedDateTime setSleepTime, ZonedDateTime setWakeTime, ZonedDateTime actualSleepTime, LocalDate sleepDate, Member member){
         Sleep sleep = new Sleep();
         sleep.setSleepTime = setSleepTime;
         sleep.setWakeTime = setWakeTime;
         sleep.actualSleepTime = actualSleepTime;
         sleep.sleepDate = sleepDate;
-        sleep.mappingUser(user);
+        sleep.mappingUser(member);
         return sleep;
     }
 
@@ -69,7 +69,6 @@ public class Sleep {
     }
 
     public Integer calculateXp() {
-        System.out.println(" = ");
         if(actualSleepTime.isAfter(setWakeTime)){
             return 0;
         } else if(actualWakeTime.isBefore(setSleepTime)){
@@ -91,8 +90,8 @@ public class Sleep {
     }
 
     public Long evaluateSleep(){
-        LocalTime goalSleepTime = user.getSleepAdvisor().getGoalSleepTime();
-        LocalTime goalWakeTime = user.getSleepAdvisor().getGoalWakeTime();
+        LocalTime goalSleepTime = member.getSleepAdvisor().getGoalSleepTime();
+        LocalTime goalWakeTime = member.getSleepAdvisor().getGoalWakeTime();
         Long denominator = ChronoUnit.HOURS.between(goalWakeTime, goalSleepTime);
         LocalTime actualSleepTime = this.actualSleepTime.toLocalTime();
         LocalTime actualWakeTime = this.actualWakeTime.toLocalTime();

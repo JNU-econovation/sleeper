@@ -1,4 +1,4 @@
-package econo.app.sleeper.web.user.dto;
+package econo.app.sleeper.web.member.dto;
 
 import lombok.Data;
 
